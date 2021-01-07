@@ -4,4 +4,6 @@ public interface Storable extends Nameable {
 
     void save();
 
+    void saveToDatabase();
+
 }
