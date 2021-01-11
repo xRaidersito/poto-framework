@@ -5,7 +5,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 public class SimpleChatChannel implements ChatChannel {
 
@@ -15,28 +15,23 @@ public class SimpleChatChannel implements ChatChannel {
     private final String permission;
     private final ChannelType type;
 
-    private final boolean permissionBased;
-    private final boolean typeBased;
-
-    private final List<Predicate<AsyncPlayerChatEvent>> predicates;
+    private final List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> predicates;
     private final BiConsumer<AsyncPlayerChatEvent, ChatChannel> consumer;
 
     public SimpleChatChannel(String name, String prefix, String permission, ChannelType type,
-                             boolean permissionBased, boolean typeBased, List<Predicate<AsyncPlayerChatEvent>> predicates,
+                             List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> predicates,
                              BiConsumer<AsyncPlayerChatEvent, ChatChannel> consumer) {
         this.name = name;
         this.prefix = prefix;
         this.permission = permission;
         this.type = type;
-        this.permissionBased = permissionBased;
-        this.typeBased = typeBased;
         this.predicates = predicates;
         this.consumer = consumer;
     }
 
 
     @Override
-    public List<Predicate<AsyncPlayerChatEvent>> getPredicateList() {
+    public List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> getPredicateList() {
         return predicates;
     }
 
@@ -60,13 +55,4 @@ public class SimpleChatChannel implements ChatChannel {
         return type;
     }
 
-    @Override
-    public boolean isPermissionBased() {
-        return permissionBased;
-    }
-
-    @Override
-    public boolean isTypeBased() {
-        return typeBased;
-    }
 }

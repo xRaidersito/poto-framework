@@ -6,11 +6,12 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public interface ChatChannel {
 
-    List<Predicate<AsyncPlayerChatEvent>> getPredicateList();
+    List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> getPredicateList();
 
     BiConsumer<AsyncPlayerChatEvent, ChatChannel> getConsumer();
 
@@ -19,9 +20,5 @@ public interface ChatChannel {
     String getPermission();
 
     ChannelType getChannelType();
-
-    boolean isPermissionBased();
-
-    boolean isTypeBased();
 
 }
