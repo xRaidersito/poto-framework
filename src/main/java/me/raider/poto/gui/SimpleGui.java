@@ -133,7 +133,7 @@ public class SimpleGui implements Gui {
         }
 
         @Override
-        public Gui.Builder addPage(GuiPage page) {
+        public Builder addPage(GuiPage page) {
             pages.add(page);
             return this;
         }

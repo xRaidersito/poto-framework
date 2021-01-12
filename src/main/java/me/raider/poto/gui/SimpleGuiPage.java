@@ -68,13 +68,13 @@ public class SimpleGuiPage implements GuiPage {
         }
 
         @Override
-        public GuiPage.Builder slots(int slots) {
+        public Builder slots(int slots) {
             this.slots=slots;
             return this;
         }
 
         @Override
-        public GuiPage.Builder addItem(GuiItem item) {
+        public Builder addItem(GuiItem item) {
 
             this.guiItems[item.getSlot()]=item;
             inventory.setItem(item.getSlot(), item.getItem());
@@ -82,7 +82,7 @@ public class SimpleGuiPage implements GuiPage {
         }
 
         @Override
-        public GuiPage.Builder addButton(Button button) {
+        public Builder addButton(Button button) {
 
             this.guiItems[button.getSlot()]=button;
             inventory.setItem(button.getSlot(), button.getItem());

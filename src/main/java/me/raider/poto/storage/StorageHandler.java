@@ -10,12 +10,6 @@ public class StorageHandler {
 
     private List<Storage<? extends Storable>> storageList = new ArrayList<>();
 
-    private StorageParser<?> storageParser;
-
-    public StorageHandler(StorageParser<? extends Storable> storageParser) {
-        this.storageParser=storageParser;
-    }
-
     public List<Storage<? extends Storable>> getStorageList() {
         return storageList;
     }
@@ -24,12 +18,8 @@ public class StorageHandler {
         this.storageList.add(storage);
     }
 
-    public void addParsed() {
+    public void addParsed(StorageParser<? extends Storable> storageParser) {
         this.storageList.add(storageParser.get());
-    }
-
-    public void setStorageParser(StorageParser<? extends Storable> storageParser) {
-        this.storageParser = storageParser;
     }
 
     public Storage<? extends Storable> getStorage(String name) {
