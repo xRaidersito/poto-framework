@@ -29,3 +29,5 @@ hs_err_pid*
 poto-framework.iml
 /target/
 /src/
+/Framework/target/
+/Test/target/

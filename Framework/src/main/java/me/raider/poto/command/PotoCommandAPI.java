@@ -71,8 +71,7 @@ public class PotoCommandAPI {
 
             commandMap = (CommandMap) getCommandMap.invoke(server);
 
-            final Field bukkitCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
-            bukkitCommands.setAccessible(true);
+            getCommandMap.setAccessible(getCommandMap.isAccessible());
 
         } catch (final Exception e) {
             e.printStackTrace();

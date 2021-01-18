@@ -1,7 +1,7 @@
 package me.raider.poto.gui.item.buttom;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Player;
 
 public class CloseButton extends Button {
 
