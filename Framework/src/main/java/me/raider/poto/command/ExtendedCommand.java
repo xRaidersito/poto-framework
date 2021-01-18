@@ -61,19 +61,7 @@ public class ExtendedCommand extends Command {
 
                     int spaces = checkSpaces(subCommand.subcommand()[i]);
 
-                    StringBuilder sb = new StringBuilder();
-
-                    if (sb.length()==0) {
-                        sb.append(args[0]);
-                    }
-
-                    if (spaces > 0) {
-
-                        for (int x = 1 ; x < spaces + 1 ; x++) {
-
-                            sb.append(' ' + args[i]);
-                        }
-                    }
+                    StringBuilder sb = buildNewArgs(args, spaces, i);
 
                     if (!sb.toString().equalsIgnoreCase(subCommand.subcommand()[i])) {
                         continue;
@@ -106,11 +94,10 @@ public class ExtendedCommand extends Command {
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
-                        return true;
-                    }
 
-                    sender.sendMessage(messageProvider.getMessage("usage"));
-                    return true;
+                    } else {
+                        sender.sendMessage(messageProvider.getMessage("usage"));
+                    }
                 }
             }
         }
@@ -150,6 +137,24 @@ public class ExtendedCommand extends Command {
         }
 
         return true;
+    }
+
+    private StringBuilder buildNewArgs(String[] args, int spaces, int i) {
+
+        StringBuilder sb = new StringBuilder();
+
+        if (sb.length()==0) {
+            sb.append(args[0]);
+        }
+
+        if (spaces > 0) {
+
+            for (int x = 1 ; x < spaces + 1 ; x++) {
+
+                sb.append(' ' + args[i]);
+            }
+        }
+        return sb;
     }
 
 }

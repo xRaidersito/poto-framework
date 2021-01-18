@@ -54,9 +54,7 @@ public class YamlFile extends YamlConfiguration {
 
     public void save() {
 
-        if (folder==null) {
-            folder = this.plugin.getDataFolder();
-        }
+        checkFolder();
         File file = new File(folder, this.fileName);
         try {
             save(file);
@@ -66,9 +64,7 @@ public class YamlFile extends YamlConfiguration {
     }
 
     public void reload() {
-        if (folder==null) {
-            folder = this.plugin.getDataFolder();
-        }
+        checkFolder();
         File file = new File(folder, this.fileName);
         try {
             load(file);
@@ -76,4 +72,11 @@ public class YamlFile extends YamlConfiguration {
             this.plugin.getLogger().log(Level.SEVERE, "Reload of the file '" + this.fileName + "' failed.", e);
         }
     }
+
+    private void checkFolder() {
+        if (folder==null) {
+            folder = this.plugin.getDataFolder();
+        }
+    }
+
 }
