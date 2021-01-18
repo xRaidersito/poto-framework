@@ -7,9 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.SimpleCommandMap;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class PotoCommandAPI {

@@ -1,6 +1,6 @@
 package me.raider.poto;
 
-public interface Initializator {
+public interface Initializer {
 
     void init();
 
