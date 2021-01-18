@@ -1,0 +1,3 @@
+name: TestPlugin
+main: me.raider.poto.Test
+version: 1.0.0
