@@ -4,9 +4,11 @@ import me.raider.poto.file.YamlFile;
 
 public class DatabaseDetails {
 
-    private YamlFile configFile;
-
-    private String hostname, port, database, username, password;
+    private String hostname;
+    private String port;
+    private String database;
+    private String username;
+    private String password;
 
     private int maximumConnections;
 
@@ -14,7 +16,6 @@ public class DatabaseDetails {
 
     public DatabaseDetails(YamlFile configFile) {
 
-        this.configFile=configFile;
         this.hostname=configFile.getString("database.host");
         this.port=configFile.getString("database.port");
         this.password=configFile.getString("database.password");

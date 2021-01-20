@@ -55,4 +55,8 @@ public class SimpleChatChannel implements ChatChannel {
         return type;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
 }

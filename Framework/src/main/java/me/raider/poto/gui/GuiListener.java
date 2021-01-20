@@ -25,7 +25,6 @@ public class GuiListener implements Listener {
             return;
         }
         Player player = (Player) event.getWhoClicked();
-        String uuid = player.getUniqueId().toString();
 
         Gui gui = handler.getGuiByViewer(player);
 
@@ -54,10 +53,8 @@ public class GuiListener implements Listener {
 
         Gui gui = handler.getGuiByViewer(player);
 
-        if (gui!=null) {
-            if (gui.getViewers().containsKey(player.getUniqueId().toString())) {
+        if (gui!=null && gui.getViewers().containsKey(player.getUniqueId().toString())) {
                 gui.getViewers().remove(player.getUniqueId().toString());
-            }
         }
     }
 
@@ -67,13 +64,8 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         Gui gui = handler.getGuiByViewer(player);
 
-        if (gui!=null) {
-            if (gui.getViewers().containsKey(player.getUniqueId().toString())) {
+        if (gui!=null && gui.getViewers().containsKey(player.getUniqueId().toString())) {
                 gui.getViewers().remove(player.getUniqueId().toString());
-            }
         }
     }
-
-
-
 }

@@ -5,7 +5,6 @@ import me.raider.poto.storage.Storage;
 import me.raider.poto.storage.StorageType;
 
 import java.util.List;
-import java.util.Map;
 
 public interface StorageParser<T extends Storable> {
 

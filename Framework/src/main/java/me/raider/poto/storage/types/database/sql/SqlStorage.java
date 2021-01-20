@@ -13,6 +13,10 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
         this.abstractSqlDatabase=abstractSqlDatabase;
     }
 
+    public AbstractSqlDatabase getAbstractSqlDatabase() {
+        return abstractSqlDatabase;
+    }
+
     @Override
     public void load(String key) {
 
