@@ -1,9 +1,11 @@
 package me.raider.poto.storage;
 
 import me.raider.poto.storage.parser.StorageParser;
+import me.raider.poto.storage.types.Storable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class StorageHandler {
 
@@ -21,17 +23,8 @@ public class StorageHandler {
         this.storageMap.put(storageParser.get().getName(), storageParser.get());
     }
 
-    public Storage<? extends Storable> getStorage(String name) {
-
-        for (String key : storageMap.keySet()) {
-
-            Storage<? extends Storable> storage = storageMap.get(key);
-
-            if (storage.getName().equals(name)) {
-                return storage;
-            }
-        }
-        return null;
+    public Optional<Storage<? extends Storable>> getStorage(String name) {
+        return Optional.of(storageMap.get(name));
     }
 
 

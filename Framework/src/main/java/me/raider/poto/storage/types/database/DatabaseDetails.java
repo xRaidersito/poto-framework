@@ -1,4 +1,4 @@
-package me.raider.poto.storage.database;
+package me.raider.poto.storage.types.database;
 
 import me.raider.poto.file.YamlFile;
 

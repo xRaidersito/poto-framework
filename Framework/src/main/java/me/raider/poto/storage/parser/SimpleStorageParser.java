@@ -1,6 +1,6 @@
 package me.raider.poto.storage.parser;
 
-import me.raider.poto.storage.Storable;
+import me.raider.poto.storage.types.Storable;
 import me.raider.poto.storage.Storage;
 import me.raider.poto.storage.StorageType;
 
@@ -11,13 +11,11 @@ public class SimpleStorageParser<T extends Storable> implements StorageParser<T>
     private Storage<T> storage;
 
     @Override
-    public void parse(List<Storage<T>> storages, String key) {
-
-        StorageType storageType = StorageType.valueOf(key.toUpperCase());
+    public void parse(List<Storage<T>> storages, StorageType type) {
 
         for (Storage<T> storage : storages) {
 
-            if (storage.getType() == storageType) {
+            if (storage.getType() == type) {
                 this.storage = storage;
             }
         }

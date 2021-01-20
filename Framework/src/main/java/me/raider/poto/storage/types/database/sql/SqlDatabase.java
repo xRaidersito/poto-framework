@@ -1,4 +1,4 @@
-package me.raider.poto.storage.database.sql;
+package me.raider.poto.storage.types.database.sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -2,7 +2,8 @@ package me.raider.poto.storage;
 
 public enum StorageType {
 
-    FLATFILE,
+    YAML,
+    JSON,
     MONGODB,
     MYSQL;
 

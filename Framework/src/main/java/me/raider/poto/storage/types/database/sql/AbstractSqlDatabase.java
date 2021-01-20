@@ -1,9 +1,9 @@
-package me.raider.poto.storage.database.sql;
+package me.raider.poto.storage.types.database.sql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.raider.poto.file.YamlFile;
-import me.raider.poto.storage.database.DatabaseDetails;
+import me.raider.poto.storage.types.database.DatabaseDetails;
 
 import java.sql.Connection;
 import java.sql.SQLException;

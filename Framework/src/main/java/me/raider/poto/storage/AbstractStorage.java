@@ -1,5 +1,7 @@
 package me.raider.poto.storage;
 
+import me.raider.poto.storage.types.Storable;
+
 import java.util.HashMap;
 import java.util.Map;
 
