@@ -1,6 +1,7 @@
 package me.raider.poto.storage;
 
 import me.raider.poto.Nameable;
+import me.raider.poto.internal.SerializableObject;
 import me.raider.poto.storage.types.Storable;
 
 import java.util.Map;
@@ -29,11 +30,18 @@ public interface Storage<T extends Storable> extends Nameable {
      */
     void save(String key);
 
+
+
+    void createIfAbsent(String key);
+
+
     /**
      * Gets the type of the storage.
      *
      * @return the {@link StorageType} of the storage.
      */
     StorageType getType();
+
+    SerializableObject<T> getSerializable();
 
 }

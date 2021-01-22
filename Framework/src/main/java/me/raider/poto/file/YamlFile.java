@@ -78,5 +78,4 @@ public class YamlFile extends YamlConfiguration {
             folder = this.plugin.getDataFolder();
         }
     }
-
 }

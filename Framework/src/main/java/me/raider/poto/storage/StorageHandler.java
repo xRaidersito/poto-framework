@@ -15,11 +15,17 @@ public class StorageHandler {
         return storageMap;
     }
 
-    public void add(Storage<? extends Storable> storage) {
+    public void register(Storage<? extends Storable> storage) {
         this.storageMap.put(storage.getName(), storage);
     }
 
-    public void addParsed(StorageParser<? extends Storable> storageParser) {
+    public void registerAll(Storage<? extends Storable>... storages) {
+        for (Storage<? extends Storable> storage : storages) {
+            register(storage);
+        }
+    }
+
+    public void registerParsed(StorageParser<? extends Storable> storageParser) {
         this.storageMap.put(storageParser.get().getName(), storageParser.get());
     }
 

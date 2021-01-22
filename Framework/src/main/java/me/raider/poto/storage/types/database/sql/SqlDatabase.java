@@ -58,6 +58,8 @@ public interface SqlDatabase {
         return null;
     }
 
+    boolean dataExist(String table, String column, String key);
+
     void createTables();
 
 }
