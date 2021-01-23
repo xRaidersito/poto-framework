@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 public class SimpleCommandArgument implements CommandArgument {
 
-    private String[] arguments;
-    private CommandSender sender;
+    private final String[] arguments;
+    private final CommandSender sender;
 
     public SimpleCommandArgument(String[] arguments, CommandSender sender) {
         this.arguments=arguments;

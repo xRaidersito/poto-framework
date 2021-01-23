@@ -9,7 +9,7 @@ import java.util.function.BiPredicate;
 
 public class ChatChannelListener<T extends ChannelObject> implements Listener {
 
-    private T channel;
+    private final T channel;
 
     public ChatChannelListener(T channel) {
         this.channel=channel;

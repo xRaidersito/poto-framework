@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class StorageHandler {
 
-    private Map<String, Storage<? extends Storable>> storageMap = new HashMap<>();
+    private final Map<String, Storage<? extends Storable>> storageMap = new HashMap<>();
 
     public Map<String, Storage<? extends Storable>> getStorageMap() {
         return storageMap;

@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class GuiListener implements Listener {
 
-    private GuiHandler handler;
+    private final GuiHandler handler;
 
     public GuiListener(GuiHandler handler) {
         this.handler=handler;

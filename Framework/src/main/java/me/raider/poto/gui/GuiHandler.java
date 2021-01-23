@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class GuiHandler {
 
-    private Map<String, Gui> guiMap = new HashMap<>();
+    private final Map<String, Gui> guiMap = new HashMap<>();
 
     public Map<String, Gui> get() {
         return guiMap;

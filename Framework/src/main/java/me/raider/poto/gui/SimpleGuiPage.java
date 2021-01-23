@@ -55,10 +55,10 @@ public class SimpleGuiPage implements GuiPage {
 
     public static class Builder implements GuiPage.Builder {
 
-        private String name;
+        private final String name;
         private int slots;
-        private GuiItem[] guiItems;
-        private Inventory inventory;
+        private final GuiItem[] guiItems;
+        private final Inventory inventory;
 
         public Builder(String name, int slots) {
             this.name=name;

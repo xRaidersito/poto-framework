@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class SimplePotoCommandManager implements PotoCommandManager {
 
-    private Map<String, RegisteredCommand> registeredCommands = new HashMap<>();
+    private final Map<String, RegisteredCommand> registeredCommands = new HashMap<>();
 
     @Override
     public Map<String, RegisteredCommand> getRegisteredCommands() {

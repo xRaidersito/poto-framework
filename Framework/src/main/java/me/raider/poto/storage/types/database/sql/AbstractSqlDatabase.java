@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public abstract class AbstractSqlDatabase implements SqlDatabase {
 
-    private HikariDataSource dataSource;
+    private final HikariDataSource dataSource;
 
     public AbstractSqlDatabase(YamlFile configFile) {
 

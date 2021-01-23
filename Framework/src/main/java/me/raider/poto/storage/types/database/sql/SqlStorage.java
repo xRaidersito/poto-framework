@@ -14,7 +14,7 @@ import java.util.Map;
 
 public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> {
 
-    private AbstractSqlDatabase sqlDatabase;
+    private final AbstractSqlDatabase sqlDatabase;
     private final String table;
     private final String[] sqlColumns;
 

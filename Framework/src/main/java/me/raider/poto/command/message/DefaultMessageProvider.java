@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class DefaultMessageProvider implements MessageProvider {
 
-    private Map<String, String> messageMap = new HashMap<>();
+    private final Map<String, String> messageMap = new HashMap<>();
 
     public DefaultMessageProvider() {
         register("only-players", "&cOnly players can use this command");

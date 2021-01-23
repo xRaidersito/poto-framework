@@ -7,9 +7,9 @@ import java.util.*;
 
 public class SimpleGui implements Gui {
 
-    private Map<String, Integer> viewers = new HashMap<>();
-    private List<GuiPage> pages;
-    private String name;
+    private final Map<String, Integer> viewers = new HashMap<>();
+    private final List<GuiPage> pages;
+    private final String name;
 
     public SimpleGui(List<GuiPage> pages, Provider<GuiHandler> provider) {
         this.pages=pages;

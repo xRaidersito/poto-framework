@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class AbstractStorage<T extends Storable> implements Storage<T> {
 
-    private Map<String, T> map = new HashMap<>();
+    private final Map<String, T> map = new HashMap<>();
 
     private final String name;
     private final StorageType type;
