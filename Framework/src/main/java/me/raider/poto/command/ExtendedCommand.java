@@ -2,8 +2,9 @@ package me.raider.poto.command;
 
 import me.raider.poto.command.annotation.SubCommand;
 import me.raider.poto.command.argument.ArgumentParser;
-import me.raider.poto.command.argument.SimpleCommandArgument;
 import me.raider.poto.command.message.MessageProvider;
+import me.raider.poto.command.parameter.ParameterCreator;
+import me.raider.poto.command.parameter.ParameterHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -11,16 +12,20 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ExtendedCommand extends Command {
 
     private final RegisteredCommand registeredCommand;
     private final MessageProvider messageProvider;
     private final ArgumentParser argumentParser;
+    private final ParameterHandler parameterHandler;
 
-    public ExtendedCommand(RegisteredCommand registeredCommand, MessageProvider messageProvider, ArgumentParser argumentParser) {
+    public ExtendedCommand(RegisteredCommand registeredCommand, MessageProvider messageProvider, ArgumentParser argumentParser, ParameterHandler parameterHandler) {
         super(registeredCommand.getCommand().name());
+        this.parameterHandler = parameterHandler;
 
         setAliases(Arrays.asList(registeredCommand.getCommand().aliases()));
         setDescription(registeredCommand.getCommand().description());
@@ -35,9 +40,11 @@ public class ExtendedCommand extends Command {
 
         for (Method method : registeredCommand.getMethods()) {
 
-            if (args.length==0 && !method.isAnnotationPresent(SubCommand.class)) {
+            if (args.length==0 && !method.isAnnotationPresent(SubCommand.class) && method.getParameterCount()==1) {
 
-                if (!checkType(registeredCommand.getCommand().type(), sender)) {
+                Class<?> parameterType = method.getParameterTypes()[0];
+
+                if (!checkType(parameterType, sender)) {
                     return true;
                 }
 
@@ -46,14 +53,14 @@ public class ExtendedCommand extends Command {
                     return true;
                 }
                 try {
-                    method.invoke(registeredCommand.getInstance(), new SimpleCommandArgument(args, sender));
+                    method.invoke(parameterHandler.getParameter(parameterType));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
                 return true;
             }
 
-            if (method.isAnnotationPresent(SubCommand.class) && args.length!=0) {
+            if (method.isAnnotationPresent(SubCommand.class) && args.length!=0 && method.getParameterCount()>0) {
 
                 SubCommand subCommand = method.getAnnotation(SubCommand.class);
 
@@ -61,19 +68,15 @@ public class ExtendedCommand extends Command {
 
                     int spaces = checkSpaces(subCommand.subcommand()[i]);
 
-                    StringBuilder sb = buildNewArgs(args, spaces, i);
+                    StringBuilder sb = buildNewArgs(args, spaces);
 
                     if (!sb.toString().equalsIgnoreCase(subCommand.subcommand()[i])) {
                         continue;
                     }
 
-                    String type = registeredCommand.getCommand().type();
+                    Class<?> senderType = method.getParameterTypes()[0];
 
-                    if (subCommand.type().equalsIgnoreCase("")) {
-                        type=subCommand.type();
-                    }
-
-                    if (!checkType(type, sender)) {
+                    if (!checkType(senderType, sender)) {
                         return true;
                     }
 
@@ -87,10 +90,25 @@ public class ExtendedCommand extends Command {
 
                     String[] newArgs = argumentParser.parse(args, subCmdSizeArray.length);
 
-                    if (newArgs.length == method.getAnnotation(SubCommand.class).args()) {
+                    if (newArgs.length == method.getParameterCount()-1) {
+
+                        List<Object> paramList = new ArrayList<>();
+
+                        paramList.add(parameterHandler.getParameter(senderType));
+
+                        for (int x = 1; i < method.getParameterCount()-1 ; x++) {
+
+                            ParameterCreator<Object> parameterCreator = parameterHandler.getParameter(method.getParameterTypes()[x]);
+
+                            if (!parameterCreator.isPresent(newArgs[x-1])) {
+                                sender.sendMessage(messageProvider.getMessage("invalid-argument"));
+                                continue;
+                            }
+                            paramList.add(parameterCreator.create(newArgs[x-1]));
+                        }
 
                         try {
-                            method.invoke(registeredCommand.getInstance(), new SimpleCommandArgument(newArgs, sender));
+                            method.invoke(registeredCommand.getInstance(), paramList.toArray());
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
@@ -105,6 +123,12 @@ public class ExtendedCommand extends Command {
     }
 
 
+    /**
+     * A method that will check all spaces in a string.
+     *
+     * @param string The string to be checked.
+     * @return The number of spaces present.
+     */
     private int checkSpaces(String string) {
 
         int spaces = 0;
@@ -119,17 +143,23 @@ public class ExtendedCommand extends Command {
         return spaces;
     }
 
-    private boolean checkType(String type, CommandSender sender) {
+    /**
+     * A method that will check the type of the {@link CommandSender}
+     *
+     * @param clazz The type that has to be equal.
+     * @param sender The sender of the command.
+     * @return False if don't equals the sender, whatever true.
+     */
+    private boolean checkType(Class<?> clazz, CommandSender sender) {
 
-        System.out.println(type + "+");
+        System.out.println(clazz + "+");
 
-        if (type.equalsIgnoreCase("player")
-                && !(sender instanceof Player)) {
+        if (clazz.equals(Player.class) && !(sender instanceof Player)) {
 
             sender.sendMessage(messageProvider.getMessage("only-players"));
             return false;
         }
-        else if (type.equalsIgnoreCase("console")
+        else if (clazz.equals(ConsoleCommandSender.class)
                 && !(sender instanceof ConsoleCommandSender)) {
 
             sender.sendMessage(messageProvider.getMessage("only-console"));
@@ -139,19 +169,24 @@ public class ExtendedCommand extends Command {
         return true;
     }
 
-    private StringBuilder buildNewArgs(String[] args, int spaces, int i) {
+    /**
+     * A method that will build a new {@link StringBuilder} based in subcommand args.
+     *
+     * @param args The args that will build the new string.
+     * @param spaces The total spaces that has the args.
+     * @return The new {@link StringBuilder}.
+     */
+    private StringBuilder buildNewArgs(String[] args, int spaces) {
 
         StringBuilder sb = new StringBuilder();
 
-        if (sb.length()==0) {
-            sb.append(args[0]);
-        }
+        sb.append(args[0]);
 
         if (spaces > 0) {
 
             for (int x = 1 ; x < spaces + 1 ; x++) {
 
-                sb.append(' ' + args[i]);
+                sb.append(' ' + args[x]);
             }
         }
         return sb;

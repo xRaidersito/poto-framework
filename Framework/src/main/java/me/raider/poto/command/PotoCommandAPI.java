@@ -3,6 +3,7 @@ package me.raider.poto.command;
 import me.raider.poto.command.annotation.Command;
 import me.raider.poto.command.argument.SimpleArgumentParser;
 import me.raider.poto.command.message.MessageProvider;
+import me.raider.poto.command.parameter.ParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandException;
@@ -15,13 +16,15 @@ public class PotoCommandAPI {
     private PotoCommandManager commandManager;
     private CommandMap commandMap;
     private MessageProvider messageProvider;
+    private ParameterHandler parameterHandler;
 
-    public void init(PotoCommandManager commandManager, MessageProvider messageProvider) {
+    public void init(PotoCommandManager commandManager, MessageProvider messageProvider, ParameterHandler parameterHandler) {
 
         initCommandMap();
 
         this.commandManager=commandManager;
         this.messageProvider=messageProvider;
+        this.parameterHandler=parameterHandler;
     }
 
     public void register(PotoCommand... potoCommands) {
@@ -39,7 +42,7 @@ public class PotoCommandAPI {
             throw new CommandException("The target class don't has the @Command annotation");
         }
 
-        commandMap.register(registered.getCommand().name(), new ExtendedCommand(registered, messageProvider, new SimpleArgumentParser()));
+        commandMap.register(registered.getCommand().name(), new ExtendedCommand(registered, messageProvider, new SimpleArgumentParser(), parameterHandler));
     }
 
     private RegisteredCommand registerCommand(PotoCommand potoCommand) {
@@ -78,4 +81,15 @@ public class PotoCommandAPI {
         this.commandMap=commandMap;
     }
 
+    public MessageProvider getMessageProvider() {
+        return messageProvider;
+    }
+
+    public ParameterHandler getParameterHandler() {
+        return parameterHandler;
+    }
+
+    public PotoCommandManager getCommandManager() {
+        return commandManager;
+    }
 }

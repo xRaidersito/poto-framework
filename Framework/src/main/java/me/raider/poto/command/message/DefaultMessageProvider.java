@@ -13,6 +13,7 @@ public class DefaultMessageProvider implements MessageProvider {
         register("usage", "&cBad usage!");
         register("bad-subcommand", "&cThat's not a valid subcommand!");
         register("no-permission", "&cYou don't have permissions!");
+        register("invalid-argument", "&cInvalid argument!");
     }
 
     @Override

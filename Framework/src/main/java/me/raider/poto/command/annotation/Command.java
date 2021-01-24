@@ -15,8 +15,6 @@ public @interface Command {
 
     String permission() default "";
 
-    String type() default "mixed";
-
     String[] aliases() default {};
 
 }

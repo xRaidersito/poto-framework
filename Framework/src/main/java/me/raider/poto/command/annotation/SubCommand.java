@@ -5,17 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface SubCommand {
 
-    String[] subcommand();
+    String[] subcommand() default {""};
 
     String permission() default "";
-
-    String type() default "";
-
-    int args() default 0;
 
 }

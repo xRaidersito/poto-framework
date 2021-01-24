@@ -7,11 +7,12 @@ public class CooldownImpl implements Cooldown {
     private final CooldownMap cooldownMap = new SimpleCooldownMap();
     private final String name;
     private final int seconds;
+    private final boolean persistent;
 
-    public CooldownImpl(String name, int seconds) {
+    public CooldownImpl(String name, int seconds, boolean persistent) {
         this.name = name;
         this.seconds = seconds;
-
+        this.persistent = persistent;
     }
 
 
@@ -41,13 +42,18 @@ public class CooldownImpl implements Cooldown {
     }
 
     @Override
+    public boolean isPersistent() {
+        return persistent;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public int getSecondsLeft() {
-        return 0;
+    public double getSecondsLeft(Player player) {
+        return cooldownMap.get().get(player.getUniqueId().toString()) / 1000;
     }
 
     @Override

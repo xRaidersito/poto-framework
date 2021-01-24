@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 public interface Cooldown extends Timeable, Nameable {
 
+
     void addCooldown(Player player);
 
     void addCooldownSec(Player player, int seconds);
@@ -14,7 +15,11 @@ public interface Cooldown extends Timeable, Nameable {
 
     void removeCooldown(Player player);
 
+    double getSecondsLeft(Player player);
+
     boolean inCooldown(Player player);
+
+    boolean isPersistent();
 
     interface Builder {
 
@@ -22,7 +27,7 @@ public interface Cooldown extends Timeable, Nameable {
 
         Builder persistent(boolean persistent);
 
-        Builder seconds(int seconds);
+        Builder defaultSeconds(int seconds);
 
         Cooldown build();
 
