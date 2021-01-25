@@ -21,7 +21,7 @@ public interface Storage<T extends Storable> extends Nameable {
      *
      * @param key represent the unique id of the object to load.
      */
-    void load(String key);
+    T load(String key);
 
     /**
      * Save an object to a database using its unique identifier.
@@ -32,7 +32,7 @@ public interface Storage<T extends Storable> extends Nameable {
 
 
 
-    void createIfAbsent(String key);
+    T createIfAbsent(String key);
 
 
     /**

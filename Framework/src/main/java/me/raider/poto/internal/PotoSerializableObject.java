@@ -31,6 +31,10 @@ public class PotoSerializableObject<T extends Storable> implements SerializableO
                 serializeMap.putAll(serializeSubClasses(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path(), yaml));
                 continue;
             }
+            if (!yaml && field.get(instance) instanceof Map) {
+                serializeMap.putAll((Map<? extends String, ?>) field.get(instance));
+                break;
+            }
 
             serializeMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
         }
@@ -59,6 +63,12 @@ public class PotoSerializableObject<T extends Storable> implements SerializableO
                 serializeMap.put(newKey, field.get(instance));
                 continue;
             }
+
+            if (field.get(instance) instanceof Map) {
+                serializeMap.putAll((Map<? extends String, ?>) field.get(instance));
+                break;
+            }
+
             serializeMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
 
         }

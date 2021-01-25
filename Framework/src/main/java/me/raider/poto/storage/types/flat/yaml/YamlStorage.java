@@ -22,19 +22,21 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
     }
 
     @Override
-    public void load(String key) {
+    public T load(String key) {
 
         YamlFile file = new YamlFile(plugin, key, ".yml", new File(plugin.getDataFolder().getAbsolutePath() + folder));
 
         if (!file.contains("data")) {
-            createIfAbsent(key);
-            return;
+            return createIfAbsent(key);
         }
 
         Map<String, Object> dataMap = file.getValues(true);
 
-        get().put(key, getSerializable().deserialize(dataMap));
+        T object = getSerializable().deserialize(dataMap);
 
+        get().put(key, object);
+
+        return object;
     }
 
     @Override

@@ -31,11 +31,10 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
     }
 
     @Override
-    public void load(String key) {
+    public T load(String key) {
 
         if (!sqlDatabase.dataExist(table, sqlColumns[0], key)) {
-            createIfAbsent(key);
-            return;
+            return createIfAbsent(key);
         }
 
         Map<String, Object> dataMap = new HashMap<>();
@@ -55,7 +54,11 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
             e.printStackTrace();
         }
 
+        T object = getSerializable().deserialize(dataMap);
+
         get().put(key, getSerializable().deserialize(dataMap));
+
+        return object;
     }
 
     @Override
@@ -69,7 +72,7 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
         Map<String, Object> serializeMap = null;
 
         try {
-            serializeMap = getSerializable().serialize(toSerialize.getClass(), toSerialize, true);
+            serializeMap = getSerializable().serialize(toSerialize.getClass(), toSerialize, false);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -138,6 +141,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
                 }
                 insertBuilder.append(")");
                 return insertBuilder.toString();
+
+            default:
         }
         return "";
     }
