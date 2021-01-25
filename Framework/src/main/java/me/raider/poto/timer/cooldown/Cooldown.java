@@ -1,37 +1,23 @@
 package me.raider.poto.timer.cooldown;
 
 import me.raider.poto.Nameable;
-import me.raider.poto.timer.Timeable;
+import me.raider.poto.timer.cooldown.user.CooldownUserProvider;
 import org.bukkit.entity.Player;
 
-public interface Cooldown extends Timeable, Nameable {
+public interface Cooldown extends Nameable {
 
+    CooldownMeta getCooldownMeta();
 
-    void addCooldown(Player player);
+    CooldownUserProvider getUserProvider();
 
-    void addCooldownSec(Player player, int seconds);
+    void createCooldown(Player player);
 
-    void removeCooldownSec(Player player, int seconds);
+    void addSeconds(Player player, int seconds);
+
+    void removeSeconds(Player player, int seconds);
 
     void removeCooldown(Player player);
 
-    double getSecondsLeft(Player player);
-
     boolean inCooldown(Player player);
-
-    boolean isPersistent();
-
-    interface Builder {
-
-        Builder name(String name);
-
-        Builder persistent(boolean persistent);
-
-        Builder defaultSeconds(int seconds);
-
-        Cooldown build();
-
-    }
-
 
 }

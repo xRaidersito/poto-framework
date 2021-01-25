@@ -1,63 +1,55 @@
 package me.raider.poto.timer.cooldown;
 
+import me.raider.poto.timer.cooldown.user.CooldownUserProvider;
 import org.bukkit.entity.Player;
 
 public class CooldownImpl implements Cooldown {
 
-    private final CooldownMap cooldownMap = new SimpleCooldownMap();
-    private final String name;
-    private final int seconds;
-    private final boolean persistent;
+    private final CooldownMeta cooldownMeta;
+    private final CooldownUserProvider provider;
 
-    public CooldownImpl(String name, int seconds, boolean persistent) {
-        this.name = name;
-        this.seconds = seconds;
-        this.persistent = persistent;
-    }
-
-
-    @Override
-    public void addCooldown(Player player) {
-
+    public CooldownImpl(CooldownMeta cooldownMeta, CooldownUserProvider provider) {
+        this.cooldownMeta = cooldownMeta;
+        this.provider = provider;
     }
 
     @Override
-    public void addCooldownSec(Player player, int seconds) {
-
+    public CooldownMeta getCooldownMeta() {
+        return cooldownMeta;
     }
 
     @Override
-    public void removeCooldownSec(Player player, int seconds) {
+    public CooldownUserProvider getUserProvider() {
+        return provider;
+    }
 
+    @Override
+    public void createCooldown(Player player) {
+        cooldownMeta.addCooldown(provider.getCooldownUser(player.getUniqueId().toString()));
+    }
+
+    @Override
+    public void addSeconds(Player player, int seconds) {
+        cooldownMeta.addCooldownSec(provider.getCooldownUser(player.getUniqueId().toString()), seconds);
+    }
+
+    @Override
+    public void removeSeconds(Player player, int seconds) {
+        cooldownMeta.removeCooldownSec(provider.getCooldownUser(player.getUniqueId().toString()), seconds);
     }
 
     @Override
     public void removeCooldown(Player player) {
-
+        cooldownMeta.removeCooldown(provider.getCooldownUser(player.getUniqueId().toString()));
     }
 
     @Override
     public boolean inCooldown(Player player) {
-        return false;
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return persistent;
+        return cooldownMeta.inCooldown(provider.getCooldownUser(player.getUniqueId().toString()));
     }
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    @Override
-    public double getSecondsLeft(Player player) {
-        return cooldownMap.get().get(player.getUniqueId().toString()) / 1000;
-    }
-
-    @Override
-    public int getSeconds() {
-        return seconds;
+        return cooldownMeta.getName();
     }
 }
