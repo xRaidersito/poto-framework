@@ -1,26 +1,21 @@
-package me.raider.poto.internal;
+package me.raider.poto.serializer;
 
-import me.raider.poto.Factory;
+import me.raider.poto.storage.StorageType;
 import me.raider.poto.storage.types.Storable;
+import me.raider.poto.utils.Utils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PotoSerializableObject<T extends Storable> implements SerializableObject<T> {
-
-    private final Factory<T> objectFactory;
-
-    public PotoSerializableObject(Factory<T> objectFactory) {
-        this.objectFactory=objectFactory;
-    }
+public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProcessor{
 
     @Override
-    public Map<String, Object> serialize(Class<?> clazz, Object instance, boolean yaml) throws IllegalAccessException {
+    public Map<String, Object> serialize(Class<?> clazz, Object instance, StorageType type) throws IllegalAccessException {
 
         Map<String, Object> serializeMap = new HashMap<>();
 
-        for (Field field : clazz.getDeclaredFields()) {
+        for (Field field : Utils.getAllFields(clazz)) {
 
             if (!field.isAnnotationPresent(Serialize.class) || field.get(instance)==null) {
                 continue;
@@ -28,11 +23,11 @@ public class PotoSerializableObject<T extends Storable> implements SerializableO
 
             if (Storable.class.isAssignableFrom(field.getType())) {
 
-                serializeMap.putAll(serializeSubClasses(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path(), yaml));
+                serializeMap.putAll(serializeChild(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path(), type));
                 continue;
             }
-            if (!yaml && field.get(instance) instanceof Map) {
-                serializeMap.putAll((Map<? extends String, ?>) field.get(instance));
+            if (type==StorageType.MYSQL && field.get(instance) instanceof Map) {
+                // create th maps with keys
                 break;
             }
 
@@ -41,11 +36,12 @@ public class PotoSerializableObject<T extends Storable> implements SerializableO
         return serializeMap;
     }
 
-    private Map<String, Object> serializeSubClasses(Class<?> clazz, Object instance, String previousKey, boolean yaml) throws IllegalAccessException {
+    @Override
+    public Map<String, Object> serializeChild(Class<?> clazz, Object instance, String previousKey, StorageType type) throws IllegalAccessException {
 
         Map<String, Object> serializeMap = new HashMap<>();
 
-        for (Field field : clazz.getDeclaredFields()) {
+        for (Field field : Utils.getAllFields(clazz)) {
 
             if (!field.isAnnotationPresent(Serialize.class) || field.get(instance)==null) {
                 continue;
@@ -55,11 +51,11 @@ public class PotoSerializableObject<T extends Storable> implements SerializableO
 
             if (Storable.class.isAssignableFrom(field.getType())) {
 
-                serializeMap.putAll(serializeSubClasses(field.getType(), field.get(instance), newKey, yaml));
+                serializeMap.putAll(serializeChild(field.getType(), field.get(instance), newKey, type));
                 continue;
             }
 
-            if (yaml) {
+            if (type==StorageType.YAML) {
                 serializeMap.put(newKey, field.get(instance));
                 continue;
             }
@@ -75,8 +71,5 @@ public class PotoSerializableObject<T extends Storable> implements SerializableO
         return serializeMap;
     }
 
-    @Override
-    public T deserialize(Map<String, Object> map) {
-        return objectFactory.create(map);
-    }
+
 }
