@@ -1,4 +1,14 @@
 package me.raider.poto.arena;
 
-public interface Arena {
+import me.raider.poto.storage.types.Storable;
+
+public interface Arena extends Storable {
+
+    int getMinPlayers();
+
+    void setMinPlayers(int players);
+
+
+
+
 }

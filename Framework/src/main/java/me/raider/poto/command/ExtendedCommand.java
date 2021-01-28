@@ -80,12 +80,18 @@ public class ExtendedCommand extends Command {
                         return true;
                     }
 
-                    if (subCommand.permission()!=null && !sender.hasPermission(subCommand.permission())
-                            || subCommand.permission()==null && !sender.hasPermission(registeredCommand.getCommand().permission())) {
-                        sender.sendMessage(messageProvider.getMessage("no-permission"));
-                        return true;
-                    }
+                    if (!subCommand.permission().equalsIgnoreCase("no-permission")) {
 
+                        if (!subCommand.permission().equalsIgnoreCase("command-permission") && !sender.hasPermission(subCommand.permission())) {
+                            sender.sendMessage(messageProvider.getMessage("no-permission"));
+                            return true;
+                        } else {
+                            if (!sender.hasPermission(registeredCommand.getCommand().permission())) {
+                                sender.sendMessage(messageProvider.getMessage("no-permission"));
+                                return true;
+                            }
+                        }
+                    }
                     String[] subCmdSizeArray = sb.toString().split(" ");
 
                     String[] newArgs = argumentParser.parse(args, subCmdSizeArray.length);
@@ -157,16 +163,16 @@ public class ExtendedCommand extends Command {
         if (clazz.equals(Player.class) && !(sender instanceof Player)) {
 
             sender.sendMessage(messageProvider.getMessage("only-players"));
-            return false;
+            return true;
         }
         else if (clazz.equals(ConsoleCommandSender.class)
                 && !(sender instanceof ConsoleCommandSender)) {
 
             sender.sendMessage(messageProvider.getMessage("only-console"));
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -186,7 +192,7 @@ public class ExtendedCommand extends Command {
 
             for (int x = 1 ; x < spaces + 1 ; x++) {
 
-                sb.append(' ' + args[x]);
+                sb.append(' ').append(args[x]);
             }
         }
         return sb;

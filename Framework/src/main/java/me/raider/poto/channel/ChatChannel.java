@@ -19,6 +19,6 @@ public interface ChatChannel extends Nameable {
 
     String getPermission();
 
-    ChannelType getChannelType();
+    ChannelType<?> getChannelType();
 
 }

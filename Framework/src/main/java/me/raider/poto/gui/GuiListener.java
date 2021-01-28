@@ -53,7 +53,7 @@ public class GuiListener implements Listener {
 
         Gui gui = handler.getGuiByViewer(player);
 
-        if (gui!=null && gui.getViewers().containsKey(player.getUniqueId().toString())) {
+        if (gui!=null) {
                 gui.getViewers().remove(player.getUniqueId().toString());
         }
     }
@@ -64,7 +64,7 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         Gui gui = handler.getGuiByViewer(player);
 
-        if (gui!=null && gui.getViewers().containsKey(player.getUniqueId().toString())) {
+        if (gui!=null) {
                 gui.getViewers().remove(player.getUniqueId().toString());
         }
     }

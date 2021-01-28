@@ -1,4 +1,4 @@
-package me.raider.poto.internal;
+package me.raider.poto.serializer;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

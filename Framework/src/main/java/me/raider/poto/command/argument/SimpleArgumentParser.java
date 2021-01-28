@@ -9,8 +9,7 @@ public class SimpleArgumentParser implements ArgumentParser {
     @Override
     public String[] parse(String[] args, int size) {
 
-        List<String> argsList = new ArrayList<>();
-        argsList.addAll(Arrays.asList(args));
+        List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
         for (int i = 0; i < size ; i++) {
             argsList.remove(i);

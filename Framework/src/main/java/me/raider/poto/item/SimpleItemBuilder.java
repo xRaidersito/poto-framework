@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SimpleItemBuilder implements ItemBuilder {
 
-    private ItemStack item;
+    private final ItemStack item;
 
     public SimpleItemBuilder(Material material) {
         item=new ItemStack(material);

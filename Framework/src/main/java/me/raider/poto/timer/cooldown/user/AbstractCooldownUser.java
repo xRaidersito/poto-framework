@@ -1,6 +1,6 @@
 package me.raider.poto.timer.cooldown.user;
 
-import me.raider.poto.internal.Serialize;
+import me.raider.poto.serializer.Serialize;
 
 public abstract class AbstractCooldownUser implements CooldownUser {
 

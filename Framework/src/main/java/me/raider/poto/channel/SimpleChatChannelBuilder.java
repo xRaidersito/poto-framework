@@ -14,7 +14,7 @@ public class SimpleChatChannelBuilder implements ChatChannelBuilder {
 
     private String prefix;
     private String permission;
-    private ChannelType type;
+    private ChannelType<?> type;
 
     private final List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> predicates = new ArrayList<>();
     private BiConsumer<AsyncPlayerChatEvent, ChatChannel> consumer;

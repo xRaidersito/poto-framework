@@ -4,6 +4,7 @@ import me.raider.poto.storage.parser.StorageParser;
 import me.raider.poto.storage.types.Storable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public class StorageHandler {
         this.storageMap.put(storage.getName(), storage);
     }
 
-    public void registerAll(Storage<? extends Storable>... storages) {
+    public final void registerAll(List<Storage<? extends Storable>> storages) {
         for (Storage<? extends Storable> storage : storages) {
             register(storage);
         }

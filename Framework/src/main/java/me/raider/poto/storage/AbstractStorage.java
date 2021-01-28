@@ -1,6 +1,6 @@
 package me.raider.poto.storage;
 
-import me.raider.poto.internal.SerializableObject;
+import me.raider.poto.serializer.Serializer;
 import me.raider.poto.storage.types.Storable;
 
 import java.util.HashMap;
@@ -12,11 +12,11 @@ public abstract class AbstractStorage<T extends Storable> implements Storage<T> 
 
     private final String name;
     private final StorageType type;
-    private final SerializableObject<T> serializableObject;
+    private final Serializer<T> serializer;
 
-    public AbstractStorage(String name, StorageType type, SerializableObject<T> serializableObject) {
+    public AbstractStorage(String name, StorageType type, Serializer<T> serializer) {
         this.name=name;
-        this.serializableObject=serializableObject;
+        this.serializer=serializer;
         this.type=type;
     }
 
@@ -36,8 +36,8 @@ public abstract class AbstractStorage<T extends Storable> implements Storage<T> 
     }
 
     @Override
-    public SerializableObject<T> getSerializable() {
-        return serializableObject;
+    public Serializer<T> getSerializer() {
+        return serializer;
     }
 }
 

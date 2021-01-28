@@ -14,11 +14,11 @@ public class ParameterHandlerImpl implements ParameterHandler {
     public ParameterHandlerImpl() {
         
         register(String.class, arg -> arg);
-        register(Boolean.class, arg -> Boolean.valueOf(arg));
-        register(Integer.class, arg -> Integer.valueOf(arg));
-        register(Double.class, arg -> Double.valueOf(arg));
-        register(Long.class, arg -> Long.valueOf(arg));
-        register(Player.class, arg -> Bukkit.getPlayer(arg));
+        register(Boolean.class, Boolean::valueOf);
+        register(Integer.class, Integer::valueOf);
+        register(Double.class, Double::valueOf);
+        register(Long.class, Long::valueOf);
+        register(Player.class, Bukkit::getPlayer);
 
     }
     

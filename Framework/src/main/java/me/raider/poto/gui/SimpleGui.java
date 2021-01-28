@@ -122,7 +122,7 @@ public class SimpleGui implements Gui {
 
     public static class Builder implements Gui.Builder {
 
-        private List<GuiPage> pages = new ArrayList<>();
+        private final List<GuiPage> pages = new ArrayList<>();
 
         private Provider<GuiHandler> provider;
 

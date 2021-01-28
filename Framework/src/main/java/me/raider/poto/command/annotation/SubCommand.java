@@ -11,6 +11,6 @@ public @interface SubCommand {
 
     String[] subcommand() default {""};
 
-    String permission() default "";
+    String permission() default "no-permission";
 
 }

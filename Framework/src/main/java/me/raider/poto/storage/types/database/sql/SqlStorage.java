@@ -1,6 +1,7 @@
 package me.raider.poto.storage.types.database.sql;
 
-import me.raider.poto.internal.SerializableObject;
+import me.raider.poto.serializer.SerializedObject;
+import me.raider.poto.serializer.Serializer;
 import me.raider.poto.storage.AbstractStorage;
 import me.raider.poto.storage.types.Storable;
 import me.raider.poto.storage.StorageType;
@@ -18,8 +19,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
     private final String table;
     private final String[] sqlColumns;
 
-    public SqlStorage(String name, SerializableObject<T> serializableObject, AbstractSqlDatabase sqlDatabase, String table, String[] sqlColumns) {
-        super(name, StorageType.MYSQL, serializableObject);
+    public SqlStorage(String name, Serializer<T> serializer, AbstractSqlDatabase sqlDatabase, String table, String[] sqlColumns) {
+        super(name, StorageType.MYSQL, serializer);
 
         this.sqlDatabase=sqlDatabase;
         this.table=table;
@@ -54,9 +55,11 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
             e.printStackTrace();
         }
 
-        T object = getSerializable().deserialize(dataMap);
+        SerializedObject<T> serializedObject = getSerializer().deserialize(dataMap);
 
-        get().put(key, getSerializable().deserialize(dataMap));
+        T object = serializedObject.createWithData();
+
+        get().put(key, object);
 
         return object;
     }
@@ -69,13 +72,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
         if (toSerialize==null) {
             return;
         }
-        Map<String, Object> serializeMap = null;
 
-        try {
-            serializeMap = getSerializable().serialize(toSerialize.getClass(), toSerialize, false);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        Map<String, Object> serializeMap = getSerializer().serialize(toSerialize).getLinkedMap();
 
         try (Connection connection = sqlDatabase.getConnection()) {
 
@@ -115,26 +113,26 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
                 StringBuilder updateBuilder = new StringBuilder();
 
-                updateBuilder.append("UPDATE " + table + " SET ");
+                updateBuilder.append("UPDATE ").append(table).append(" SET ");
 
                 for (int i = 1 ; i < sqlColumns.length ; i++) {
-                    updateBuilder.append(sqlColumns[i] + "=?");
+                    updateBuilder.append(sqlColumns[i]).append("=?");
                     if (i!=sqlColumns.length-1) {
                         updateBuilder.append(",");
                     }
                 }
 
-                updateBuilder.append(" WHERE(" + sqlColumns[0] + "=?)");
+                updateBuilder.append(" WHERE(").append(sqlColumns[0]).append("=?)");
                 return updateBuilder.toString();
 
             case "insert":
 
                 StringBuilder insertBuilder = new StringBuilder();
 
-                insertBuilder.append("INSERT INTO " + table + " VALUE(");
+                insertBuilder.append("INSERT INTO ").append(table).append(" VALUE(");
 
                 for (int i = 0 ; i < sqlColumns.length ; i++) {
-                    insertBuilder.append(sqlColumns[i] + "?");
+                    insertBuilder.append(sqlColumns[i]).append("?");
                     if (i!=sqlColumns.length-1) {
                         insertBuilder.append(",");
                     }

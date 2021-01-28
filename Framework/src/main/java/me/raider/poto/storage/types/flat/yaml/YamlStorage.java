@@ -1,7 +1,7 @@
 package me.raider.poto.storage.types.flat.yaml;
 
 import me.raider.poto.file.YamlFile;
-import me.raider.poto.internal.SerializableObject;
+import me.raider.poto.serializer.Serializer;
 import me.raider.poto.storage.AbstractStorage;
 import me.raider.poto.storage.types.Storable;
 import me.raider.poto.storage.StorageType;
@@ -15,8 +15,8 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
     private final String folder;
     private final Plugin plugin;
 
-    public YamlStorage(String name, SerializableObject<T> serializableObject, String folder, Plugin plugin) {
-        super(name, StorageType.YAML, serializableObject);
+    public YamlStorage(String name, Serializer<T> serializedObject, String folder, Plugin plugin) {
+        super(name, StorageType.YAML, serializedObject);
         this.folder=folder;
         this.plugin = plugin;
     }
@@ -32,7 +32,7 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
 
         Map<String, Object> dataMap = file.getValues(true);
 
-        T object = getSerializable().deserialize(dataMap);
+        T object = getSerializer().deserialize(dataMap).createWithData();
 
         get().put(key, object);
 
@@ -47,11 +47,9 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
         T toSerialize = get().get(key);
 
         if (toSerialize!=null) {
-            try {
-                file.set("data.", getSerializable().serialize(toSerialize.getClass(), toSerialize, true));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+
+            file.set("data.", getSerializer().serialize(toSerialize));
+
             get().remove(key);
         }
     }

@@ -38,7 +38,6 @@ public class YamlFile extends YamlConfiguration {
             if (file.exists()) {
                 load(file);
                 save(file);
-                System.out.println("hola");
                 return;
             }
             if (this.plugin.getResource(this.fileName) != null) {
