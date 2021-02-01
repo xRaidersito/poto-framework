@@ -74,6 +74,8 @@ public interface Arena extends Storable {
 
     void disableArena();
 
+    boolean isEnabled();
+
     void regenArena();
 
     void initAdditionalData(Map<String, Object> map);

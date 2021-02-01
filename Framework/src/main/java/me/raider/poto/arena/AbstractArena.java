@@ -22,6 +22,7 @@ public abstract class AbstractArena implements Arena {
     private final ChatChannel arenaChannel;
     private CuboidArea waitLobbyCuboid;
     private Location spectatorLocation;
+    private Location waitLobbyLocation;
     private int teamSize;
     private int countdownSeconds;
     private int requiredPlayers;
@@ -63,77 +64,82 @@ public abstract class AbstractArena implements Arena {
 
     @Override
     public int getMaxPlayers() {
-        return 0;
+        return maxPlayers;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @Override
     public void setMaxPlayers(int players) {
-
+        this.maxPlayers=players;
     }
 
     @Override
     public ChatChannel getChatChannel() {
-        return null;
+        return arenaChannel;
     }
 
     @Override
     public CuboidArea getWaitLobbyCuboid() {
-        return null;
+        return waitLobbyCuboid;
     }
 
     @Override
     public void setWaitLobbyCuboid(CuboidArea waitLobbyCuboid) {
-
+        this.waitLobbyCuboid=waitLobbyCuboid;
     }
 
     @Override
     public Location getSpectatorLocation() {
-        return null;
+        return spectatorLocation;
     }
 
     @Override
     public Location getWaitLobbyLocation() {
-        return null;
+        return waitLobbyLocation;
     }
 
     @Override
     public void setSpectatorLocation(Location spectatorLocation) {
-
+        this.spectatorLocation=spectatorLocation;
     }
 
     @Override
     public void setWaitLobbyLocation(Location lobbyLocation) {
-
+        this.waitLobbyLocation=lobbyLocation;
     }
 
     @Override
     public int getTeamSize() {
-        return 0;
+        return teamSize;
     }
 
     @Override
     public void setTeamSize(int teamSize) {
-
+        this.teamSize=teamSize;
     }
 
     @Override
     public int getCountdownSeconds() {
-        return 0;
+        return countdownSeconds;
     }
 
     @Override
     public void setCountdownSeconds(int seconds) {
-
+        this.countdownSeconds=seconds;
     }
 
     @Override
     public int getRequiredPlayers() {
-        return 0;
+        return requiredPlayers;
     }
 
     @Override
     public void setRequiredPlayers(int requiredPlayers) {
-
+        this.requiredPlayers=requiredPlayers;
     }
 
     @Override
@@ -143,52 +149,52 @@ public abstract class AbstractArena implements Arena {
 
     @Override
     public Game getGame() {
-        return null;
+        return game;
     }
 
     @Override
     public List<Player> getPlayers() {
-        return null;
+        return players;
     }
 
     @Override
     public List<Player> getSpectators() {
-        return null;
+        return spectators;
     }
 
     @Override
     public void addPlayer(Player player) {
-
+        this.players.add(player);
     }
 
     @Override
     public void addSpectator(Player player) {
-
+        this.spectators.add(player);
     }
 
     @Override
     public ArenaState getArenaState() {
-        return null;
+        return arenaState;
     }
 
     @Override
     public void setArenaState(ArenaState arenaState) {
-
+        this.arenaState=arenaState;
     }
 
     @Override
     public Map<String, ArenaTeam> getTeamMap() {
-        return null;
+        return teams;
     }
 
     @Override
     public void addTeam(ArenaTeam team) {
-
+        this.teams.put("", team);
     }
 
     @Override
     public void addTeam(String color) {
-
+        this.teams.put("", null);
     }
 
     @Override
@@ -199,25 +205,33 @@ public abstract class AbstractArena implements Arena {
     @Override
     public void enableArena() {
 
+
+        arenaState=ArenaState.WAITING;
+        enabled=true;
     }
 
     @Override
     public void disableArena() {
+
+        enabled=false;
+        arenaState=ArenaState.DISABLED;
 
     }
 
     @Override
     public void regenArena() {
 
+
+
     }
 
     @Override
     public CuboidArea getArenaCuboid() {
-        return null;
+        return arenaCuboid;
     }
 
     @Override
     public void setArenaCuboid(CuboidArea arenaCuboid) {
-
+        this.arenaCuboid=arenaCuboid;
     }
 }
