@@ -1,7 +1,6 @@
 package me.raider.poto.channel;
 
 import me.raider.poto.Nameable;
-import me.raider.poto.channel.type.ChannelType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
@@ -18,7 +17,5 @@ public interface ChatChannel extends Nameable {
     String getPrefix();
 
     String getPermission();
-
-    ChannelType<?> getChannelType();
 
 }

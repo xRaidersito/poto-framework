@@ -26,10 +26,6 @@ public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProc
                 serializeMap.putAll(serializeChild(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path(), type));
                 continue;
             }
-            if (type==StorageType.MYSQL && field.get(instance) instanceof Map) {
-                // create th maps with keys
-                break;
-            }
 
             serializeMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
         }
@@ -60,13 +56,7 @@ public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProc
                 continue;
             }
 
-            if (field.get(instance) instanceof Map) {
-                serializeMap.putAll((Map<? extends String, ?>) field.get(instance));
-                break;
-            }
-
             serializeMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
-
         }
         return serializeMap;
     }

@@ -1,6 +1,5 @@
 package me.raider.poto.channel;
 
-import me.raider.poto.channel.type.ChannelType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
@@ -13,18 +12,16 @@ public class SimpleChatChannel implements ChatChannel {
 
     private final String prefix;
     private final String permission;
-    private final ChannelType<?> type;
 
     private final List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> predicates;
     private final BiConsumer<AsyncPlayerChatEvent, ChatChannel> consumer;
 
-    public SimpleChatChannel(String name, String prefix, String permission, ChannelType<?> type,
+    public SimpleChatChannel(String name, String prefix, String permission,
                              List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> predicates,
                              BiConsumer<AsyncPlayerChatEvent, ChatChannel> consumer) {
         this.name = name;
         this.prefix = prefix;
         this.permission = permission;
-        this.type = type;
         this.predicates = predicates;
         this.consumer = consumer;
     }
@@ -48,11 +45,6 @@ public class SimpleChatChannel implements ChatChannel {
     @Override
     public String getPermission() {
         return permission;
-    }
-
-    @Override
-    public ChannelType<?> getChannelType() {
-        return type;
     }
 
     @Override

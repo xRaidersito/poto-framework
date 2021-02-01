@@ -1,6 +1,5 @@
 package me.raider.poto.channel;
 
-import me.raider.poto.channel.type.ChannelType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ public class SimpleChatChannelBuilder implements ChatChannelBuilder {
 
     private String prefix;
     private String permission;
-    private ChannelType<?> type;
 
     private final List<BiPredicate<AsyncPlayerChatEvent, ChatChannel>> predicates = new ArrayList<>();
     private BiConsumer<AsyncPlayerChatEvent, ChatChannel> consumer;
@@ -38,12 +36,6 @@ public class SimpleChatChannelBuilder implements ChatChannelBuilder {
     }
 
     @Override
-    public ChatChannelBuilder type(ChannelType<?> type) {
-        this.type=type;
-        return this;
-    }
-
-    @Override
     public ChatChannelBuilder filter(BiPredicate<AsyncPlayerChatEvent, ChatChannel> predicate) {
         this.predicates.add(predicate);
         return this;
@@ -58,6 +50,6 @@ public class SimpleChatChannelBuilder implements ChatChannelBuilder {
     @Override
     public ChatChannel build() {
 
-        return new SimpleChatChannel(name, prefix, permission, type, predicates, consumer);
+        return new SimpleChatChannel(name, prefix, permission, predicates, consumer);
     }
 }

@@ -6,7 +6,6 @@ import me.raider.poto.storage.types.Storable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class StorageHandler {
 
@@ -30,8 +29,8 @@ public class StorageHandler {
         this.storageMap.put(storageParser.get().getName(), storageParser.get());
     }
 
-    public Optional<Storage<? extends Storable>> getStorage(String name) {
-        return Optional.of(storageMap.get(name));
+    public <T extends Storable> Storage<T> getStorage(String name) {
+        return (Storage<T>) storageMap.get(name);
     }
 
 
