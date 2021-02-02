@@ -1,6 +1,5 @@
 package me.raider.poto.serializer;
 
-import me.raider.poto.storage.StorageType;
 import me.raider.poto.storage.types.Storable;
 import me.raider.poto.utils.Utils;
 
@@ -11,11 +10,13 @@ import java.util.Map;
 public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProcessor{
 
     @Override
-    public Map<String, Object> serialize(Class<?> clazz, Object instance, StorageType type) throws IllegalAccessException {
+    public Map<String, Object> serialize(Class<?> clazz, Object instance) throws IllegalAccessException {
 
         Map<String, Object> serializeMap = new HashMap<>();
 
         for (Field field : Utils.getAllFields(clazz)) {
+
+            field.setAccessible(true);
 
             if (!field.isAnnotationPresent(Serialize.class) || field.get(instance)==null) {
                 continue;
@@ -23,40 +24,48 @@ public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProc
 
             if (Storable.class.isAssignableFrom(field.getType())) {
 
-                serializeMap.putAll(serializeChild(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path(), type));
+                if (field.getType().isInterface()) {
+                    serializeMap.putAll(serializeChild(field.get(instance).getClass(), field.get(instance), field.getAnnotation(Serialize.class).path()));
+                }
+
+                serializeMap.putAll(serializeChild(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path()));
                 continue;
             }
 
             serializeMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
+            field.setAccessible(field.isAccessible());
         }
         return serializeMap;
     }
 
     @Override
-    public Map<String, Object> serializeChild(Class<?> clazz, Object instance, String previousKey, StorageType type) throws IllegalAccessException {
+    public Map<String, Object> serializeChild(Class<?> clazz, Object instance, String previousKey) throws IllegalAccessException {
 
         Map<String, Object> serializeMap = new HashMap<>();
+        Map<String, Object> subMap = new HashMap<>();
 
         for (Field field : Utils.getAllFields(clazz)) {
+
+            field.setAccessible(true);
 
             if (!field.isAnnotationPresent(Serialize.class) || field.get(instance)==null) {
                 continue;
             }
 
-            String newKey = previousKey +  "." + field.getAnnotation(Serialize.class).path();
-
             if (Storable.class.isAssignableFrom(field.getType())) {
 
-                serializeMap.putAll(serializeChild(field.getType(), field.get(instance), newKey, type));
+                if (field.getType().isInterface()) {
+                    subMap.putAll(serializeChild(field.get(instance).getClass(), field.get(instance), field.getAnnotation(Serialize.class).path()));
+                }
+
+                subMap.putAll(serializeChild(field.getType(), field.get(instance), field.getAnnotation(Serialize.class).path()));
                 continue;
             }
 
-            if (type==StorageType.YAML) {
-                serializeMap.put(newKey, field.get(instance));
-                continue;
-            }
+            subMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
+            serializeMap.put(previousKey, subMap);
 
-            serializeMap.put(field.getAnnotation(Serialize.class).path(), field.get(instance));
+            field.setAccessible(field.isAccessible());
         }
         return serializeMap;
     }

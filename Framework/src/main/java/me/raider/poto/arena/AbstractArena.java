@@ -5,6 +5,7 @@ import me.raider.poto.arena.game.GameImpl;
 import me.raider.poto.channel.ChatChannel;
 import me.raider.poto.channel.ChatChannelBuilder;
 import me.raider.poto.cuboid.CuboidArea;
+import me.raider.poto.serializer.Serialize;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -16,25 +17,44 @@ import java.util.Map;
 
 public abstract class AbstractArena implements Arena {
 
-    private final String name;
+    @Serialize(path = "min-players")
     private int minPlayers;
+
+    @Serialize(path = "max-players")
     private int maxPlayers;
-    private final ChatChannel arenaChannel;
+
+    @Serialize(path = "wait-cuboid")
     private CuboidArea waitLobbyCuboid;
+
+    @Serialize(path = "spectators-location")
     private Location spectatorLocation;
+
+    @Serialize(path = "wait-location")
     private Location waitLobbyLocation;
+
+    @Serialize(path = "team-size")
     private int teamSize;
+
+    @Serialize(path = "countdown-secs")
     private int countdownSeconds;
-    private int requiredPlayers;
+
+    @Serialize(path = "teams")
+    private Map<String, ArenaTeam> teams = new HashMap<>();
+
+    @Serialize(path = "arena-cuboid")
+    private CuboidArea arenaCuboid;
+
+    @Serialize(path = "enabled")
+    private boolean enabled;
+
+    private final String name;
     private final Game game;
     private ArenaState arenaState;
     private final List<Player> players = new ArrayList<>();
     private final List<Player> spectators = new ArrayList<>();
-    private Map<String, ArenaTeam> teams = new HashMap<>();
-    private final ArenaWorld arenaWorld;
-    private CuboidArea arenaCuboid;
-    private boolean enabled;
     private Plugin plugin;
+    private final ArenaWorld arenaWorld;
+    private final ChatChannel arenaChannel;
 
     public AbstractArena(Plugin plugin, String name, ArenaType type) {
         this.plugin=plugin;
@@ -45,6 +65,20 @@ public abstract class AbstractArena implements Arena {
         this.arenaState=ArenaState.DISABLED;
         this.teamSize=type.getTeamSize();
         this.enabled=false;
+    }
+
+    public AbstractArena(Map<String, Object> map) {
+
+        this.name=(String) map.get("name");
+
+        this.game=new GameImpl(this);
+        this.arenaWorld=new ArenaWorld();
+        this.arenaChannel=ChatChannelBuilder.create("arena-channel").prefix("test").build();
+
+
+
+
+
     }
 
     @Override
@@ -130,16 +164,6 @@ public abstract class AbstractArena implements Arena {
     @Override
     public void setCountdownSeconds(int seconds) {
         this.countdownSeconds=seconds;
-    }
-
-    @Override
-    public int getRequiredPlayers() {
-        return requiredPlayers;
-    }
-
-    @Override
-    public void setRequiredPlayers(int requiredPlayers) {
-        this.requiredPlayers=requiredPlayers;
     }
 
     @Override

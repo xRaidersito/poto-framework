@@ -42,10 +42,6 @@ public interface Arena extends Storable {
 
     void setCountdownSeconds(int seconds);
 
-    int getRequiredPlayers();
-
-    void setRequiredPlayers(int requiredPlayers);
-
     int calculateMaxPlayers();
 
     Game getGame();

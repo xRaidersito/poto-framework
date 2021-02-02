@@ -36,4 +36,5 @@ public class CuboidLocationImpl implements CuboidLocation {
     public String getName() {
         return "";
     }
+
 }

@@ -13,27 +13,30 @@ public class CuboidAreaImpl implements CuboidArea {
 
     @Serialize(path = "min")
     private final CuboidLocation minPoint;
+
     @Serialize(path = "max")
     private final CuboidLocation maxPoint;
+
     @Serialize(path = "world")
     private final String world;
+
     @Serialize(path = "name")
     private final String name;
 
-    public CuboidAreaImpl(String name, Location locOne, Location locTwo) {
+    public CuboidAreaImpl(String name, Location minLoc, Location maxLoc) {
 
-        if (!locOne.getWorld().equals(locTwo.getWorld())) {
+        if (!minLoc.getWorld().equals(maxLoc.getWorld())) {
             throw new IllegalArgumentException("Locations arent in the same world");
         }
 
         this.name=name;
-        this.world=locOne.getWorld().getName();
+        this.world=minLoc.getWorld().getName();
 
-        this.minPoint=new CuboidLocationImpl(Math.min(locOne.getBlockX(), locTwo.getBlockX()),
-                Math.min(locOne.getBlockY(), locTwo.getBlockY()), Math.min(locOne.getBlockX(), locTwo.getBlockX()));
+        this.minPoint=new CuboidLocationImpl(Math.min(minLoc.getBlockX(), maxLoc.getBlockX()),
+                Math.min(minLoc.getBlockY(), maxLoc.getBlockY()), Math.min(minLoc.getBlockX(), maxLoc.getBlockX()));
 
-        this.maxPoint=new CuboidLocationImpl(Math.max(locOne.getBlockX(), locTwo.getBlockX()),
-                Math.max(locOne.getBlockY(), locTwo.getBlockY()), Math.max(locOne.getBlockX(), locTwo.getBlockX()));
+        this.maxPoint=new CuboidLocationImpl(Math.max(minLoc.getBlockX(), maxLoc.getBlockX()),
+                Math.max(minLoc.getBlockY(), maxLoc.getBlockY()), Math.max(minLoc.getBlockX(), maxLoc.getBlockX()));
 
     }
 
@@ -109,4 +112,5 @@ public class CuboidAreaImpl implements CuboidArea {
     public String getName() {
         return name;
     }
+
 }
