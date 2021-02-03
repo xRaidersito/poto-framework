@@ -5,15 +5,15 @@ import me.raider.poto.serializer.Serialize;
 public abstract class AbstractCooldownUser implements CooldownUser {
 
     @Serialize(path = "cooldown")
-    private Long cooldownMillis;
+    private long cooldownMillis;
 
     @Override
-    public Long getActualCooldown() {
+    public long getActualCooldown() {
         return cooldownMillis;
     }
 
     @Override
-    public void setActualCooldown(Long cooldown) {
+    public void setActualCooldown(long cooldown) {
         this.cooldownMillis=cooldown;
     }
 }

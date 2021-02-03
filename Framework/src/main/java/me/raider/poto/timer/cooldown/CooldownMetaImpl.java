@@ -16,7 +16,7 @@ public class CooldownMetaImpl implements CooldownMeta {
 
     @Override
     public void addCooldown(CooldownUser cooldownUser) {
-        if (cooldownUser.getActualCooldown()!=null) {
+        if (cooldownUser.getActualCooldown()!=-1) {
             return;
         }
         cooldownUser.setActualCooldown(seconds*1000 + System.currentTimeMillis());
@@ -25,7 +25,7 @@ public class CooldownMetaImpl implements CooldownMeta {
     @Override
     public void addCooldownSec(CooldownUser cooldownUser, int seconds) {
 
-        if (cooldownUser.getActualCooldown()!=null) {
+        if (cooldownUser.getActualCooldown()!=-1) {
 
             long millisSeconds = seconds*1000 + cooldownUser.getActualCooldown();
             cooldownUser.setActualCooldown(millisSeconds);
@@ -36,7 +36,7 @@ public class CooldownMetaImpl implements CooldownMeta {
     @Override
     public void removeCooldownSec(CooldownUser cooldownUser, int seconds) {
 
-        if (cooldownUser.getActualCooldown()==null) {
+        if (cooldownUser.getActualCooldown()==-1) {
             return;
         }
 
@@ -53,13 +53,13 @@ public class CooldownMetaImpl implements CooldownMeta {
 
     @Override
     public void removeCooldown(CooldownUser cooldownUser) {
-        cooldownUser.setActualCooldown(null);
+        cooldownUser.setActualCooldown(-1);
     }
 
     @Override
     public boolean inCooldown(CooldownUser cooldownUser) {
 
-        if (cooldownUser.getActualCooldown()==null) {
+        if (cooldownUser.getActualCooldown()==-1) {
             return false;
         }
 
