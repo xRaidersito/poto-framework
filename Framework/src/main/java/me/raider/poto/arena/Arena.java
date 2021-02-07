@@ -1,24 +1,25 @@
 package me.raider.poto.arena;
 
 import me.raider.poto.arena.game.Game;
+import me.raider.poto.arena.team.ArenaTeam;
 import me.raider.poto.channel.ChatChannel;
 import me.raider.poto.cuboid.CuboidArea;
 import me.raider.poto.storage.types.Storable;
+import me.raider.poto.utils.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.Map;
 
 public interface Arena extends Storable {
 
+    void loadNecessaryData(Map<String, Object> serializedData);
+
     int getMinPlayers();
 
     void setMinPlayers(int players);
-
-    int getMaxPlayers();
-
-    void setMaxPlayers(int players);
 
     ChatChannel getChatChannel();
 
@@ -39,6 +40,10 @@ public interface Arena extends Storable {
     void setTeamSize(int teamSize);
 
     int getCountdownSeconds();
+
+    ArenaTeam randomizeTeam();
+
+    void addPlayerToTeam(Player player, ArenaTeam team);
 
     void setCountdownSeconds(int seconds);
 
@@ -62,7 +67,7 @@ public interface Arena extends Storable {
 
     void addTeam(ArenaTeam team);
 
-    void addTeam(String color);
+    void addTeam(Color color, String name);
 
     void updateSigns();
 
@@ -79,5 +84,7 @@ public interface Arena extends Storable {
     CuboidArea getArenaCuboid();
 
     void setArenaCuboid(CuboidArea arenaCuboid);
+
+    Plugin getPlugin();
 
 }

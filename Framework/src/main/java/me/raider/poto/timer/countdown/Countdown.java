@@ -9,8 +9,7 @@ public interface Countdown extends Timeable, Runnable {
 
     int getTaskId();
 
-
-
+    int getSecondsLeft();
 
     void start();
 
