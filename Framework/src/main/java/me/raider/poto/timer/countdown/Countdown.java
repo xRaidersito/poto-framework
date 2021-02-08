@@ -1,6 +1,7 @@
 package me.raider.poto.timer.countdown;
 
 import me.raider.poto.timer.Timeable;
+import org.bukkit.plugin.Plugin;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -12,6 +13,8 @@ public interface Countdown extends Timeable, Runnable {
     int getSecondsLeft();
 
     void start();
+
+    void cancel();
 
     interface Builder {
 
@@ -26,6 +29,10 @@ public interface Countdown extends Timeable, Runnable {
         Builder finish(Consumer<Countdown> consumer);
 
         Countdown build();
+
+        static Builder create(Plugin plugin) {
+            return new CountdownImpl.Builder(plugin);
+        }
 
     }
 
