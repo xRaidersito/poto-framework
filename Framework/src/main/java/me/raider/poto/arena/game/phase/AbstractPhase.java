@@ -45,4 +45,19 @@ public abstract class AbstractPhase implements Phase {
     public int getTaskId() {
         return taskId;
     }
+
+    @Override
+    public void onEnd() {
+
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
 }

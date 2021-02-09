@@ -34,17 +34,9 @@ public class CountdownLobbyPhase extends LobbyPhase {
                 .seconds(getGame().getArena().getCountdownSeconds()).build().start();
     }
 
-    @Override
-    public void update() {
-    }
-
     private boolean shouldAnnounceTime(int i)
     {
         return (i <= 20 && i % 5 == 0 && i != 15) || i <= 5;
     }
 
-    @Override
-    public void onEnd() {
-
-    }
 }

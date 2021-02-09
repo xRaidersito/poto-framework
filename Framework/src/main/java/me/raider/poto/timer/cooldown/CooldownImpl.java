@@ -1,8 +1,6 @@
 package me.raider.poto.timer.cooldown;
 
 import me.raider.poto.timer.cooldown.user.CooldownUser;
-import me.raider.poto.timer.cooldown.user.CooldownUserProvider;
-import org.bukkit.entity.Player;
 
 public class CooldownImpl implements Cooldown {
 

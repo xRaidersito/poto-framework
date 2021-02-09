@@ -23,8 +23,4 @@ public class WaitingLobbyPhase extends LobbyPhase {
         }
 
     }
-
-    @Override
-    public void onEnd() {
-    }
 }

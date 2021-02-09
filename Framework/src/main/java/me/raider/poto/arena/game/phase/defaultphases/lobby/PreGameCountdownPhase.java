@@ -7,19 +7,4 @@ public class PreGameCountdownPhase extends LobbyPhase {
     public PreGameCountdownPhase(Plugin plugin, Game game) {
         super(plugin, game);
     }
-
-    @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void onEnd() {
-
-    }
 }
