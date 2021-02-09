@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface Arena extends Storable {
 
@@ -71,9 +72,13 @@ public interface Arena extends Storable {
 
     void updateSigns();
 
+    ArenaTeam getTeamByPlayer(Player player);
+
     void enableArena();
 
     void disableArena();
+
+    void clearTeams();
 
     boolean isEnabled();
 
@@ -86,5 +91,11 @@ public interface Arena extends Storable {
     void setArenaCuboid(CuboidArea arenaCuboid);
 
     Plugin getPlugin();
+
+    ArenaWorld getWorld();
+
+    void setWinners(Player... players);
+
+    void playerDeath(Player player);
 
 }

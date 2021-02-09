@@ -32,6 +32,6 @@ public interface Game {
 
     void startGame();
 
-    void endGame();
+    void endGame(Player... players);
 
 }

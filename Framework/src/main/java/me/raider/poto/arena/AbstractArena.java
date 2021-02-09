@@ -17,10 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractArena implements Arena {
 
@@ -111,6 +108,8 @@ public abstract class AbstractArena implements Arena {
             });
         }
 
+        initAdditionalData(map);
+
         if (map.get("enabled")!=null) {
 
             this.enabled=(boolean) map.get("enabled");
@@ -124,8 +123,6 @@ public abstract class AbstractArena implements Arena {
         } else {
             disableArena();
         }
-
-        initAdditionalData(map);
     }
 
     @Override
@@ -259,6 +256,13 @@ public abstract class AbstractArena implements Arena {
     }
 
     @Override
+    public void clearTeams() {
+        for (ArenaTeam team : teams.values()) {
+            team.getPlayers().clear();
+        }
+    }
+
+    @Override
     public void addPlayerToTeam(Player player, ArenaTeam team) {
 
         if (team == null) {
@@ -270,6 +274,18 @@ public abstract class AbstractArena implements Arena {
         }
 
         team.addPlayer(player);
+    }
+
+    @Override
+    public ArenaTeam getTeamByPlayer(Player player) {
+
+        for (ArenaTeam team : teams.values()) {
+
+            if (team.getPlayers().contains(player)) {
+                return team;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -343,6 +359,7 @@ public abstract class AbstractArena implements Arena {
     @Override
     public void regenArena() {
         arenaWorld.deleteWorld();
+
     }
 
     @Override
@@ -358,5 +375,10 @@ public abstract class AbstractArena implements Arena {
     @Override
     public Plugin getPlugin() {
         return plugin;
+    }
+
+    @Override
+    public ArenaWorld getWorld() {
+        return arenaWorld;
     }
 }

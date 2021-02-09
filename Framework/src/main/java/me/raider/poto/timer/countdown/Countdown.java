@@ -28,6 +28,8 @@ public interface Countdown extends Timeable, Runnable {
 
         Builder finish(Consumer<Countdown> consumer);
 
+        Builder onCancel(Consumer<Countdown> consumer);
+
         Countdown build();
 
         static Builder create(Plugin plugin) {

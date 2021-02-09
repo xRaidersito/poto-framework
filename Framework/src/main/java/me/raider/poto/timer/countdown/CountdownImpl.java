@@ -16,11 +16,12 @@ public class CountdownImpl implements Countdown {
     private final Consumer<Countdown> start;
     private final Consumer<Countdown> everySecond;
     private final Consumer<Countdown> finish;
+    private Consumer<Countdown> cancel;
     private int secondsLeft;
 
     private int taskId;
 
-    private CountdownImpl(Plugin plugin, int seconds, List<Predicate<Countdown>> predicates, Consumer<Countdown> start, Consumer<Countdown> everySecond, Consumer<Countdown> finish) {
+    private CountdownImpl(Plugin plugin, int seconds, List<Predicate<Countdown>> predicates, Consumer<Countdown> start, Consumer<Countdown> everySecond, Consumer<Countdown> finish, Consumer<Countdown> cancel) {
         this.plugin = plugin;
         this.seconds = seconds;
         this.predicates = predicates;
@@ -28,6 +29,7 @@ public class CountdownImpl implements Countdown {
         this.everySecond = everySecond;
         this.finish = finish;
         this.secondsLeft=seconds;
+        this.cancel=cancel;
     }
 
     @Override
@@ -63,6 +65,7 @@ public class CountdownImpl implements Countdown {
 
         for (Predicate<Countdown> predicate : predicates) {
             if (!predicate.test(this)) {
+                cancel.accept(this);
                 cancel();
                 return;
             }
@@ -90,6 +93,7 @@ public class CountdownImpl implements Countdown {
         private Consumer<Countdown> start;
         private Consumer<Countdown> everySecond;
         private Consumer<Countdown> finish;
+        private Consumer<Countdown> cancel;
 
         public Builder(Plugin plugin) {
             this.plugin=plugin;
@@ -126,8 +130,14 @@ public class CountdownImpl implements Countdown {
         }
 
         @Override
+        public Countdown.Builder onCancel(Consumer<Countdown> consumer) {
+            this.cancel=consumer;
+            return this;
+        }
+
+        @Override
         public Countdown build() {
-            return new CountdownImpl(plugin, seconds, predicates, start, everySecond, finish);
+            return new CountdownImpl(plugin, seconds, predicates, start, everySecond, finish, cancel);
         }
     }
 }

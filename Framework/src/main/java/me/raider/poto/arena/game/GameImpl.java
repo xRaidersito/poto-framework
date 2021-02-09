@@ -3,6 +3,7 @@ package me.raider.poto.arena.game;
 import me.raider.poto.arena.Arena;
 import me.raider.poto.arena.ArenaState;
 import me.raider.poto.arena.game.phase.Phase;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -110,10 +111,20 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void endGame() {
+    public void endGame(Player... players) {
 
+        arena.setArenaState(ArenaState.RESTARTING);
 
+        this.index=0;
+        actualPhase.removeAll();
 
+        actualPhase=phases.get(index);
 
+        arena.setWinners();
+        arena.clearTeams();
+
+        Bukkit.getScheduler().runTaskLater(arena.getPlugin(),
+                () -> arena.regenArena(),
+                100L);
     }
 }

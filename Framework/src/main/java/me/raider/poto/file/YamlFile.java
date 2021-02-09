@@ -1,11 +1,14 @@
 package me.raider.poto.file;
 
+import me.raider.poto.utils.MessageUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 public class YamlFile extends YamlConfiguration {
@@ -76,5 +79,20 @@ public class YamlFile extends YamlConfiguration {
         if (folder==null) {
             folder = this.plugin.getDataFolder();
         }
+    }
+
+    public String getColorizedString(String path) {
+
+        return MessageUtils.colorize(super.getString(path));
+    }
+
+    public List<String> getColorizedStringList(String path) {
+
+        List<String> newList = new ArrayList<>();
+
+        for (String s : super.getStringList(path)) {
+            newList.add(MessageUtils.colorize(s));
+        }
+        return newList;
     }
 }
