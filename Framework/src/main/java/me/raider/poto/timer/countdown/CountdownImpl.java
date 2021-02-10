@@ -21,7 +21,7 @@ public class CountdownImpl implements Countdown {
 
     private int taskId;
 
-    private CountdownImpl(Plugin plugin, int seconds, List<Predicate<Countdown>> predicates, Consumer<Countdown> start, Consumer<Countdown> everySecond, Consumer<Countdown> finish, Consumer<Countdown> cancel) {
+    public CountdownImpl(Plugin plugin, int seconds, List<Predicate<Countdown>> predicates, Consumer<Countdown> start, Consumer<Countdown> everySecond, Consumer<Countdown> finish, Consumer<Countdown> cancel) {
         this.plugin = plugin;
         this.seconds = seconds;
         this.predicates = predicates;

@@ -34,7 +34,7 @@ public class Utils {
     }
 
     public static Location locationFromString(String stringLoc) {
-        if (stringLoc == null || stringLoc.trim() == "") {
+        if (stringLoc == null || stringLoc.trim().equals("")) {
             return null;
         }
         String[] parts = stringLoc.split(":");

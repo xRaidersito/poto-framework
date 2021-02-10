@@ -43,11 +43,8 @@ public class SimpleGuiPage implements GuiPage {
     @Override
     public GuiItem getItemFromSlot(int slot) {
         for (GuiItem guiItem : this.guiItems) {
-
-            if (guiItem!=null) {
-                if (guiItem.getSlot() == slot) {
-                    return guiItem;
-                }
+            if (guiItem!=null && guiItem.getSlot() == slot) {
+                return guiItem;
             }
         }
         return null;

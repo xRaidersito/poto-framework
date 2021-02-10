@@ -48,16 +48,16 @@ public abstract class AbstractPhase implements Phase {
 
     @Override
     public void onEnd() {
-
+        // To be overridden
     }
 
     @Override
     public void onStart() {
-
+        // To be overridden
     }
 
     @Override
     public void update() {
-
+        // To be overridden
     }
 }
