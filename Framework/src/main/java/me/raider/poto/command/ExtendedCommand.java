@@ -53,7 +53,7 @@ public class ExtendedCommand extends Command {
                     return true;
                 }
                 try {
-                    method.invoke(parameterHandler.getParameter(parameterType));
+                    method.invoke(sender);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
