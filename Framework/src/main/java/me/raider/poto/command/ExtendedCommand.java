@@ -158,21 +158,19 @@ public class ExtendedCommand extends Command {
      */
     private boolean checkType(Class<?> clazz, CommandSender sender) {
 
-        System.out.println(clazz + "+");
-
         if (clazz.equals(Player.class) && !(sender instanceof Player)) {
 
             sender.sendMessage(messageProvider.getMessage("only-players"));
-            return true;
+            return false;
         }
         else if (clazz.equals(ConsoleCommandSender.class)
                 && !(sender instanceof ConsoleCommandSender)) {
 
             sender.sendMessage(messageProvider.getMessage("only-console"));
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
