@@ -48,7 +48,7 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
 
         if (toSerialize!=null) {
 
-            file.set("data.", getSerializer().serialize(toSerialize).getLinkedMap());
+            file.set("data", getSerializer().serialize(toSerialize).getLinkedMap());
 
             get().remove(key);
         }
