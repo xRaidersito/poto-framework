@@ -1,6 +1,6 @@
 package me.raider.poto.timer.cooldown;
 
-import me.raider.poto.timer.cooldown.user.CooldownHolder;
+import me.raider.poto.timer.cooldown.holder.CooldownHolder;
 
 public class CooldownMetaImpl implements CooldownMeta {
 

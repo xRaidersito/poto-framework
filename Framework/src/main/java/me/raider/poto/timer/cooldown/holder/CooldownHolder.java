@@ -1,4 +1,4 @@
-package me.raider.poto.timer.cooldown.user;
+package me.raider.poto.timer.cooldown.holder;
 
 public interface CooldownHolder {
 

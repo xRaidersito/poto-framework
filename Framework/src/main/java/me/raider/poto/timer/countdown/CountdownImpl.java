@@ -130,7 +130,7 @@ public class CountdownImpl implements Countdown {
         }
 
         @Override
-        public Countdown.Builder onCancel(Consumer<Countdown> consumer) {
+        public Builder onCancel(Consumer<Countdown> consumer) {
             this.cancel=consumer;
             return this;
         }

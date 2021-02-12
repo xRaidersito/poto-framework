@@ -1,7 +1,7 @@
 package me.raider.poto.timer.cooldown;
 
 import me.raider.poto.Nameable;
-import me.raider.poto.timer.cooldown.user.CooldownHolder;
+import me.raider.poto.timer.cooldown.holder.CooldownHolder;
 
 public interface Cooldown extends Nameable {
 

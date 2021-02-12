@@ -1,4 +1,4 @@
-package me.raider.poto.timer.cooldown.user;
+package me.raider.poto.timer.cooldown.holder;
 
 import me.raider.poto.serializer.Serialize;
 
