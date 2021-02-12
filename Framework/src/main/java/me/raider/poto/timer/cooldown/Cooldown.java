@@ -1,20 +1,20 @@
 package me.raider.poto.timer.cooldown;
 
 import me.raider.poto.Nameable;
-import me.raider.poto.timer.cooldown.user.CooldownUser;
+import me.raider.poto.timer.cooldown.user.CooldownHolder;
 
 public interface Cooldown extends Nameable {
 
     CooldownMeta getCooldownMeta();
 
-    void createCooldown(CooldownUser cooldownUser);
+    void createCooldown(CooldownHolder cooldownUser);
 
-    void addSeconds(CooldownUser cooldownUser, int seconds);
+    void addSeconds(CooldownHolder cooldownUser, int seconds);
 
-    void removeSeconds(CooldownUser cooldownUser, int seconds);
+    void removeSeconds(CooldownHolder cooldownUser, int seconds);
 
-    void removeCooldown(CooldownUser cooldownUser);
+    void removeCooldown(CooldownHolder cooldownUser);
 
-    boolean inCooldown(CooldownUser cooldownUser);
+    boolean inCooldown(CooldownHolder cooldownUser);
 
 }

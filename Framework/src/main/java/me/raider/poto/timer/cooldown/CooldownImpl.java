@@ -1,6 +1,6 @@
 package me.raider.poto.timer.cooldown;
 
-import me.raider.poto.timer.cooldown.user.CooldownUser;
+import me.raider.poto.timer.cooldown.user.CooldownHolder;
 
 public class CooldownImpl implements Cooldown {
 
@@ -16,27 +16,27 @@ public class CooldownImpl implements Cooldown {
     }
 
     @Override
-    public void createCooldown(CooldownUser cooldownUser) {
+    public void createCooldown(CooldownHolder cooldownUser) {
         cooldownMeta.addCooldown(cooldownUser);
     }
 
     @Override
-    public void addSeconds(CooldownUser cooldownUser, int seconds) {
+    public void addSeconds(CooldownHolder cooldownUser, int seconds) {
         cooldownMeta.addCooldownSec(cooldownUser, seconds);
     }
 
     @Override
-    public void removeSeconds(CooldownUser cooldownUser, int seconds) {
+    public void removeSeconds(CooldownHolder cooldownUser, int seconds) {
         cooldownMeta.removeCooldownSec(cooldownUser, seconds);
     }
 
     @Override
-    public void removeCooldown(CooldownUser cooldownUser) {
+    public void removeCooldown(CooldownHolder cooldownUser) {
         cooldownMeta.removeCooldown(cooldownUser);
     }
 
     @Override
-    public boolean inCooldown(CooldownUser cooldownUser) {
+    public boolean inCooldown(CooldownHolder cooldownUser) {
         return cooldownMeta.inCooldown(cooldownUser);
     }
 

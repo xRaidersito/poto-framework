@@ -1,5 +1,6 @@
 package me.raider.poto.storage.types.flat.yaml;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
 import me.raider.poto.file.YamlFile;
 import me.raider.poto.serializer.Serializer;
 import me.raider.poto.storage.AbstractStorage;
@@ -15,8 +16,8 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
     private final String folder;
     private final Plugin plugin;
 
-    public YamlStorage(String name, Serializer<T> serializedObject, String folder, Plugin plugin) {
-        super(name, StorageType.YAML, serializedObject);
+    public YamlStorage(String name, Serializer<T> serializedObject, String folder, Plugin plugin, ListeningExecutorService executorService) {
+        super(name, StorageType.YAML, serializedObject, executorService);
         this.folder=folder;
         this.plugin = plugin;
     }

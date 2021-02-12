@@ -1,5 +1,6 @@
 package me.raider.poto.storage.types.database.sql;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
 import me.raider.poto.serializer.SerializedObject;
 import me.raider.poto.serializer.Serializer;
 import me.raider.poto.storage.AbstractStorage;
@@ -19,8 +20,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
     private final String table;
     private final String[] sqlColumns;
 
-    public SqlStorage(String name, Serializer<T> serializer, AbstractSqlDatabase sqlDatabase, String table, String[] sqlColumns) {
-        super(name, StorageType.MYSQL, serializer);
+    public SqlStorage(String name, Serializer<T> serializer, AbstractSqlDatabase sqlDatabase, String table, String[] sqlColumns, ListeningExecutorService executorService) {
+        super(name, StorageType.MYSQL, serializer, executorService);
 
         this.sqlDatabase=sqlDatabase;
         this.table=table;

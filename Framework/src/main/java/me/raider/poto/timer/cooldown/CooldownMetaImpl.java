@@ -1,6 +1,6 @@
 package me.raider.poto.timer.cooldown;
 
-import me.raider.poto.timer.cooldown.user.CooldownUser;
+import me.raider.poto.timer.cooldown.user.CooldownHolder;
 
 public class CooldownMetaImpl implements CooldownMeta {
 
@@ -15,7 +15,7 @@ public class CooldownMetaImpl implements CooldownMeta {
     }
 
     @Override
-    public void addCooldown(CooldownUser cooldownUser) {
+    public void addCooldown(CooldownHolder cooldownUser) {
         if (cooldownUser.getActualCooldown()!=-1) {
             return;
         }
@@ -23,7 +23,7 @@ public class CooldownMetaImpl implements CooldownMeta {
     }
 
     @Override
-    public void addCooldownSec(CooldownUser cooldownUser, int seconds) {
+    public void addCooldownSec(CooldownHolder cooldownUser, int seconds) {
 
         if (cooldownUser.getActualCooldown()!=-1) {
 
@@ -34,7 +34,7 @@ public class CooldownMetaImpl implements CooldownMeta {
     }
 
     @Override
-    public void removeCooldownSec(CooldownUser cooldownUser, int seconds) {
+    public void removeCooldownSec(CooldownHolder cooldownUser, int seconds) {
 
         if (cooldownUser.getActualCooldown()==-1) {
             return;
@@ -52,12 +52,12 @@ public class CooldownMetaImpl implements CooldownMeta {
     }
 
     @Override
-    public void removeCooldown(CooldownUser cooldownUser) {
+    public void removeCooldown(CooldownHolder cooldownUser) {
         cooldownUser.setActualCooldown(-1);
     }
 
     @Override
-    public boolean inCooldown(CooldownUser cooldownUser) {
+    public boolean inCooldown(CooldownHolder cooldownUser) {
 
         if (cooldownUser.getActualCooldown()==-1) {
             return false;

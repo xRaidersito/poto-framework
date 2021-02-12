@@ -1,6 +1,6 @@
 package me.raider.poto.timer.cooldown.user;
 
-public interface CooldownUser {
+public interface CooldownHolder {
 
     long getActualCooldown();
 

@@ -1,5 +1,6 @@
 package me.raider.poto.storage;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
 import me.raider.poto.serializer.Serializer;
 import me.raider.poto.storage.types.Storable;
 
@@ -13,11 +14,13 @@ public abstract class AbstractStorage<T extends Storable> implements Storage<T> 
     private final String name;
     private final StorageType type;
     private final Serializer<T> serializer;
+    private final ListeningExecutorService executorService;
 
-    public AbstractStorage(String name, StorageType type, Serializer<T> serializer) {
+    public AbstractStorage(String name, StorageType type, Serializer<T> serializer, ListeningExecutorService executorService) {
         this.name=name;
         this.serializer=serializer;
         this.type=type;
+        this.executorService=executorService;
     }
 
     @Override
@@ -38,6 +41,11 @@ public abstract class AbstractStorage<T extends Storable> implements Storage<T> 
     @Override
     public Serializer<T> getSerializer() {
         return serializer;
+    }
+
+    @Override
+    public ListeningExecutorService getExecutorService() {
+        return executorService;
     }
 }
 

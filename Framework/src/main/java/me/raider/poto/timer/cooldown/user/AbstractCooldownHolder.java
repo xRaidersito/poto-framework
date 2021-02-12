@@ -2,7 +2,7 @@ package me.raider.poto.timer.cooldown.user;
 
 import me.raider.poto.serializer.Serialize;
 
-public abstract class AbstractCooldownUser implements CooldownUser {
+public abstract class AbstractCooldownHolder implements CooldownHolder {
 
     @Serialize(path = "cooldown")
     private long cooldownMillis;

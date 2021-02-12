@@ -33,5 +33,4 @@ public class StorageHandler {
         return (Storage<T>) storageMap.get(name);
     }
 
-
 }
