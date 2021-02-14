@@ -288,6 +288,9 @@ public abstract class AbstractArena implements Arena {
         return null;
     }
 
+    /**
+     * Original code: https://github.com/iTheTrollIdk
+     */
     @Override
     public ArenaTeam randomizeTeam() {
 

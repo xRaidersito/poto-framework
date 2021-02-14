@@ -31,7 +31,7 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
             return createIfAbsent(key);
         }
 
-        Map<String, Object> dataMap = file.getValues(true);
+        Map<String, Object> dataMap = file.getConfigurationSection("data").getValues(true);
 
         T object = getSerializer().deserialize(dataMap).createWithData();
 
