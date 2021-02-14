@@ -102,7 +102,7 @@ public class ExtendedCommand extends Command {
 
                         paramList.add(parameterHandler.getParameter(senderType));
 
-                        for (int x = 1; i < method.getParameterCount()-1 ; x++) {
+                        for (int x = 1; x < method.getParameterCount()-1 ; x++) {
 
                             ParameterCreator<Object> parameterCreator = parameterHandler.getParameter(method.getParameterTypes()[x]);
 
