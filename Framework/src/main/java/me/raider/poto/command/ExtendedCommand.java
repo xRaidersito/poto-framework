@@ -64,11 +64,17 @@ public class ExtendedCommand extends Command {
 
                 SubCommand subCommand = method.getAnnotation(SubCommand.class);
 
-                for (int i = 0 ; i < subCommand.subcommand().length ; i++) {
+                for (int i = 0 ; i <= subCommand.subcommand().length-1 ; i++) {
 
                     int spaces = checkSpaces(subCommand.subcommand()[i]);
 
-                    StringBuilder sb = buildNewArgs(args, spaces);
+                    StringBuilder sb = new StringBuilder();
+
+                    if (spaces>0) {
+                        sb = buildNewArgs(args, spaces);
+                    } else {
+                        sb.append(args[0]);
+                    }
 
                     if (!sb.toString().equalsIgnoreCase(subCommand.subcommand()[i])) {
                         continue;
@@ -100,27 +106,34 @@ public class ExtendedCommand extends Command {
 
                         List<Object> paramList = new ArrayList<>();
 
-                        paramList.add(parameterHandler.getParameter(senderType));
+                        paramList.add(sender);
 
-                        for (int x = 1; x < method.getParameterCount()-1 ; x++) {
+                        for (int x = 1; x <= method.getParameterCount()-1 ; x++) {
 
                             ParameterCreator<Object> parameterCreator = parameterHandler.getParameter(method.getParameterTypes()[x]);
 
+                            if (parameterCreator==null) {
+                                sender.sendMessage(messageProvider.getMessage("not-registered-argument"));
+                                return true;
+                            }
+
                             if (!parameterCreator.isPresent(newArgs[x-1])) {
                                 sender.sendMessage(messageProvider.getMessage("invalid-argument"));
-                                continue;
+                                return true;
                             }
                             paramList.add(parameterCreator.create(newArgs[x-1]));
                         }
 
                         try {
                             method.invoke(registeredCommand.getInstance(), paramList.toArray());
+                            return true;
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
 
                     } else {
                         sender.sendMessage(messageProvider.getMessage("usage"));
+                        return true;
                     }
                 }
             }

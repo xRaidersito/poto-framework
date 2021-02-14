@@ -12,7 +12,7 @@ public class SimpleArgumentParser implements ArgumentParser {
         List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
         for (int i = 0; i < size ; i++) {
-            argsList.remove(i);
+            argsList.remove(0);
         }
 
         String[] newArgs = new String[args.length-size];

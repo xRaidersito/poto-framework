@@ -53,7 +53,7 @@ public class PotoCommandAPI {
 
         if (potoClass.isAnnotationPresent(Command.class)) {
 
-            registeredCommand = new SimpleRegisteredCommand(potoClass.getMethods(), potoClass.getAnnotation(Command.class), potoCommand);
+            registeredCommand = new SimpleRegisteredCommand(potoClass.getDeclaredMethods(), potoClass.getAnnotation(Command.class), potoCommand);
             commandManager.getRegisteredCommands().putIfAbsent(potoClass.getAnnotation(Command.class).name(), registeredCommand);
 
         }

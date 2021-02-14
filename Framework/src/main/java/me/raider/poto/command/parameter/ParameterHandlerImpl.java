@@ -1,6 +1,6 @@
 package me.raider.poto.command.parameter;
 
-import me.raider.poto.command.exception.CommandException;
+import me.raider.poto.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,10 +14,29 @@ public class ParameterHandlerImpl implements ParameterHandler {
     public ParameterHandlerImpl() {
         
         register(String.class, arg -> arg);
-        register(Boolean.class, Boolean::valueOf);
-        register(Integer.class, Integer::valueOf);
-        register(Double.class, Double::valueOf);
-        register(Long.class, Long::valueOf);
+        register(boolean.class, arg -> Boolean.valueOf(arg));
+
+        register(int.class, arg -> {
+            if (Utils.isNumeric(arg)) {
+                return Integer.valueOf(arg);
+            }
+            return null;
+        });
+
+        register(double.class, arg -> {
+            if (Utils.isNumeric(arg)) {
+                return Double.valueOf(arg);
+            }
+            return null;
+        });
+
+        register(long.class, arg -> {
+            if (Utils.isNumeric(arg)) {
+                return Long.valueOf(arg);
+            }
+            return null;
+        });
+
         register(Player.class, Bukkit::getPlayer);
 
     }
@@ -40,6 +59,6 @@ public class ParameterHandlerImpl implements ParameterHandler {
                 return parameterMap.get(key);
             }
         }
-        throw new CommandException("The parameter is not registered");
+        return null;
     }
 }
