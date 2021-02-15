@@ -11,19 +11,6 @@ public interface SqlDatabase {
 
     void closePool();
 
-    default ResultSet executeResult(PreparedStatement statement) {
-
-        try (ResultSet result = statement.executeQuery()) {
-
-            return result;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
     default void executeStatement(PreparedStatement statement) {
 
         try {

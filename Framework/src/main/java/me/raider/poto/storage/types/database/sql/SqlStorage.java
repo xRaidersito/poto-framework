@@ -43,7 +43,9 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
         try (PreparedStatement statement = sqlDatabase.prepareStatement("SELECT * FROM " + table + " WHERE (" + sqlColumns[0] + "=?)", key)) {
 
-            ResultSet resultSet = sqlDatabase.executeResult(statement);
+            statement.setString(1, key);
+
+            ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 for (String column : sqlColumns) {
