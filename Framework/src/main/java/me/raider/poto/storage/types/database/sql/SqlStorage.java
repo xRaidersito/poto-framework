@@ -92,6 +92,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
                 PreparedStatement insert = connection.prepareStatement(buildQuery("insert"));
 
+                System.out.println(buildQuery("insert"));
+
                 for (int i = 0 ; i < sqlColumns.length ; i++) {
                     insert.setObject(i, serializeMap.get(sqlColumns[i]));
                 }
@@ -130,14 +132,25 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
                 StringBuilder insertBuilder = new StringBuilder();
 
-                insertBuilder.append("INSERT INTO ").append(table).append(" VALUE(");
+                insertBuilder.append("INSERT INTO ").append(table).append("(");
 
                 for (int i = 0 ; i < sqlColumns.length ; i++) {
-                    insertBuilder.append(sqlColumns[i]).append("?");
+                    insertBuilder.append(sqlColumns[i]);
                     if (i!=sqlColumns.length-1) {
                         insertBuilder.append(",");
                     }
                 }
+
+                insertBuilder.append(") VALUES(");
+
+                for (int i = 0 ; i < sqlColumns.length ; i++) {
+                    insertBuilder.append("?");
+                    if (i!=sqlColumns.length-1) {
+                        insertBuilder.append(",");
+                    }
+                }
+
+
                 insertBuilder.append(")");
                 return insertBuilder.toString();
 
