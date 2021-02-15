@@ -4,6 +4,7 @@ import me.raider.poto.arena.game.Game;
 import me.raider.poto.arena.team.ArenaTeam;
 import me.raider.poto.channel.ChatChannel;
 import me.raider.poto.cuboid.CuboidArea;
+import me.raider.poto.storage.Storage;
 import me.raider.poto.storage.types.Storable;
 import me.raider.poto.utils.Color;
 import org.bukkit.Location;

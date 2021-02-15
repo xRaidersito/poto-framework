@@ -41,7 +41,7 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
         Map<String, Object> dataMap = new HashMap<>();
 
-        try (PreparedStatement statement = sqlDatabase.prepareStatement("SELECT * FROM " + table + " WHERE (" + sqlColumns[0] + "=?)", key)) {
+        try (PreparedStatement statement = sqlDatabase.getConnection().prepareStatement("SELECT * FROM " + table + " WHERE (" + sqlColumns[0] + "=?)")) {
 
             statement.setString(1, key);
 

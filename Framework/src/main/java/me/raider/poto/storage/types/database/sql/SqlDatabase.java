@@ -15,7 +15,7 @@ public interface SqlDatabase {
 
         try {
             statement.execute();
-            statement.getConnection().close();
+            statement.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
