@@ -10,11 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class AbstractSqlDatabase implements SqlDatabase {
+public abstract class AbstractSQLDatabase implements SQLDatabase {
 
     private final HikariDataSource dataSource;
 
-    public AbstractSqlDatabase(YamlFile configFile) {
+    public AbstractSQLDatabase(YamlFile configFile) {
 
         DatabaseDetails databaseDetails = new DatabaseDetails(configFile);
 

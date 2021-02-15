@@ -14,13 +14,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> {
+public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> {
 
-    private final AbstractSqlDatabase sqlDatabase;
+    private final AbstractSQLDatabase sqlDatabase;
     private final String table;
     private final String[] sqlColumns;
 
-    public SqlStorage(String name, Serializer<T> serializer, AbstractSqlDatabase sqlDatabase, String table, String[] sqlColumns, ListeningExecutorService executorService) {
+    public SQLStorage(String name, Serializer<T> serializer, AbstractSQLDatabase sqlDatabase, String table, String[] sqlColumns, ListeningExecutorService executorService) {
         super(name, StorageType.MYSQL, serializer, executorService);
 
         this.sqlDatabase=sqlDatabase;
@@ -28,7 +28,7 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
         this.sqlColumns=sqlColumns;
     }
 
-    public AbstractSqlDatabase getAbstractSqlDatabase() {
+    public AbstractSQLDatabase getAbstractSqlDatabase() {
         return sqlDatabase;
     }
 
@@ -85,7 +85,7 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
                 PreparedStatement update = connection.prepareStatement(buildQuery("update"));
 
                 for (int i = 1 ; i <= sqlColumns.length ; i++) {
-                    update.setObject(i, serializeMap.get(sqlColumns[i-1]));
+                    update.setObject(i, serializeMap.get(sqlColumns[i!=sqlColumns.length ? i : i-1]));
                 }
 
                 sqlDatabase.executeStatement(update);

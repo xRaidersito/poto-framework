@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface SqlDatabase {
+public interface SQLDatabase {
 
     Connection getConnection() throws SQLException;
 
