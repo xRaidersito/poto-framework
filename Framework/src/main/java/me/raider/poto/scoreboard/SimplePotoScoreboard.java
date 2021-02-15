@@ -2,6 +2,7 @@ package me.raider.poto.scoreboard;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
@@ -17,7 +18,6 @@ public class SimplePotoScoreboard implements PotoScoreboard {
 
     private Objective objective;
     private final String name;
-
 
     public SimplePotoScoreboard(String title, List<ScoreboardLine> lines, Scoreboard scoreboard, String name) {
 
@@ -41,14 +41,14 @@ public class SimplePotoScoreboard implements PotoScoreboard {
         objective.setDisplayName(title);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        for (ScoreboardLine line : lines) {
+        for (int i = 0 ; i < lines.size() ; i++) {
 
-            Team team = scoreboard.registerNewTeam(line.getText());
+            Team team = scoreboard.registerNewTeam(lines.get(i).getName());
 
-            team.addEntry("");
-            team.setPrefix(line.getText());
+            team.addEntry(ChatColor.values()[i] + "");
+            team.setPrefix(lines.get(i).getText());
 
-            objective.getScore(line.getText()).setScore(line.getScore());
+            objective.getScore(ChatColor.values()[i] + "").setScore(lines.get(i).getScore());
 
         }
     }
@@ -62,15 +62,15 @@ public class SimplePotoScoreboard implements PotoScoreboard {
             return;
         }
 
-        for (ScoreboardLine line : lines) {
-            Team team = scoreboard.getTeam(line.getText());
+        for (int i = 0 ; i < lines.size() ; i++) {
+
+            Team team = scoreboard.getTeam(lines.get(i).getName());
             if (placeholderApi) {
-                team.setPrefix(PlaceholderAPI.setPlaceholders(player, line.getText()));
+                team.setPrefix(PlaceholderAPI.setPlaceholders(player, lines.get(i).getText()));
             } else {
-                team.setPrefix(line.getText());
+                team.setPrefix(lines.get(i).getText());
             }
         }
-
     }
 
     @Override
@@ -119,8 +119,8 @@ public class SimplePotoScoreboard implements PotoScoreboard {
         }
 
         @Override
-        public Builder addLine(String text, int score) {
-            addLine(ScoreboardLine.Builder.create().text(text).score(score).build());
+        public Builder addLine(String name, String text, int score) {
+            addLine(ScoreboardLine.Builder.create().name(name).text(text).score(score).build());
             return this;
         }
 

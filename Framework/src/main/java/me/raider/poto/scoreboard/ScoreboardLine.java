@@ -6,7 +6,11 @@ public interface ScoreboardLine {
 
     String getText();
 
+    String getName();
+
     interface Builder {
+
+        Builder name(String name);
 
         Builder text(String text);
 

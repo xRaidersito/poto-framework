@@ -28,7 +28,7 @@ public interface PotoScoreboard extends Nameable {
 
         Builder addLine(ScoreboardLine line);
 
-        Builder addLine(String text, int score);
+        Builder addLine(String name, String text, int score);
 
         Builder addLines(List<ScoreboardLine> lines);
 

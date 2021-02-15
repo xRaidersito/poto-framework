@@ -4,10 +4,12 @@ public class SimpleScoreboardLine implements ScoreboardLine {
 
     private final String text;
     private final int score;
+    private final String name;
 
-    public SimpleScoreboardLine(String text, int score) {
+    public SimpleScoreboardLine(String text, int score, String name) {
         this.text=text;
         this.score=score;
+        this.name=name;
     }
 
     @Override
@@ -20,10 +22,22 @@ public class SimpleScoreboardLine implements ScoreboardLine {
         return text;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public static class Builder implements ScoreboardLine.Builder {
 
         private String text;
         private int score;
+        private String name;
+
+        @Override
+        public Builder name(String name) {
+            this.name=name;
+            return this;
+        }
 
         @Override
         public Builder text(String text) {
@@ -39,7 +53,7 @@ public class SimpleScoreboardLine implements ScoreboardLine {
 
         @Override
         public ScoreboardLine build() {
-            return new SimpleScoreboardLine(text, score);
+            return new SimpleScoreboardLine(text, score, name);
         }
     }
 }
