@@ -84,8 +84,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
                 PreparedStatement update = connection.prepareStatement(buildQuery("update"));
 
-                for (int i = 0 ; i < sqlColumns.length ; i++) {
-                    update.setObject(i, serializeMap.get(sqlColumns[i]));
+                for (int i = 1 ; i <= sqlColumns.length ; i++) {
+                    update.setObject(i, serializeMap.get(sqlColumns[i-1]));
                 }
 
                 sqlDatabase.executeStatement(update);

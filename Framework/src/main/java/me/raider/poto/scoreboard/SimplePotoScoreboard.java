@@ -1,5 +1,6 @@
 package me.raider.poto.scoreboard;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -53,7 +54,7 @@ public class SimplePotoScoreboard implements PotoScoreboard {
     }
 
     @Override
-    public void update(Player player) {
+    public void update(Player player, boolean placeholderApi) {
 
         Scoreboard scoreboard = player.getScoreboard();
 
@@ -63,7 +64,11 @@ public class SimplePotoScoreboard implements PotoScoreboard {
 
         for (ScoreboardLine line : lines) {
             Team team = scoreboard.getTeam(line.getText());
-            team.setPrefix(line.getText());
+            if (placeholderApi) {
+                team.setPrefix(PlaceholderAPI.setPlaceholders(player, line.getText()));
+            } else {
+                team.setPrefix(line.getText());
+            }
         }
 
     }

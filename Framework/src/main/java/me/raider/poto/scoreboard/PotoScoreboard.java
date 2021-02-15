@@ -12,7 +12,7 @@ public interface PotoScoreboard extends Nameable {
 
     void setDefaults();
 
-    void update(Player player);
+    void update(Player player, boolean placeholderApi);
 
     String getTitle();
 
