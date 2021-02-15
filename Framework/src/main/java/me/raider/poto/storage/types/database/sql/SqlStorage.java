@@ -94,8 +94,8 @@ public abstract class SqlStorage<T extends Storable> extends AbstractStorage<T> 
 
                 System.out.println(buildQuery("insert"));
 
-                for (int i = 0 ; i < sqlColumns.length ; i++) {
-                    insert.setObject(i, serializeMap.get(sqlColumns[i]));
+                for (int i = 1 ; i <= sqlColumns.length ; i++) {
+                    insert.setObject(i, serializeMap.get(sqlColumns[i-1]));
                 }
 
                 sqlDatabase.executeStatement(insert);
