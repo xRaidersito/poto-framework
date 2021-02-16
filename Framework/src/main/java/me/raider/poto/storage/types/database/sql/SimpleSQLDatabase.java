@@ -10,11 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class AbstractSQLDatabase implements SQLDatabase {
+public class SimpleSQLDatabase implements SQLDatabase {
 
     private final HikariDataSource dataSource;
 
-    public AbstractSQLDatabase(YamlFile configFile) {
+    public SimpleSQLDatabase(YamlFile configFile) {
 
         DatabaseDetails databaseDetails = new DatabaseDetails(configFile);
 
@@ -30,7 +30,6 @@ public abstract class AbstractSQLDatabase implements SQLDatabase {
 
         dataSource=new HikariDataSource(config);
 
-        createTables();
     }
 
     @Override
@@ -61,5 +60,39 @@ public abstract class AbstractSQLDatabase implements SQLDatabase {
             sqlException.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void createTables(String table, String[] columns, String... dataTypes) {
+
+        System.out.println(buildTablesQuery(table, columns, dataTypes));
+
+        try (PreparedStatement statement = getConnection().prepareStatement(buildTablesQuery(table, columns, dataTypes))) {
+
+            executeStatement(statement);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String buildTablesQuery(String table, String[] columns, String... dataTypes) {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("CREATE TABLE IF NOT EXISTS ").append(table).append(" (");
+
+        for (int i = 0 ; i < columns.length ; i++) {
+
+            builder.append(columns[i]).append(" ").append(dataTypes[i]);
+
+            if (i+1!=columns.length) {
+                builder.append(", ");
+            }
+
+        }
+        builder.append(")");
+        return builder.toString();
+
     }
 }

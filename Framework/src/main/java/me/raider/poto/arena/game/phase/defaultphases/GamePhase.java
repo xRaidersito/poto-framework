@@ -15,14 +15,14 @@ import org.bukkit.plugin.Plugin;
 
 public abstract class GamePhase extends AbstractPhase {
 
-    private boolean canBreak;
-    private boolean canPlace;
-    private boolean canSpawn;
-    private boolean canReceiveDamage;
-    private boolean canSpecChat;
-    private boolean canDrop;
-    private boolean canHungerLoss;
-    private boolean canPickup;
+    private final boolean canBreak;
+    private final boolean canPlace;
+    private final boolean canSpawn;
+    private final boolean canReceiveDamage;
+    private final boolean canSpecChat;
+    private final boolean canDrop;
+    private final boolean canHungerLoss;
+    private final boolean canPickup;
 
     public GamePhase(Plugin plugin, Game game, boolean canBreak, boolean canPlace,
                      boolean canSpawn, boolean canSpecChat, boolean canReceiveDamage,

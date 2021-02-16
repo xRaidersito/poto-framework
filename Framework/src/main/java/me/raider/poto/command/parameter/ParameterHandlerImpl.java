@@ -14,7 +14,7 @@ public class ParameterHandlerImpl implements ParameterHandler {
     public ParameterHandlerImpl() {
         
         register(String.class, arg -> arg);
-        register(boolean.class, arg -> Boolean.valueOf(arg));
+        register(boolean.class, Boolean::valueOf);
 
         register(int.class, arg -> {
             if (Utils.isNumeric(arg)) {

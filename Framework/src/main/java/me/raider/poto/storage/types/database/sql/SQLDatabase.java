@@ -2,7 +2,6 @@ package me.raider.poto.storage.types.database.sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface SQLDatabase {
@@ -47,6 +46,6 @@ public interface SQLDatabase {
 
     boolean dataExist(String table, String column, String key);
 
-    void createTables();
+    void createTables(String table, String[] columns, String... dataTypes);
 
 }

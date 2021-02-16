@@ -21,8 +21,8 @@ public enum Color {
     WHITE("&f", DyeColor.WHITE);
 
 
-    private String colorCode;
-    private DyeColor dyeColor;
+    private final String colorCode;
+    private final DyeColor dyeColor;
 
     Color(String colorCode, DyeColor dyeColor) {
             this.colorCode = colorCode;

@@ -1,6 +1,7 @@
 package me.raider.poto.serializer;
 
 import me.raider.poto.Factory;
+import me.raider.poto.serializer.field.SerializeAnnotatedObjectFields;
 import me.raider.poto.storage.types.Storable;
 
 import java.util.Map;
@@ -38,4 +39,15 @@ public class SerializerImpl<T extends Storable> implements Serializer<T> {
     public SerializedObject<T> deserialize(Map<String, Object> map) {
         return new SimpleSerializedObject<>(map, factory);
     }
+
+    @Override
+    public SerializeAnnotatedObjectFields getAllAnnotatedFields(Class<?> clazz) {
+
+        SerializeAnnotatedObjectFields annotatedObjectFields =
+                new SerializeAnnotatedObjectFields(annotationProcessor.processFields(clazz));
+
+        return annotatedObjectFields;
+
+    }
+
 }

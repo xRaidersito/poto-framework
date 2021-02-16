@@ -1,10 +1,14 @@
 package me.raider.poto.serializer;
 
+import me.raider.poto.serializer.field.SerializeAnnotatedField;
+import me.raider.poto.serializer.field.SerializeAnnotatedFieldImpl;
 import me.raider.poto.storage.types.Storable;
 import me.raider.poto.utils.Utils;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProcessor{
@@ -68,6 +72,31 @@ public class SerializeAnnotationProcessorImpl implements SerializeAnnotationProc
             field.setAccessible(field.isAccessible());
         }
         return serializeMap;
+    }
+
+    @Override
+    public List<SerializeAnnotatedField> processFields(Class<?> clazz) {
+
+        List<SerializeAnnotatedField> annotatedFieldList = new ArrayList<>();
+
+        for (Field field : Utils.getAllFields(clazz)) {
+
+            if (field.isAnnotationPresent(Serialize.class)) {
+
+                SerializeAnnotatedField annotatedField = new SerializeAnnotatedFieldImpl();
+
+                annotatedField.setName(field.getAnnotation(Serialize.class).path());
+                annotatedField.setUniqueKey(false);
+
+                if (field.isAnnotationPresent(Key.class)) {
+                    annotatedField.setUniqueKey(true);
+                }
+
+                annotatedFieldList.add(annotatedField);
+
+            }
+        }
+        return annotatedFieldList;
     }
 
 

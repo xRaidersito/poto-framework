@@ -16,7 +16,7 @@ public class CountdownImpl implements Countdown {
     private final Consumer<Countdown> start;
     private final Consumer<Countdown> everySecond;
     private final Consumer<Countdown> finish;
-    private Consumer<Countdown> cancel;
+    private final Consumer<Countdown> cancel;
     private int secondsLeft;
 
     private int taskId;

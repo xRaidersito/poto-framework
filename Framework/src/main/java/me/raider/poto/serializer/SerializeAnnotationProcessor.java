@@ -1,7 +1,9 @@
 package me.raider.poto.serializer;
 
+import me.raider.poto.serializer.field.SerializeAnnotatedField;
 import me.raider.poto.storage.types.Storable;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SerializeAnnotationProcessor {
@@ -16,5 +18,7 @@ public interface SerializeAnnotationProcessor {
     Map<String, Object> serialize(Class<?> clazz, Object instance) throws IllegalAccessException;
 
     Map<String, Object> serializeChild(Class<?> clazz, Object instance, String previousKey) throws IllegalAccessException;
+
+    List<SerializeAnnotatedField> processFields(Class<?> clazz);
 
 }

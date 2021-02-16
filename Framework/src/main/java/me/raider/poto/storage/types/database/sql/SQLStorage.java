@@ -16,39 +16,43 @@ import java.util.Map;
 
 public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> {
 
-    private final AbstractSQLDatabase sqlDatabase;
+    private final SimpleSQLDatabase sqlDatabase;
     private final String table;
-    private final String[] sqlColumns;
+    private final Class<T> clazz;
 
-    public SQLStorage(String name, Serializer<T> serializer, AbstractSQLDatabase sqlDatabase, String table, String[] sqlColumns, ListeningExecutorService executorService) {
+    public SQLStorage(String name, Serializer<T> serializer, SimpleSQLDatabase sqlDatabase, String table, Class<T> clazz, ListeningExecutorService executorService) {
         super(name, StorageType.MYSQL, serializer, executorService);
 
         this.sqlDatabase=sqlDatabase;
         this.table=table;
-        this.sqlColumns=sqlColumns;
+        this.clazz=clazz;
     }
 
-    public AbstractSQLDatabase getAbstractSqlDatabase() {
+    public SimpleSQLDatabase getAbstractSqlDatabase() {
         return sqlDatabase;
     }
 
     @Override
     public T load(String key) {
 
-        if (!sqlDatabase.dataExist(table, sqlColumns[0], key)) {
-            return createIfAbsent(key);
+        String[] paths = getSerializer().getAllAnnotatedFields(clazz).getOrganizedPaths();
+
+        if (!sqlDatabase.dataExist(table, paths[0], key)) {
+            T newObject = createIfAbsent(key);
+            get().put(key, newObject);
+            return newObject;
         }
 
         Map<String, Object> dataMap = new HashMap<>();
 
-        try (PreparedStatement statement = sqlDatabase.getConnection().prepareStatement("SELECT * FROM " + table + " WHERE (" + sqlColumns[0] + "=?)")) {
+        try (PreparedStatement statement = sqlDatabase.getConnection().prepareStatement("SELECT * FROM " + table + " WHERE (" + paths[0] + "=?)")) {
 
             statement.setString(1, key);
 
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                for (String column : sqlColumns) {
+                for (String column : paths) {
                     dataMap.put(column, resultSet.getObject(column));
                 }
             }
@@ -78,15 +82,24 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
         Map<String, Object> serializeMap = getSerializer().serialize(toSerialize).getLinkedMap();
 
+        String[] paths = getSerializer().getAllAnnotatedFields(clazz).getOrganizedPaths();
+
         try (Connection connection = sqlDatabase.getConnection()) {
 
-            if (sqlDatabase.dataExist(table, sqlColumns[0], key)) {
+            if (sqlDatabase.dataExist(table, paths[0], key)) {
 
                 PreparedStatement update = connection.prepareStatement(buildQuery("update"));
 
-                for (int i = 1 ; i <= sqlColumns.length ; i++) {
-                    update.setObject(i, serializeMap.get(sqlColumns[i!=sqlColumns.length ? i : i-1]));
+                System.out.println(buildQuery("update"));
+
+                int index = 0;
+
+                for (int i = 1 ; i <= paths.length ; i++) {
+                    index++;
+                    update.setObject(index, serializeMap.get(paths[i!=paths.length ? i : i-1]));
                 }
+
+                update.setObject(paths.length, serializeMap.get(paths[0]));
 
                 sqlDatabase.executeStatement(update);
 
@@ -94,8 +107,8 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
                 PreparedStatement insert = connection.prepareStatement(buildQuery("insert"));
 
-                for (int i = 1 ; i <= sqlColumns.length ; i++) {
-                    insert.setObject(i, serializeMap.get(sqlColumns[i-1]));
+                for (int i = 1 ; i <= paths.length ; i++) {
+                    insert.setObject(i, serializeMap.get(paths[i-1]));
                 }
 
                 sqlDatabase.executeStatement(insert);
@@ -110,6 +123,8 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
     private String buildQuery(String type) {
 
+        String[] paths = getSerializer().getAllAnnotatedFields(clazz).getOrganizedPaths();
+
         switch (type.toLowerCase()) {
 
             case "update":
@@ -118,14 +133,14 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
                 updateBuilder.append("UPDATE ").append(table).append(" SET ");
 
-                for (int i = 1 ; i < sqlColumns.length ; i++) {
-                    updateBuilder.append(sqlColumns[i]).append("=?");
-                    if (i!=sqlColumns.length-1) {
+                for (int i = 1 ; i < paths.length ; i++) {
+                    updateBuilder.append(paths[i]).append("=?");
+                    if (i!=paths.length-1) {
                         updateBuilder.append(",");
                     }
                 }
 
-                updateBuilder.append(" WHERE(").append(sqlColumns[0]).append("=?)");
+                updateBuilder.append(" WHERE(").append(paths[0]).append("=?)");
                 return updateBuilder.toString();
 
             case "insert":
@@ -134,18 +149,18 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
                 insertBuilder.append("INSERT INTO ").append(table).append("(");
 
-                for (int i = 0 ; i < sqlColumns.length ; i++) {
-                    insertBuilder.append(sqlColumns[i]);
-                    if (i!=sqlColumns.length-1) {
+                for (int i = 0 ; i < paths.length ; i++) {
+                    insertBuilder.append(paths[i]);
+                    if (i!=paths.length-1) {
                         insertBuilder.append(",");
                     }
                 }
 
                 insertBuilder.append(") VALUES(");
 
-                for (int i = 0 ; i < sqlColumns.length ; i++) {
+                for (int i = 0 ; i < paths.length ; i++) {
                     insertBuilder.append("?");
-                    if (i!=sqlColumns.length-1) {
+                    if (i!=paths.length-1) {
                         insertBuilder.append(",");
                     }
                 }

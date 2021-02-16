@@ -31,3 +31,5 @@ poto-framework.iml
 /src/
 /Framework/target/
 /Test/target/
+/Framework/dependency-reduced-pom.xml
+/Test/

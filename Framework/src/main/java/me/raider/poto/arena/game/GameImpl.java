@@ -124,7 +124,7 @@ public class GameImpl implements Game {
         arena.clearTeams();
 
         Bukkit.getScheduler().runTaskLater(arena.getPlugin(),
-                () -> arena.regenArena(),
+                arena::regenArena,
                 100L);
     }
 }

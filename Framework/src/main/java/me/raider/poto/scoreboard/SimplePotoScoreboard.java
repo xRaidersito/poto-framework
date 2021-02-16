@@ -16,7 +16,7 @@ public class SimplePotoScoreboard implements PotoScoreboard {
 
     private final Scoreboard scoreboard;
 
-    private Objective objective;
+    private final Objective objective;
     private final String name;
 
     public SimplePotoScoreboard(String title, List<ScoreboardLine> lines, Scoreboard scoreboard, String name) {
@@ -62,13 +62,13 @@ public class SimplePotoScoreboard implements PotoScoreboard {
             return;
         }
 
-        for (int i = 0 ; i < lines.size() ; i++) {
+        for (ScoreboardLine line : lines) {
 
-            Team team = scoreboard.getTeam(lines.get(i).getName());
+            Team team = scoreboard.getTeam(line.getName());
             if (placeholderApi) {
-                team.setPrefix(PlaceholderAPI.setPlaceholders(player, lines.get(i).getText()));
+                team.setPrefix(PlaceholderAPI.setPlaceholders(player, line.getText()));
             } else {
-                team.setPrefix(lines.get(i).getText());
+                team.setPrefix(line.getText());
             }
         }
     }

@@ -24,7 +24,7 @@ public interface ArenaTeam extends Storable {
 
     static ArenaTeam fromString(String stringTeam) {
 
-        if (stringTeam == null || stringTeam.trim() == "") {
+        if (stringTeam == null || stringTeam.trim().equals("")) {
             return null;
         }
         String[] args = stringTeam.split(",");

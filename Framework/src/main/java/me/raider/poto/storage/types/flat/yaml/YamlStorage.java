@@ -28,7 +28,9 @@ public abstract class YamlStorage<T extends Storable> extends AbstractStorage<T>
         YamlFile file = new YamlFile(plugin, key, ".yml", new File(plugin.getDataFolder().getAbsolutePath() + folder));
 
         if (!file.contains("data")) {
-            return createIfAbsent(key);
+            T newObject = createIfAbsent(key);
+            get().put(key, newObject);
+            return newObject;
         }
 
         Map<String, Object> dataMap = file.getConfigurationSection("data").getValues(true);
