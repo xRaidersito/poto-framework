@@ -1,8 +1,6 @@
 package me.raider.poto.storage.types.database.mongodb;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.client.model.UpdateOptions;
 import me.raider.poto.serializer.SerializedObject;
 import me.raider.poto.serializer.Serializer;
@@ -16,10 +14,10 @@ import java.util.Map;
 
 public abstract class MongoDBStorage<T extends Storable> extends AbstractStorage<T> {
 
-    private final Class<T> clazz;
+    private final Class<? extends T> clazz;
     private final MongoDBDatabase database;
 
-    public MongoDBStorage(String name, Serializer<T> serializer, ListeningExecutorService executorService, Class<T> clazz, MongoDBDatabase database) {
+    public MongoDBStorage(String name, Serializer<T> serializer, ListeningExecutorService executorService, Class<? extends T> clazz, MongoDBDatabase database) {
         super(name, StorageType.MONGODB, serializer, executorService);
         this.clazz=clazz;
         this.database=database;

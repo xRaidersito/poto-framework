@@ -18,9 +18,9 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
     private final SimpleSQLDatabase sqlDatabase;
     private final String table;
-    private final Class<T> clazz;
+    private final Class<? extends T> clazz;
 
-    public SQLStorage(String name, Serializer<T> serializer, SimpleSQLDatabase sqlDatabase, String table, Class<T> clazz, ListeningExecutorService executorService) {
+    public SQLStorage(String name, Serializer<T> serializer, SimpleSQLDatabase sqlDatabase, String table, Class<? extends T> clazz, ListeningExecutorService executorService) {
         super(name, StorageType.MYSQL, serializer, executorService);
 
         this.sqlDatabase=sqlDatabase;
