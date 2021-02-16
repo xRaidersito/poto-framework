@@ -43,10 +43,7 @@ public class SerializerImpl<T extends Storable> implements Serializer<T> {
     @Override
     public SerializeAnnotatedObjectFields getAllAnnotatedFields(Class<?> clazz) {
 
-        SerializeAnnotatedObjectFields annotatedObjectFields =
-                new SerializeAnnotatedObjectFields(annotationProcessor.processFields(clazz));
-
-        return annotatedObjectFields;
+        return new SerializeAnnotatedObjectFields(annotationProcessor.processFields(clazz));
 
     }
 

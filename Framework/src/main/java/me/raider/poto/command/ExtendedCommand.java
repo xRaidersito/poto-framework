@@ -70,7 +70,7 @@ public class ExtendedCommand extends Command {
 
                     StringBuilder sb = new StringBuilder();
 
-                    if (spaces>0) {
+                    if (spaces>1) {
                         sb = buildNewArgs(args, spaces);
                     } else {
                         sb.append(args[0]);
@@ -174,16 +174,16 @@ public class ExtendedCommand extends Command {
         if (clazz.equals(Player.class) && !(sender instanceof Player)) {
 
             sender.sendMessage(messageProvider.getMessage("only-players"));
-            return false;
+            return true;
         }
         else if (clazz.equals(ConsoleCommandSender.class)
                 && !(sender instanceof ConsoleCommandSender)) {
 
             sender.sendMessage(messageProvider.getMessage("only-console"));
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**

@@ -81,7 +81,6 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
         }
 
         Map<String, Object> serializeMap = getSerializer().serialize(toSerialize).getLinkedMap();
-
         String[] paths = getSerializer().getAllAnnotatedFields(clazz).getOrganizedPaths();
 
         try (Connection connection = sqlDatabase.getConnection()) {
@@ -90,13 +89,20 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
 
                 PreparedStatement update = connection.prepareStatement(buildQuery("update"));
 
-                System.out.println(buildQuery("update"));
-
                 int index = 0;
 
                 for (int i = 1 ; i <= paths.length ; i++) {
+
                     index++;
-                    update.setObject(index, serializeMap.get(paths[i!=paths.length ? i : i-1]));
+
+                    String actualObj = paths[i!=paths.length ? i : i-1];
+
+                    if (serializeMap.get(actualObj) instanceof Map) {
+                        update.setObject(index, saveMap(serializeMap, actualObj));
+                        continue;
+                    }
+
+                    update.setObject(index, serializeMap.get(actualObj));
                 }
 
                 update.setObject(paths.length, serializeMap.get(paths[0]));
@@ -108,17 +114,43 @@ public abstract class SQLStorage<T extends Storable> extends AbstractStorage<T> 
                 PreparedStatement insert = connection.prepareStatement(buildQuery("insert"));
 
                 for (int i = 1 ; i <= paths.length ; i++) {
+
+                    if (serializeMap.get(paths[i-1]) instanceof Map) {
+                        insert.setObject(i, saveMap(serializeMap, paths[i-1]));
+                        continue;
+                    }
                     insert.setObject(i, serializeMap.get(paths[i-1]));
                 }
-
                 sqlDatabase.executeStatement(insert);
-
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         get().remove(key);
+    }
+
+    private String saveMap(Map<String, Object> serializeMap, String actual) {
+
+        Map<Object, Object> toSerializeMap = (Map<Object, Object>) serializeMap.get(actual);
+
+        StringBuilder builder = new StringBuilder();
+        int index = 0;
+
+        for (Object keyMap : toSerializeMap.keySet()) {
+
+            index++;
+
+            builder.append(keyMap.toString())
+                    .append(",@,")
+                    .append(toSerializeMap.get(keyMap).toString());
+
+            if (index!=toSerializeMap.keySet().size()) {
+                builder.append(";@;");
+            }
+
+        }
+        return builder.toString();
     }
 
     private String buildQuery(String type) {
