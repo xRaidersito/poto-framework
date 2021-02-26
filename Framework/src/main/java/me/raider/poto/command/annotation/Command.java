@@ -13,7 +13,7 @@ public @interface Command {
 
     String description() default "No description";
 
-    String permission() default "";
+    String[] permissions() default "";
 
     String[] aliases() default {};
 

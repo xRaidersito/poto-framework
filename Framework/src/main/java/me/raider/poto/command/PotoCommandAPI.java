@@ -2,6 +2,8 @@ package me.raider.poto.command;
 
 import me.raider.poto.command.annotation.Command;
 import me.raider.poto.command.argument.SimpleArgumentParser;
+import me.raider.poto.command.authorizer.PotoAuthorizer;
+import me.raider.poto.command.authorizer.PotoAuthorizerImpl;
 import me.raider.poto.command.message.MessageProvider;
 import me.raider.poto.command.parameter.ParameterHandler;
 import org.bukkit.Bukkit;
@@ -17,14 +19,20 @@ public class PotoCommandAPI {
     private CommandMap commandMap;
     private MessageProvider messageProvider;
     private ParameterHandler parameterHandler;
+    private PotoAuthorizer potoAuthorizer;
 
-    public void init(PotoCommandManager commandManager, MessageProvider messageProvider, ParameterHandler parameterHandler) {
+    public void init(PotoCommandManager commandManager, MessageProvider messageProvider, ParameterHandler parameterHandler, PotoAuthorizer potoAuthorizer) {
 
         initCommandMap();
 
         this.commandManager=commandManager;
         this.messageProvider=messageProvider;
         this.parameterHandler=parameterHandler;
+        this.potoAuthorizer=potoAuthorizer;
+    }
+
+    public void init(PotoCommandManager commandManager, MessageProvider messageProvider, ParameterHandler parameterHandler) {
+        init(commandManager , messageProvider, parameterHandler, new PotoAuthorizerImpl());
     }
 
     public void register(PotoCommand... potoCommands) {
@@ -42,7 +50,7 @@ public class PotoCommandAPI {
             throw new CommandException("The target class don't has the @Command annotation");
         }
 
-        commandMap.register(registered.getCommand().name(), new ExtendedCommand(registered, messageProvider, new SimpleArgumentParser(), parameterHandler));
+        commandMap.register(registered.getCommand().name(), new ExtendedCommand(registered, messageProvider, new SimpleArgumentParser(), parameterHandler, potoAuthorizer));
     }
 
     private RegisteredCommand registerCommand(PotoCommand potoCommand) {
@@ -91,5 +99,9 @@ public class PotoCommandAPI {
 
     public PotoCommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public PotoAuthorizer getPotoAuthorizer() {
+        return potoAuthorizer;
     }
 }
