@@ -2,6 +2,7 @@ package me.raider.poto.command;
 
 import me.raider.poto.command.annotation.SubCommand;
 import me.raider.poto.command.argument.ArgumentParser;
+import me.raider.poto.command.authorizer.PotoAuthorizer;
 import me.raider.poto.command.message.MessageProvider;
 import me.raider.poto.command.parameter.ParameterCreator;
 import me.raider.poto.command.parameter.ParameterHandler;
@@ -22,8 +23,9 @@ public class ExtendedCommand extends Command {
     private final MessageProvider messageProvider;
     private final ArgumentParser argumentParser;
     private final ParameterHandler parameterHandler;
+    private final PotoAuthorizer potoAuthorizer;
 
-    public ExtendedCommand(RegisteredCommand registeredCommand, MessageProvider messageProvider, ArgumentParser argumentParser, ParameterHandler parameterHandler) {
+    public ExtendedCommand(RegisteredCommand registeredCommand, MessageProvider messageProvider, ArgumentParser argumentParser, ParameterHandler parameterHandler, PotoAuthorizer potoAuthorizer) {
         super(registeredCommand.getCommand().name());
         this.parameterHandler = parameterHandler;
 
@@ -33,6 +35,7 @@ public class ExtendedCommand extends Command {
         this.registeredCommand = registeredCommand;
         this.messageProvider=messageProvider;
         this.argumentParser=argumentParser;
+        this.potoAuthorizer = potoAuthorizer;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class ExtendedCommand extends Command {
                     return true;
                 }
 
-                if (!sender.hasPermission(registeredCommand.getCommand().permission())) {
+                if (!potoAuthorizer.isAuthorized(sender, registeredCommand.getCommand().permissions())) {
                     sender.sendMessage(messageProvider.getMessage("no-permission"));
                     return true;
                 }
@@ -92,7 +95,7 @@ public class ExtendedCommand extends Command {
                             sender.sendMessage(messageProvider.getMessage("no-permission"));
                             return true;
                         } else {
-                            if (!sender.hasPermission(registeredCommand.getCommand().permission())) {
+                            if (!potoAuthorizer.isAuthorized(sender, registeredCommand.getCommand().permissions())) {
                                 sender.sendMessage(messageProvider.getMessage("no-permission"));
                                 return true;
                             }
