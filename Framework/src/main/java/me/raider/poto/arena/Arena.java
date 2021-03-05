@@ -97,4 +97,6 @@ public interface Arena extends Storable {
 
     void playerDeath(Player player);
 
+    boolean isFull();
+
 }

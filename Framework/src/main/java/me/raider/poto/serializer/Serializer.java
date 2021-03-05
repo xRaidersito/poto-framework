@@ -1,6 +1,6 @@
 package me.raider.poto.serializer;
 
-import me.raider.poto.serializer.field.SerializeAnnotatedObjectFields;
+import me.raider.poto.serializer.field.SerializeAnnotatedFieldsManager;
 import me.raider.poto.storage.types.Storable;
 
 import java.util.Map;
@@ -23,6 +23,6 @@ public interface Serializer<T extends Storable> {
      */
     SerializedObject<T> deserialize(Map<String, Object> map);
 
-    SerializeAnnotatedObjectFields getAllAnnotatedFields(Class<?> clazz);
+    SerializeAnnotatedFieldsManager getAllAnnotatedFields(Class<?> clazz);
 
 }

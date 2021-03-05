@@ -1,16 +1,20 @@
 package me.raider.poto.commons.cmd;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SimpleCommandArgumentManager implements CommandArgumentManager {
 
-
+    private final Map<Class<?>, CommandArgument<?>> commandArgumentMap = new HashMap<>();
 
     @Override
-    public <T> ContextSupplier<T> getSupplier(Class<T> tClass) {
+    public <T> CommandArgument<T> getArgument(Class<T> tClass) {
+
         return null;
     }
 
     @Override
-    public <T> void registerSupplier(Class<T> tClass, ContextSupplier<T> supplier) {
+    public <T> void registerSupplier(Class<T> tClass, ArgumentSupplier<T> supplier) {
 
     }
 }

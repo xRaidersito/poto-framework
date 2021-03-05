@@ -25,7 +25,8 @@ public class ExtendedCommand extends Command {
     private final ParameterHandler parameterHandler;
     private final PotoAuthorizer potoAuthorizer;
 
-    public ExtendedCommand(RegisteredCommand registeredCommand, MessageProvider messageProvider, ArgumentParser argumentParser, ParameterHandler parameterHandler, PotoAuthorizer potoAuthorizer) {
+    public ExtendedCommand(RegisteredCommand registeredCommand, MessageProvider messageProvider,
+                           ArgumentParser argumentParser, ParameterHandler parameterHandler, PotoAuthorizer potoAuthorizer) {
         super(registeredCommand.getCommand().name());
         this.parameterHandler = parameterHandler;
 

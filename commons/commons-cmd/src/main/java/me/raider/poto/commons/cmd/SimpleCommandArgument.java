@@ -3,11 +3,11 @@ package me.raider.poto.commons.cmd;
 public class SimpleCommandArgument<T> implements CommandArgument<T> {
 
     private final Class<T> clazz;
-    private final CommandArgumentManager manager;
+    private final ArgumentSupplier<T> supplier;
 
-    public SimpleCommandArgument(Class<T> clazz, CommandArgumentManager manager) {
+    public SimpleCommandArgument(Class<T> clazz, ArgumentSupplier<T> supplier) {
         this.clazz = clazz;
-        this.manager = manager;
+        this.supplier = supplier;
     }
 
     @Override
@@ -17,6 +17,6 @@ public class SimpleCommandArgument<T> implements CommandArgument<T> {
 
     @Override
     public T resolveArgument(Object object) {
-        return manager.getSupplier(clazz).supply(object);
+        return supplier.supply(object);
     }
 }

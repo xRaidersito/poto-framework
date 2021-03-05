@@ -4,11 +4,11 @@ import me.raider.poto.serializer.SerializerException;
 
 import java.util.List;
 
-public class SerializeAnnotatedObjectFields {
+public class SerializeAnnotatedFieldsManager {
 
     private final List<SerializeAnnotatedField> annotatedFieldList;
 
-    public SerializeAnnotatedObjectFields(List<SerializeAnnotatedField> annotatedFieldList) {
+    public SerializeAnnotatedFieldsManager(List<SerializeAnnotatedField> annotatedFieldList) {
         this.annotatedFieldList=annotatedFieldList;
     }
 

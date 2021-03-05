@@ -1,12 +1,13 @@
 package me.raider.poto.arena;
 
 import me.raider.poto.arena.game.Game;
-import me.raider.poto.arena.game.GameImpl;
+import me.raider.poto.arena.game.SimpleGame;
 import me.raider.poto.arena.team.ArenaTeam;
 import me.raider.poto.arena.team.SimpleArenaTeam;
 import me.raider.poto.channel.ChatChannel;
 import me.raider.poto.channel.ChatChannelBuilder;
 import me.raider.poto.cuboid.CuboidArea;
+import me.raider.poto.serializer.Key;
 import me.raider.poto.serializer.Serialize;
 import me.raider.poto.utils.Color;
 import me.raider.poto.utils.StorableLocation;
@@ -48,7 +49,9 @@ public abstract class AbstractArena implements Arena {
     @Serialize(path = "enabled")
     private boolean enabled;
 
+    @Key @Serialize(path = "name")
     private final String name;
+
     private final Game game;
     private ArenaState arenaState;
     private final List<Player> players = new ArrayList<>();
@@ -60,7 +63,7 @@ public abstract class AbstractArena implements Arena {
     public AbstractArena(Plugin plugin, String name, ArenaType type) {
         this.plugin=plugin;
         this.name=name;
-        this.game=new GameImpl(this);
+        this.game=new SimpleGame(this);
         this.arenaWorld=new ArenaWorld(this);
         this.arenaChannel=ChatChannelBuilder.create("arena-channel").prefix("test").build();
         this.arenaState=ArenaState.DISABLED;
@@ -203,6 +206,11 @@ public abstract class AbstractArena implements Arena {
     @Override
     public int calculateMaxPlayers() {
         return teamSize*teams.size();
+    }
+
+    @Override
+    public boolean isFull() {
+        return players.size()==calculateMaxPlayers();
     }
 
     @Override

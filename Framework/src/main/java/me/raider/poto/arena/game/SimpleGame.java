@@ -3,13 +3,14 @@ package me.raider.poto.arena.game;
 import me.raider.poto.arena.Arena;
 import me.raider.poto.arena.ArenaState;
 import me.raider.poto.arena.game.phase.Phase;
+import me.raider.poto.arena.game.phase.defaultphases.lobby.LobbyPhase;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameImpl implements Game {
+public class SimpleGame implements Game {
 
     private final List<Phase> phases = new ArrayList<>();
     private final Arena arena;
@@ -18,7 +19,7 @@ public class GameImpl implements Game {
 
     private int index;
 
-    public GameImpl(Arena arena) {
+    public SimpleGame(Arena arena) {
         this.arena=arena;
         this.index=0;
     }
@@ -78,6 +79,21 @@ public class GameImpl implements Game {
     @Override
     public void playerJoin(Player player) {
 
+        if (!arena.isEnabled()) {
+            return;
+        }
+
+        if (actualPhase instanceof LobbyPhase && !arena.isFull()) {
+
+            arena.addPlayer(player);
+            arena.addPlayerToTeam(player, arena.randomizeTeam());
+
+            player.teleport(arena.getWaitLobbyLocation());
+
+            broadcastToAll();
+
+
+        }
 
 
     }

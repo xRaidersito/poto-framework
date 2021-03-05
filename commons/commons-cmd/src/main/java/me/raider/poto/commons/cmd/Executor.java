@@ -1,7 +1,7 @@
 package me.raider.poto.commons.cmd;
 
-public interface Executor<T> {
+public interface Executor {
 
-    void execute(T t);
+    void execute(String[] args, Object... injected);
 
 }

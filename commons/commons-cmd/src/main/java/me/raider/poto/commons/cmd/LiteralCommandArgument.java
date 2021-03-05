@@ -4,8 +4,8 @@ public class LiteralCommandArgument extends SimpleCommandArgument<String> {
 
     private final String requiredLiteral;
 
-    public LiteralCommandArgument(CommandArgumentManager manager, String requiredLiteral) {
-        super(String.class, manager);
+    public LiteralCommandArgument(ArgumentSupplier<String> supplier, String requiredLiteral) {
+        super(String.class, supplier);
         this.requiredLiteral = requiredLiteral;
     }
 

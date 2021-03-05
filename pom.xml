@@ -12,6 +12,9 @@
     <modules>
         <module>Framework</module>
         <module>Test</module>
+        <module>commons</module>
+        <module>bukkit</module>
+        <module>commons-sql</module>
     </modules>
 
     <build>
