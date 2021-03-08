@@ -6,18 +6,23 @@ import java.util.List;
 
 public interface CommandBuilder extends Builder<List<Command>> {
 
-    CommandBuilder injected(Class<?> clazz);
+    <T> CommandBuilder injected(Class<T> clazz);
 
     CommandBuilder literal(String literal);
 
-    CommandBuilder argument(Class<?> clazz);
+    <T> CommandBuilder argument(Class<T> clazz);
 
     CommandBuilder subcommand(CommandBuilder builder);
 
     CommandBuilder action(Action action);
 
-    CommandBuilder name(String name);
+    CommandBuilder permission(String permission);
 
-    CommandBuilder prefix(String prefix);
+    static CommandBuilder create(String name, String prefix,
+                                 ArgumentProcessor<LiteralCommandArgument> argumentProcessor,
+                                 CommandSupplierManager supplierManager) {
+
+        return new CommandBuilderImpl(name, prefix, argumentProcessor, supplierManager);
+    }
 
 }

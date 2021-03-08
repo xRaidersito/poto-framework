@@ -1,7 +1,6 @@
 package me.raider.poto.commons.cmd.resolved;
 
 import me.raider.poto.commons.cmd.CommandArgument;
-import me.raider.poto.commons.cmd.CommandArgumentManager;
 
 public interface ResolvedArgument {
 

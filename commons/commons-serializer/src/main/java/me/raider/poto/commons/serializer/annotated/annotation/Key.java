@@ -1,4 +1,4 @@
-package me.raider.poto.serializer;
+package me.raider.poto.commons.serializer.annotated.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,10 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Serialize {
-
-    String path();
-
-    Class<?> value() default String.class;
-
+public @interface Key {
 }

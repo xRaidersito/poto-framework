@@ -16,4 +16,5 @@ public interface Node<T, S> {
 
     Node<T, S> findData(String arg, Class<?> clazz);
 
+    void print(StringBuilder buffer, String prefix, String childrenPrefix);
 }

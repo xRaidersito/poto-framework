@@ -57,7 +57,9 @@ public class CommandTree {
 
     public WrappedCommandResult traverseTree(String[] args, Object... injected) {
 
-        Node<CommandArgument<?>, Command> node = checkInjected(root, injected);
+        InjectionResult result = checkInjected(root, injected);
+
+        Node<CommandArgument<?>, Command> node = result.linkedNode;
 
         if (node==null) {
             return new WrappedCommandResult(CommandResult.INJECTED_FAILURE, null, null);
@@ -65,23 +67,30 @@ public class CommandTree {
 
         List<ResolvedArgument> resolvedArguments = new ArrayList<>();
 
+        resolvedArguments.addAll(result.resolvedArguments);
+
         for (String arg : args) {
 
             for (Node<CommandArgument<?>, Command> children : node.getChildren()) {
 
-                if (children.getData() instanceof LiteralCommandArgument) {
+                CommandArgument<?> argument = children.getData();
 
-                    LiteralCommandArgument literal = (LiteralCommandArgument) children.getData();
+                if (argument instanceof LiteralCommandArgument) {
+
+                    LiteralCommandArgument literal = (LiteralCommandArgument) argument;
 
                     if (literal.getRequiredLiteral().equalsIgnoreCase(arg)) {
                         node=children;
-                        break;
                     }
                     continue;
                 }
 
-                if (children.getData().resolveArgument(arg)!=null) {
-                    resolvedArguments.add(ResolvedArgument.of(arg, children.getData()));
+                if (argument instanceof InjectedCommandArgument<?>) {
+                    continue;
+                }
+
+                if (argument.resolveArgument(arg)!=null) {
+                    resolvedArguments.add(ResolvedArgument.of(arg, argument));
                     node=children;
                     break;
                 }
@@ -97,22 +106,42 @@ public class CommandTree {
 
 
 
-    private Node<CommandArgument<?>, Command> checkInjected(Node<CommandArgument<?>, Command> root, Object... objects) {
+    private InjectionResult checkInjected(Node<CommandArgument<?>, Command> root, Object... objects) {
 
         Node<CommandArgument<?>, Command> actual = root;
+        List<ResolvedArgument> resolvedArguments = new ArrayList<>();
+
+        if (objects==null) {
+            return new InjectionResult(actual, resolvedArguments);
+        }
 
         for (Object object : objects) {
 
-            Node<CommandArgument<?>, Command> next = actual.findData(null, object.getClass());
+            for (Node<CommandArgument<?>, Command> children : actual.getChildren()) {
 
-            if (next!=null) {
-                actual = next;
-                continue;
+                if (children != null && children.getData() instanceof InjectedCommandArgument<?>
+                        && children.getData().getRequiredClass().equals(object.getClass())) {
+                    actual = children;
+                    resolvedArguments.add(ResolvedArgument.of(object, children.getData()));
+                }
             }
-            return actual;
         }
+        return new InjectionResult(actual, resolvedArguments);
+    }
 
-        return null;
+    public Node<CommandArgument<?>, Command> getRoot() {
+        return root;
+    }
+
+    private static class InjectionResult {
+
+        private final Node<CommandArgument<?>, Command> linkedNode;
+        private final List<ResolvedArgument> resolvedArguments;
+
+        private InjectionResult(Node<CommandArgument<?>, Command> linkedNode, List<ResolvedArgument> resolvedArguments) {
+            this.linkedNode = linkedNode;
+            this.resolvedArguments = resolvedArguments;
+        }
     }
 
 }

@@ -2,10 +2,10 @@ package me.raider.poto.commons.cmd.tree;
 
 import me.raider.poto.commons.cmd.Command;
 import me.raider.poto.commons.cmd.CommandArgument;
-import me.raider.poto.commons.cmd.InjectedCommandArgument;
 import me.raider.poto.commons.cmd.LiteralCommandArgument;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CommandNodeImpl implements CommandNode {
@@ -69,18 +69,39 @@ public class CommandNodeImpl implements CommandNode {
                 }
             }
 
-            if (argument instanceof InjectedCommandArgument && arg==null) {
-
-                InjectedCommandArgument<?> injected = (InjectedCommandArgument<?>) argument;
-                if (injected.getRequiredClass().equals(clazz)) {
-                    return child;
-                }
-            }
-
-            if (argument.getRequiredClass().equals(clazz) && arg!=null) {
+            if (argument.getRequiredClass().equals(clazz)) {
                 return child;
             }
         }
         return null;
+    }
+
+    public String toString() {
+        StringBuilder buffer = new StringBuilder(50);
+        print(buffer, "", "");
+        return buffer.toString();
+    }
+
+    public void print(StringBuilder buffer, String prefix, String childrenPrefix) {
+        buffer.append(prefix);
+        if (data!=null) {
+            if (data instanceof LiteralCommandArgument) {
+                LiteralCommandArgument literal = (LiteralCommandArgument) data;
+                buffer.append(literal.getRequiredLiteral());
+            } else {
+                buffer.append(data.getRequiredClass());
+        }
+        } else {
+            buffer.append("null");
+        }
+        buffer.append('\n');
+        for (Iterator<Node<CommandArgument<?>, Command>> it = children.iterator(); it.hasNext();) {
+            Node<CommandArgument<?>, Command> next = it.next();
+            if (it.hasNext()) {
+                next.print(buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
+            } else {
+                next.print(buffer, childrenPrefix + "└── ", childrenPrefix + "    ");
+            }
+        }
     }
 }

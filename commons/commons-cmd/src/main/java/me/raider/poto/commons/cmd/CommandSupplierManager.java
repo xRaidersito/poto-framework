@@ -1,8 +1,8 @@
 package me.raider.poto.commons.cmd;
 
-public interface CommandArgumentManager {
+public interface CommandSupplierManager {
 
-    <T> CommandArgument<T> getArgument(Class<T> tClass);
+    <T> ArgumentSupplier<T> getSupplier(Class<T> tClass);
 
     <T> void registerSupplier(Class<T> tClass, ArgumentSupplier<T> supplier);
 

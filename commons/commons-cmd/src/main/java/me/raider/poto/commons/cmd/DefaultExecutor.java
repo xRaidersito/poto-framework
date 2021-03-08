@@ -3,11 +3,11 @@ package me.raider.poto.commons.cmd;
 import me.raider.poto.commons.cmd.resolved.ResolvedArgument;
 import me.raider.poto.commons.cmd.tree.CommandTree;
 
-public class SimpleExecutor implements Executor {
+public class DefaultExecutor implements Executor {
 
     private final CommandTree commandTree;
 
-    protected SimpleExecutor(CommandTree commandTree) {
+    protected DefaultExecutor(CommandTree commandTree) {
         this.commandTree = commandTree;
     }
 

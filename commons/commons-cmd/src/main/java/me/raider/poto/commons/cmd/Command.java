@@ -1,10 +1,8 @@
 package me.raider.poto.commons.cmd;
 
-import me.raider.poto.commons.BuildableObject;
-
 import java.util.List;
 
-public interface Command extends BuildableObject {
+public interface Command {
 
     List<CommandArgument<?>> getArguments();
 
