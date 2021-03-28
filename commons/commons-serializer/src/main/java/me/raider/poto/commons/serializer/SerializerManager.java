@@ -2,7 +2,7 @@ package me.raider.poto.commons.serializer;
 
 import me.raider.poto.commons.serializer.annotated.SerializeAnnotationProcessor;
 import me.raider.poto.commons.serializer.bind.Binder;
-import me.raider.poto.commons.serializer.repository.SerializerRepository;
+import me.raider.poto.commons.serializer.repository.FindableRepository;
 
 public interface SerializerManager {
 
@@ -12,7 +12,9 @@ public interface SerializerManager {
 
     Binder getBinder();
 
-    SerializerRepository getRepository();
+    FindableRepository getRepository();
+
+    void setRepository(FindableRepository repository);
 
     SerializeAnnotationProcessor getProcessor();
 

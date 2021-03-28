@@ -1,11 +1,15 @@
 package me.raider.poto.commons.serializer.bind;
 
+import me.raider.poto.commons.serializer.annotated.SerializeAnnotationProcessor;
+
 import java.util.Map;
 
 public interface Binder {
 
-    Map<Class<?>, Class<?>> getBindings();
+    Map<BindingKey<?>, Class<?>> getBindings();
 
-    <T> BindingBuilder<T> bind(Class<T> clazz);
+    SerializeAnnotationProcessor getProcessor();
+
+    <T> NamedBindingBuilder<T> bind(Class<T> clazz);
 
 }
