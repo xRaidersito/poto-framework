@@ -18,9 +18,7 @@ public class CommandBuilderImpl implements CommandBuilder {
 
     private List<InjectedCommandArgument<?>> injected = new ArrayList<>();
     private List<LiteralCommandArgument> literal = new ArrayList<>();
-
     private List<CommandArgument<?>> argument = new ArrayList<>();
-
     private List<CommandBuilder> builders = new ArrayList<>();
 
     public CommandBuilderImpl(String name, String prefix, ArgumentProcessor<LiteralCommandArgument> argumentProcessor,

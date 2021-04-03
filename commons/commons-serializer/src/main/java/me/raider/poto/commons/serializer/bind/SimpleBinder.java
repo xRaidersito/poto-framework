@@ -1,18 +1,11 @@
 package me.raider.poto.commons.serializer.bind;
 
-import me.raider.poto.commons.serializer.annotated.SerializeAnnotationProcessor;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleBinder implements Binder {
 
     private Map<BindingKey<?>, Class<?>> bindings = new HashMap<>();
-    private final SerializeAnnotationProcessor serializeAnnotationProcessor;
-
-    public SimpleBinder(SerializeAnnotationProcessor serializeAnnotationProcessor) {
-        this.serializeAnnotationProcessor = serializeAnnotationProcessor;
-    }
 
     @Override
     public Map<BindingKey<?>, Class<?>> getBindings() {
@@ -20,8 +13,16 @@ public class SimpleBinder implements Binder {
     }
 
     @Override
-    public SerializeAnnotationProcessor getProcessor() {
-        return serializeAnnotationProcessor;
+    public Class<?> getBinding(Class<?> clazz, String identifier) {
+        for (BindingKey<?> key : getBindings().keySet()) {
+            if (key.getLinkedClass().equals(clazz)) {
+                if (key.isNamed() && !identifier.equalsIgnoreCase(key.getName())) {
+                    return null;
+                }
+                return bindings.get(key);
+            }
+        }
+        return null;
     }
 
     @Override

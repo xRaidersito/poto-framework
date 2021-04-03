@@ -7,6 +7,7 @@ public class SerializedFieldImpl implements SerializedField {
     private final Class<?> clazz;
 
     private boolean isInterface;
+    private boolean serializable;
     private Field field;
 
     public SerializedFieldImpl(Class<?> clazz) {
@@ -21,6 +22,16 @@ public class SerializedFieldImpl implements SerializedField {
     @Override
     public boolean isInterface() {
         return isInterface;
+    }
+
+    @Override
+    public boolean isSerializable() {
+        return serializable;
+    }
+
+    @Override
+    public void setSerializable(boolean serializable) {
+        this.serializable = serializable;
     }
 
     @Override

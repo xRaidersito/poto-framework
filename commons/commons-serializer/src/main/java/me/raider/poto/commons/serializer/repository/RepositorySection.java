@@ -1,17 +1,15 @@
 package me.raider.poto.commons.serializer.repository;
 
+import java.util.List;
+
 public interface RepositorySection {
 
-    String[] getPath();
+    List<String> getPath();
 
-    <T> T get(String key);
+    RepositoryPath getRepositoryPath();
 
-    <T> void set(String key, T instance);
+    RepositorySection getRoot();
 
-    boolean contains(String key);
-
-    RepositorySection getChildSection(String key, RepositorySection parent);
-
-
+    RepositorySection getChild(String key);
 
 }

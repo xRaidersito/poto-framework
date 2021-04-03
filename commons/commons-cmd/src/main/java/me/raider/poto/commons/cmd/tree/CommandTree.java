@@ -58,7 +58,6 @@ public class CommandTree {
     public WrappedCommandResult traverseTree(String[] args, Object... injected) {
 
         InjectionResult result = checkInjected(root, injected);
-
         Node<CommandArgument<?>, Command> node = result.linkedNode;
 
         if (node==null) {
@@ -66,11 +65,9 @@ public class CommandTree {
         }
 
         List<ResolvedArgument> resolvedArguments = new ArrayList<>();
-
         resolvedArguments.addAll(result.resolvedArguments);
 
         for (String arg : args) {
-
             for (Node<CommandArgument<?>, Command> children : node.getChildren()) {
 
                 CommandArgument<?> argument = children.getData();
@@ -84,11 +81,9 @@ public class CommandTree {
                     }
                     continue;
                 }
-
                 if (argument instanceof InjectedCommandArgument<?>) {
                     continue;
                 }
-
                 if (argument.resolveArgument(arg)!=null) {
                     resolvedArguments.add(ResolvedArgument.of(arg, argument));
                     node=children;
@@ -96,11 +91,9 @@ public class CommandTree {
                 }
             }
         }
-
         if (node.getCommand()!=null) {
             return new WrappedCommandResult(CommandResult.SUCCESSFUL, node.getCommand(), resolvedArguments);
         }
-
         return new WrappedCommandResult(CommandResult.INVALID, null, null);
     }
 
@@ -114,7 +107,6 @@ public class CommandTree {
         if (objects==null) {
             return new InjectionResult(actual, resolvedArguments);
         }
-
         for (Object object : objects) {
 
             for (Node<CommandArgument<?>, Command> children : actual.getChildren()) {

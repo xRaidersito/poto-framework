@@ -8,6 +8,10 @@ public interface SerializedField {
 
     boolean isInterface();
 
+    boolean isSerializable();
+
+    void setSerializable(boolean serializable);
+
     void setInterface(boolean isInterface);
 
     Field getField();

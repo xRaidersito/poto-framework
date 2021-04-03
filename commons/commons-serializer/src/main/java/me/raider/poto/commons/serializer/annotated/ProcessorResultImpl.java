@@ -1,6 +1,6 @@
 package me.raider.poto.commons.serializer.annotated;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ProcessorResultImpl implements ProcessorResult {
@@ -18,7 +18,7 @@ public class ProcessorResultImpl implements ProcessorResult {
 
     public static class Builder implements ProcessorResult.Builder {
 
-        private final Map<SerializedKey, SerializedField> builderMap = new HashMap<>();
+        private final Map<SerializedKey, SerializedField> builderMap = new LinkedHashMap<>();
 
         @Override
         public Builder add(SerializedKey key, SerializedField field) {

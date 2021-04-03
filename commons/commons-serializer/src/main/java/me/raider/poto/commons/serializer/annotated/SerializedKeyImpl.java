@@ -3,6 +3,7 @@ package me.raider.poto.commons.serializer.annotated;
 public class SerializedKeyImpl implements SerializedKey {
 
     private final String name;
+    private String named;
 
     private boolean key;
 
@@ -18,6 +19,16 @@ public class SerializedKeyImpl implements SerializedKey {
     @Override
     public void setKey(boolean key) {
         this.key = key;
+    }
+
+    @Override
+    public String getNamed() {
+        return named;
+    }
+
+    @Override
+    public void setNamed(String named) {
+        this.named = named;
     }
 
     @Override

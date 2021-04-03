@@ -2,9 +2,9 @@ package me.raider.poto.commons.serializer;
 
 import java.util.Map;
 
-public interface SerializedObject<T> {
+public interface SerializedObject {
 
-    Class<T> getLinkedClass();
+    Class<?> getLinkedClass();
 
     Map<String, Object> getLinkedMap();
 

@@ -8,4 +8,8 @@ public interface SerializedKey extends Key {
 
     void setKey(boolean key);
 
+    String getNamed();
+
+    void setNamed(String named);
+
 }

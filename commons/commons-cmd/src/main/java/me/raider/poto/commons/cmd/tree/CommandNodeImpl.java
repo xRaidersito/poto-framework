@@ -41,7 +41,6 @@ public class CommandNodeImpl implements CommandNode {
 
     @Override
     public Node<CommandArgument<?>, Command> addChild(Node<CommandArgument<?>, Command> child) {
-
         if (children.contains(child)) {
             return null;
         }
@@ -56,7 +55,6 @@ public class CommandNodeImpl implements CommandNode {
 
     @Override
     public Node<CommandArgument<?>, Command> findData(String arg, Class<?> clazz) {
-
         for (Node<CommandArgument<?>, Command> child : children) {
 
             CommandArgument<?> argument = child.getData();
@@ -64,11 +62,11 @@ public class CommandNodeImpl implements CommandNode {
             if (argument instanceof LiteralCommandArgument && arg!=null) {
 
                 LiteralCommandArgument literal = (LiteralCommandArgument) argument;
+
                 if (literal.getRequiredLiteral().equalsIgnoreCase(arg)) {
                     return child;
                 }
             }
-
             if (argument.getRequiredClass().equals(clazz)) {
                 return child;
             }
