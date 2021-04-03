@@ -1,7 +1,7 @@
 package me.raider.poto.commons.serializer.repository;
 
-public interface FindableRepository {
+public interface FindableRepository<R> {
 
-    RepositorySection find(String key);
+    RepositorySection<R> find(String key);
 
 }

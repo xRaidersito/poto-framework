@@ -15,7 +15,7 @@ public interface InstanceFactoryManager {
     default <T> InstanceFactory<T> getFactory(Class<T> clazz) {
         InstanceFactory<T> factory = (InstanceFactory<T>) getFactories().get(clazz);
         if (factory==null) {
-            throw new SerializerException("The factory of " + clazz.getName() + "is not defined");
+            throw new SerializerException("The factory of " + clazz.getName() + " is not defined");
         }
         return factory;
     }

@@ -14,11 +14,11 @@ import java.util.Map;
 
 public class SimpleSerializer<T> implements Serializer<T> {
 
-    private final FindableRepository findableRepository;
+    private final FindableRepository<?> findableRepository;
     private final SerializeAnnotationProcessor processor;
     private final Binder binder;
 
-    public SimpleSerializer(FindableRepository findableRepository, SerializeAnnotationProcessor processor, Binder binder) {
+    public SimpleSerializer(FindableRepository<?> findableRepository, SerializeAnnotationProcessor processor, Binder binder) {
         this.findableRepository = findableRepository;
         this.processor = processor;
         this.binder = binder;
@@ -26,7 +26,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
 
     @Override
     public SerializedObject serialize(T instance, String key) {
-        RepositorySection root = findableRepository.find(key);
+        RepositorySection<?> root = findableRepository.find(key);
 
         if (root==null) {
             return null;
@@ -38,7 +38,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
 
     @Override
     public SerializedObject deserialize(Class<T> clazz, String key) {
-        RepositorySection root = findableRepository.find(key);
+        RepositorySection<?> root = findableRepository.find(key);
 
         if (root==null) {
             return null;
@@ -48,7 +48,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
         return new SimpleSerializedObject(clazz, deserializedData);
     }
 
-    private void serializeClass(Class<?> clazz, RepositorySection section, Object instance) {
+    private void serializeClass(Class<?> clazz, RepositorySection<?> section, Object instance) {
         ProcessorResult result = processor.process(clazz);
 
         for (SerializedKey field : result.getFields().keySet()) {
@@ -61,7 +61,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
                     throw new SerializerException("Interfaces with @Serialize annotation needs to bind");
                 }
 
-                RepositorySection newSection = section.getChild(field.getName());
+                RepositorySection<?> newSection = section.getChild(field.getName());
                 try {
                     serializeClass(bind, newSection, value.getField().get(instance));
                 } catch (IllegalAccessException e) {
@@ -70,7 +70,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
                 continue;
             }
             if (value.isSerializable()) {
-                RepositorySection newSection = section.getChild(field.getName());
+                RepositorySection<?> newSection = section.getChild(field.getName());
                 try {
                     serializeClass(value.getClazz(), newSection, value.getField().get(instance));
                 } catch (IllegalAccessException e) {
@@ -89,7 +89,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
         }
     }
 
-    private Map<String, Object> deserializeClass(Class<?> clazz, RepositorySection section) {
+    private Map<String, Object> deserializeClass(Class<?> clazz, RepositorySection<?> section) {
         ProcessorResult result = processor.process(clazz);
         Map<String, Object> deserialized = new HashMap<>();
 
@@ -102,12 +102,12 @@ public class SimpleSerializer<T> implements Serializer<T> {
                     throw new SerializerException("Interfaces with @Serialize annotation needs to bind");
                 }
 
-                RepositorySection newSection = section.getChild(field.getName());
+                RepositorySection<?> newSection = section.getChild(field.getName());
                 deserialized.putAll(deserializeClass(bind, newSection));
                 continue;
             }
             if (value.isSerializable()) {
-                RepositorySection newSection = section.getChild(field.getName());
+                RepositorySection<?> newSection = section.getChild(field.getName());
                 deserialized.putAll(deserializeClass(value.getClazz(), newSection));
                 continue;
             }
