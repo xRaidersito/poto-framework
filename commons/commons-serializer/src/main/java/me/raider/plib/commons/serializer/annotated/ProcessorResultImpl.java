@@ -3,6 +3,7 @@ package me.raider.plib.commons.serializer.annotated;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 public class ProcessorResultImpl implements ProcessorResult {
 
     private final Map<SerializedKey, SerializedField> fieldMap;

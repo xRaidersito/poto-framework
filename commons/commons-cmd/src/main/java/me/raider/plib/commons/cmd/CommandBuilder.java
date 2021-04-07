@@ -1,7 +1,7 @@
 package me.raider.plib.commons.cmd;
 
-import me.raider.plib.commons.Builder;
-import me.raider.plib.commons.Nameable;
+import me.raider.commons.utils.Builder;
+import me.raider.commons.utils.Nameable;
 
 import java.util.List;
 

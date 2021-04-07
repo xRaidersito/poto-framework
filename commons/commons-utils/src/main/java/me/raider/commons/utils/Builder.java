@@ -1,4 +1,4 @@
-package me.raider.plib.commons;
+package me.raider.commons.utils;
 
 public interface Builder<T> {
 
