@@ -1,9 +1,12 @@
 package me.raider.plib.bukkit.cmd
 
+import me.raider.plib.bukkit.cmd.suppliers.PlayerSupplier
 import me.raider.plib.commons.cmd.Command
+import me.raider.plib.commons.cmd.CommandSupplierManager
 import me.raider.plib.commons.cmd.SimpleCommandManager
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandMap
+import org.bukkit.entity.Player
 
 class BukkitCommandManager() : SimpleCommandManager() {
 
@@ -11,6 +14,8 @@ class BukkitCommandManager() : SimpleCommandManager() {
 
     init {
         startMap()
+        val supplierManager: CommandSupplierManager = super.getSuppliers()
+        supplierManager.registerSupplier(Player::class.java, PlayerSupplier())
     }
 
     override fun register(command: Command?) {
