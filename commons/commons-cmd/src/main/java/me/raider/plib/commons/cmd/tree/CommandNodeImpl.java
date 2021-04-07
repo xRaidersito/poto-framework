@@ -2,6 +2,7 @@ package me.raider.plib.commons.cmd.tree;
 
 import me.raider.plib.commons.cmd.Command;
 import me.raider.plib.commons.cmd.CommandArgument;
+import me.raider.plib.commons.cmd.InjectedCommandArgument;
 import me.raider.plib.commons.cmd.LiteralCommandArgument;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.List;
 
 public class CommandNodeImpl implements CommandNode {
 
-    // When a Command is null in a node is because not good!!! (Si, lo entiendo a mi manera)
     private final Command command;
     private final CommandArgument<?> data;
 
@@ -18,7 +18,7 @@ public class CommandNodeImpl implements CommandNode {
 
     private final Node<CommandArgument<?>, Command> parent;
 
-    public CommandNodeImpl(Command command, CommandArgument data, Node<CommandArgument<?>, Command> parent) {
+    public CommandNodeImpl(Command command, CommandArgument<?> data, Node<CommandArgument<?>, Command> parent) {
         this.command = command;
         this.data = data;
         this.parent = parent;
@@ -56,9 +56,7 @@ public class CommandNodeImpl implements CommandNode {
     @Override
     public Node<CommandArgument<?>, Command> findData(String arg, Class<?> clazz) {
         for (Node<CommandArgument<?>, Command> child : children) {
-
             CommandArgument<?> argument = child.getData();
-
             if (argument instanceof LiteralCommandArgument && arg!=null) {
 
                 LiteralCommandArgument literal = (LiteralCommandArgument) argument;
@@ -67,7 +65,8 @@ public class CommandNodeImpl implements CommandNode {
                     return child;
                 }
             }
-            if (argument.getRequiredClass().equals(clazz)) {
+            else if (argument instanceof InjectedCommandArgument<?> &&
+                    argument.getRequiredClass().equals(clazz) && arg==null) {
                 return child;
             }
         }

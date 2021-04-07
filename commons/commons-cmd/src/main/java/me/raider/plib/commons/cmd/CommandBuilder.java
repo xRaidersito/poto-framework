@@ -1,10 +1,11 @@
 package me.raider.plib.commons.cmd;
 
 import me.raider.plib.commons.Builder;
+import me.raider.plib.commons.Nameable;
 
 import java.util.List;
 
-public interface CommandBuilder extends Builder<List<Command>> {
+public interface CommandBuilder extends Builder<List<Command>>, Nameable {
 
     <T> CommandBuilder injected(Class<T> clazz);
 
@@ -18,11 +19,23 @@ public interface CommandBuilder extends Builder<List<Command>> {
 
     CommandBuilder permission(String permission);
 
+    String getPrefix();
+
+    List<LiteralCommandArgument> getLiteral();
+
+    ArgumentProcessor<LiteralCommandArgument> getArgumentProcessor();
+
+    CommandSupplierManager getSupplierManager();
+
     static CommandBuilder create(String name, String prefix,
                                  ArgumentProcessor<LiteralCommandArgument> argumentProcessor,
                                  CommandSupplierManager supplierManager) {
 
         return new CommandBuilderImpl(name, prefix, argumentProcessor, supplierManager);
+    }
+
+    static CommandBuilder create(CommandBuilder builder) {
+        return new CommandBuilderImpl(builder);
     }
 
 }

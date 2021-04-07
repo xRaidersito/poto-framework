@@ -8,9 +8,9 @@ public interface CommandManager {
 
     void register(Command command);
 
-    void registerAll(List<Command> commands);
+    void register(List<Command> commands);
 
-    void registerAll(Command... commands);
+    void register(Command... commands);
 
     CommandSupplierManager getSuppliers();
 

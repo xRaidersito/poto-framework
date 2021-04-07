@@ -22,14 +22,14 @@ public class SimpleCommandManager implements CommandManager {
     }
 
     @Override
-    public void registerAll(List<Command> commands) {
+    public void register(List<Command> commands) {
         for (Command command : commands) {
             register(command);
         }
     }
 
     @Override
-    public void registerAll(Command... commands) {
+    public void register(Command... commands) {
         for (Command command : commands) {
             register(command);
         }

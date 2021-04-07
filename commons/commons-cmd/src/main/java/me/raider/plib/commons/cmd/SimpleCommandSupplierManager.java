@@ -10,7 +10,9 @@ public class SimpleCommandSupplierManager implements CommandSupplierManager {
     public SimpleCommandSupplierManager() {
         registerSupplier(int.class, object -> Integer.valueOf(object.toString()) );
         registerSupplier(Integer.class, object -> Integer.valueOf(object.toString()) );
-        registerSupplier(String.class, object -> object.toString() );
+        registerSupplier(String.class, Object::toString);
+        registerSupplier(boolean.class, object -> Boolean.valueOf(object.toString()) );
+        registerSupplier(Boolean.class, object -> Boolean.valueOf(object.toString()) );
     }
 
     @Override

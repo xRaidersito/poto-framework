@@ -12,7 +12,5 @@ public interface ProcessorResult extends BuildableObject {
 
         Builder add(SerializedKey key, SerializedField field);
 
-
     }
-
 }

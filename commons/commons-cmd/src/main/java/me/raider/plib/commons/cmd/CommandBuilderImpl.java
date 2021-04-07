@@ -5,8 +5,6 @@ import java.util.List;
 
 public class CommandBuilderImpl implements CommandBuilder {
 
-    private final List<Command> commands = new ArrayList<>();
-
     private final String name;
     private final String prefix;
     private String permission;
@@ -29,14 +27,15 @@ public class CommandBuilderImpl implements CommandBuilder {
         this.supplierManager = supplierManager;
     }
 
-    public CommandBuilderImpl(CommandBuilderImpl builder) {
-        this.name = builder.name;
-        this.prefix = builder.prefix;
-        this.argumentProcessor = builder.argumentProcessor;
-        this.supplierManager = builder.supplierManager;
+    public CommandBuilderImpl(CommandBuilder builder) {
+        this.name = builder.getName();
+        this.prefix = builder.getPrefix();
+        this.argumentProcessor = builder.getArgumentProcessor();
+        this.supplierManager = builder.getSupplierManager();
         this.injected = new ArrayList<>();
-        this.literal = builder.literal;
+        this.literal = new ArrayList<>(builder.getLiteral());
         this.argument = new ArrayList<>();
+        this.builders = new ArrayList<>();
     }
 
     @Override
@@ -76,22 +75,50 @@ public class CommandBuilderImpl implements CommandBuilder {
     }
 
     @Override
+    public String getPrefix() {
+        return prefix;
+    }
+
+    @Override
+    public List<LiteralCommandArgument> getLiteral() {
+        return literal;
+    }
+
+    @Override
+    public ArgumentProcessor<LiteralCommandArgument> getArgumentProcessor() {
+        return argumentProcessor;
+    }
+
+    @Override
+    public CommandSupplierManager getSupplierManager() {
+        return supplierManager;
+    }
+
+    @Override
     public List<Command> build() {
 
-        List<CommandArgument<?>> arguments = new ArrayList<>();
+        List<CommandArgument<?>> arguments = new ArrayList<>(injected);
 
-        arguments.addAll(injected);
-        arguments.add(new LiteralCommandArgument(supplierManager.getSupplier(String.class), prefix));
-        arguments.add(new LiteralCommandArgument(supplierManager.getSupplier(String.class), name));
+        if(prefix != null && !prefix.trim().isEmpty())  {
+            arguments.add(new LiteralCommandArgument(supplierManager.getSupplier(String.class), prefix));
+        }
+        if(name != null && !name.trim().isEmpty())  {
+            arguments.add(new LiteralCommandArgument(supplierManager.getSupplier(String.class), name));
+        }
         arguments.addAll(literal);
         arguments.addAll(argument);
 
+        List<Command> commands = new ArrayList<>();
         commands.add(new SimpleCommand(arguments, action, permission, name, prefix));
 
         for (CommandBuilder commandBuilder : builders) {
             commands.addAll(commandBuilder.build());
         }
-
         return commands;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

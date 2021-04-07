@@ -2,7 +2,6 @@ package me.raider.plib.commons.cmd.tree;
 
 import me.raider.plib.commons.cmd.*;
 import me.raider.plib.commons.cmd.resolved.ResolvedArgument;
-import me.raider.poto.commons.cmd.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,23 +15,20 @@ public class CommandTree {
     }
 
     public void addCommandToTree(Command command) {
-
         if (command==null) {
             return;
         }
-
         Node<CommandArgument<?>, Command> parent = root;
-
         int index = 0;
 
         for (CommandArgument<?> argument : command.getArguments()) {
-
             index++;
 
             if (argument instanceof LiteralCommandArgument) {
-
                 LiteralCommandArgument literal = (LiteralCommandArgument) argument;
-                Node<CommandArgument<?>, Command> find = parent.findData(literal.getRequiredLiteral(), literal.getClass());
+
+                Node<CommandArgument<?>, Command> find = parent.findData(literal.getRequiredLiteral(),
+                        literal.getRequiredClass());
 
                 if (find!=null) {
                     parent = find;
@@ -43,8 +39,7 @@ public class CommandTree {
                 }
                 continue;
             }
-
-            Node<CommandArgument<?>, Command> find = parent.findData(null, argument.getClass());
+            Node<CommandArgument<?>, Command> find = parent.findData(null, argument.getRequiredClass());
 
             if (find!=null) {
                 parent = find;
@@ -65,8 +60,7 @@ public class CommandTree {
             return new WrappedCommandResult(CommandResult.INJECTED_FAILURE, null, null);
         }
 
-        List<ResolvedArgument> resolvedArguments = new ArrayList<>();
-        resolvedArguments.addAll(result.resolvedArguments);
+        List<ResolvedArgument> resolvedArguments = new ArrayList<>(result.resolvedArguments);
 
         for (String arg : args) {
             for (Node<CommandArgument<?>, Command> children : node.getChildren()) {
@@ -79,6 +73,7 @@ public class CommandTree {
 
                     if (literal.getRequiredLiteral().equalsIgnoreCase(arg)) {
                         node=children;
+                        break;
                     }
                     continue;
                 }
