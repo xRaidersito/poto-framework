@@ -35,7 +35,6 @@ poto-framework.iml
 /Framework/dependency-reduced-pom.xml
 /Test/
 /Framework/
-/Test/
 /bukkit/bukkit.iml
 /bukkit/bukkit-cmd/src/test/
 /commons/commons-serializer/src/main/java/me/raider/plib/commons/serializer/repository/DefaultRepositorySection.java
@@ -44,3 +43,9 @@ poto-framework.iml
 /commons/commons-serializer/src/main/java/me/raider/plib/commons/serializer/test/
 /commons/commons-cmd/src/main/java/me/raider/plib/commons/cmd/Test.java
 /commons/commons-cmd/src/main/java/me/raider/plib/commons/cmd/TestClass.java
+/commons/commons-utils/build/
+/.gradle/
+/commons/commons-cmd/build/
+/build/
+/commons/build/
+/commons/commons-serializer/build/

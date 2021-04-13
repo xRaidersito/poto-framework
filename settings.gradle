@@ -1,0 +1,9 @@
+rootProject.name = 'p-lib'
+include 'commons'
+include 'commons:commons-cmd'
+findProject(':commons:commons-cmd')?.name = 'commons-cmd'
+include 'commons:commons-utils'
+findProject(':commons:commons-utils')?.name = 'commons-utils'
+include 'commons:commons-serializer'
+findProject(':commons:commons-serializer')?.name = 'commons-serializer'
+

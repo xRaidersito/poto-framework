@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+configurations {
+    provided
+    // Make compile extend from our provided configuration so that things added to bundled end up on the compile classpath
+    compile.extendsFrom(provided)
+}
+
+task buildJar(type: Jar) {
+    manifest {
+        attributes(
+                'Main-Class': 'me.raider.plib.commons.cmd'
+        )
+    }
+    classifier = 'all'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+            {
+                exclude "META-INF/*.SF"
+                exclude "META-INF/*.DSA"
+                exclude "META-INF/*.RSA"
+            }
+    with jar
+}
+
+dependencies {
+    compile project(':commons:commons-utils')
+}
+
+group 'me.raider'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}

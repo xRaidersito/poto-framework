@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+group 'me.raider'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
