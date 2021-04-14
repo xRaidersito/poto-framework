@@ -24,11 +24,9 @@ public class CommandTree {
         for (CommandArgument<?> argument : command.getArguments()) {
             index++;
 
-            if (argument instanceof LiteralCommandArgument) {
-                LiteralCommandArgument literal = (LiteralCommandArgument) argument;
-
-                Node<CommandArgument<?>, Command> find = parent.findData(literal.getRequiredLiteral(),
-                        literal.getRequiredClass());
+            if (argument.hasRequiredLiteral()) {
+                Node<CommandArgument<?>, Command> find = parent.findData(argument.getRequiredLiteral(),
+                        argument.getRequiredClass());
 
                 if (find!=null) {
                     parent = find;
@@ -67,17 +65,11 @@ public class CommandTree {
 
                 CommandArgument<?> argument = children.getData();
 
-                if (argument instanceof LiteralCommandArgument) {
-
-                    LiteralCommandArgument literal = (LiteralCommandArgument) argument;
-
-                    if (literal.getRequiredLiteral().equalsIgnoreCase(arg)) {
+                if (argument.hasRequiredLiteral()) {
+                    if (argument.getRequiredLiteral().equalsIgnoreCase(arg)) {
                         node=children;
                         break;
                     }
-                    continue;
-                }
-                if (argument instanceof InjectedCommandArgument<?>) {
                     continue;
                 }
                 if (argument.resolveArgument(arg)!=null) {
