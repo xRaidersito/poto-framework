@@ -1,6 +1,7 @@
 package me.raider.plib.commons.cmd.annotated;
 
 import me.raider.plib.commons.cmd.*;
+import me.raider.plib.commons.cmd.annotated.annotation.Default;
 import me.raider.plib.commons.cmd.annotated.annotation.Injected;
 
 import java.lang.annotation.Annotation;
@@ -72,8 +73,14 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                 applyAction(subCommand, method, command);
                 applyArguments(subCommand, method);
                 builder.subcommand(subCommand);
+                continue;
             }
-
+            if (method.isAnnotationPresent(Default.class)) {
+                if (builder==null) {
+                    throw new CommandException("If default annotation, class needs annotation @Command");
+                }
+                applyAction(builder, method, command);
+            }
         }
         builders.add(builder);
         return builders;
