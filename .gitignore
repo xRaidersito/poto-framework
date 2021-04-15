@@ -49,3 +49,4 @@ poto-framework.iml
 /build/
 /commons/build/
 /commons/commons-serializer/build/
+/bukkit/bukkit-cmd/build/
