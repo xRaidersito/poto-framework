@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import me.raider.commons.utils.Nameable;
 import me.raider.plib.commons.serializer.SerializerManager;
+import me.raider.plib.commons.storage.factory.InstanceFactoryManager;
 
 import java.util.Map;
 import java.util.Optional;
@@ -23,14 +24,14 @@ public interface Storage<T> extends Nameable {
      *
      * @param key represent the unique id of the object to load.
      */
-    T load(String key);
+    T load(String key, boolean addToCache);
 
     /**
      * Save an object to a database using its unique identifier.
      *
      * @param key represent the unique id of the object to save.
      */
-    void save(String key);
+    void save(String key, boolean removeFromCache);
 
     /**
      * Load in async form an object from a database using its unique identifier.
@@ -38,8 +39,8 @@ public interface Storage<T> extends Nameable {
      *
      * @param key represent the unique id of the object to load.
      */
-    default ListenableFuture<T> loadAsync(String key) {
-        return getExecutorService().submit(() -> load(key));
+    default ListenableFuture<T> loadAsync(String key, boolean addToCache) {
+        return getExecutorService().submit(() -> load(key, addToCache));
     }
 
     /**
@@ -47,8 +48,8 @@ public interface Storage<T> extends Nameable {
      *
      * @param key represent the unique id of the object to save.
      */
-    default ListenableFuture<?> saveAsync(String key) {
-        return getExecutorService().submit(() -> save(key));
+    default ListenableFuture<?> saveAsync(String key, boolean removeFromCache) {
+        return getExecutorService().submit(() -> save(key, removeFromCache));
     }
 
     /**
@@ -67,7 +68,7 @@ public interface Storage<T> extends Nameable {
      */
     default void loadAll(String[] keys) {
         for (String key : keys) {
-            load(key);
+            load(key, true);
         }
     }
 
@@ -78,7 +79,7 @@ public interface Storage<T> extends Nameable {
      */
     default void saveAll(String[] keys) {
         for (String key : keys) {
-            save(key);
+            save(key, true);
         }
     }
 
@@ -106,7 +107,7 @@ public interface Storage<T> extends Nameable {
 
     boolean hasSerializer();
 
-    boolean setSerializer(boolean hasSerializer);
+    void setSerializer(boolean hasSerializer);
 
     /**
      * Gets the linked executor service.
@@ -114,5 +115,9 @@ public interface Storage<T> extends Nameable {
      * @return the {@link ListeningExecutorService} of the storage.
      */
     ListeningExecutorService getExecutorService();
+
+    Class<T> getLinkedClass();
+
+    InstanceFactoryManager getFactory();
 
 }
