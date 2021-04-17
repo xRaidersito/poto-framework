@@ -49,6 +49,8 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                     commandAnnotation.prefix(),
                     argumentProcessor,
                     supplierManager);
+
+            builder.permission(commandAnnotation.permission());
         }
         for (Method method : command.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(me.raider.plib.commons.cmd.annotated.annotation.Command.class)) {
@@ -63,12 +65,14 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                             argumentProcessor,
                             supplierManager);
 
+                    methodCommand.permission(methodAnnotation.permission());
                     applyAction(methodCommand, method, command);
                     applyArguments(methodCommand, method);
                     builders.add(methodCommand);
                     continue;
                 }
                 CommandBuilder subCommand = CommandBuilder.create(builder);
+                subCommand.permission(methodAnnotation.permission());
                 subCommand.literal(methodAnnotation.name());
                 applyAction(subCommand, method, command);
                 applyArguments(subCommand, method);

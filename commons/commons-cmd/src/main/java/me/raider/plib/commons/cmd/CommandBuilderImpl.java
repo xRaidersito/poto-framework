@@ -35,6 +35,7 @@ public class CommandBuilderImpl implements CommandBuilder {
         this.injected = new ArrayList<>();
         this.literal = new ArrayList<>(builder.getLiteral());
         this.argument = new ArrayList<>();
+        this.permission = builder.getPermission();
         this.builders = new ArrayList<>();
     }
 
@@ -82,6 +83,11 @@ public class CommandBuilderImpl implements CommandBuilder {
     @Override
     public List<LiteralCommandArgument> getLiteral() {
         return literal;
+    }
+
+    @Override
+    public String getPermission() {
+        return permission;
     }
 
     @Override

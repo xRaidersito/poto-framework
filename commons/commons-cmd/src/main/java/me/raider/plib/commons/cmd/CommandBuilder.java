@@ -23,6 +23,8 @@ public interface CommandBuilder extends Builder<List<Command>>, Nameable {
 
     List<LiteralCommandArgument> getLiteral();
 
+    String getPermission();
+
     ArgumentProcessor<LiteralCommandArgument> getArgumentProcessor();
 
     CommandSupplierManager getSupplierManager();
