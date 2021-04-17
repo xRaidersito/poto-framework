@@ -80,6 +80,7 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                     throw new CommandException("If default annotation, class needs annotation @Command");
                 }
                 applyAction(builder, method, command);
+                applyArguments(builder, method);
             }
         }
         builders.add(builder);

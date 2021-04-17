@@ -1,8 +1,11 @@
 package me.raider.plib.bukkit.cmd;
 
 import me.raider.plib.bukkit.cmd.supplier.PlayerSupplier;
+import me.raider.plib.commons.cmd.Authorizer;
 import me.raider.plib.commons.cmd.Command;
 import me.raider.plib.commons.cmd.SimpleCommandManager;
+import me.raider.plib.commons.cmd.message.MessageProvider;
+import me.raider.plib.commons.cmd.message.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
@@ -16,8 +19,8 @@ public class BukkitCommandManager extends SimpleCommandManager {
 
     private CommandMap commandMap;
 
-    public BukkitCommandManager() {
-        super();
+    public BukkitCommandManager(MessageProvider messageProvider, Authorizer<?> authorizer, Messenger<?> messenger) {
+        super(messageProvider, authorizer, messenger);
         getSuppliers().registerSupplier(Player.class, new PlayerSupplier());
         getSuppliers().registerSupplier(ConsoleCommandSender.class, object -> (ConsoleCommandSender) object);
         getSuppliers().registerSupplier(CommandSender.class, object -> (CommandSender) object);

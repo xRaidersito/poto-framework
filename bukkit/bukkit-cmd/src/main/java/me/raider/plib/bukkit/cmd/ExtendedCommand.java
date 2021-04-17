@@ -22,7 +22,8 @@ public class ExtendedCommand extends Command {
         List<String> newArgs = new ArrayList<>();
         newArgs.add(getName());
         newArgs.addAll(Arrays.asList(args));
-        commandManager.getExecutor().execute(newArgs.toArray(new String[0]), sender);
+        Object[] senderArray = new Object[]{sender};
+        commandManager.getExecutor().execute(newArgs.toArray(new String[0]), senderArray, senderArray, senderArray);
         return true;
     }
 }

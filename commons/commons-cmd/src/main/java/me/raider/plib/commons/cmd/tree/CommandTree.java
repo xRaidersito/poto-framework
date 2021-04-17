@@ -51,7 +51,7 @@ public class CommandTree {
 
     public WrappedCommandResult traverseTree(String[] args, Object... injected) {
 
-        InjectionResult result = checkInjected(root, injected);
+        InjectionResult result = preChecks(root, injected);
         Node<CommandArgument<?>, Command> node = result.linkedNode;
 
         if (node==null) {
@@ -87,7 +87,7 @@ public class CommandTree {
 
 
 
-    private InjectionResult checkInjected(Node<CommandArgument<?>, Command> root, Object... objects) {
+    private InjectionResult preChecks(Node<CommandArgument<?>, Command> root, Object... objects) {
 
         Node<CommandArgument<?>, Command> actual = root;
         List<ResolvedArgument> resolvedArguments = new ArrayList<>();
