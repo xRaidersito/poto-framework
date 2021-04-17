@@ -72,7 +72,9 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                     continue;
                 }
                 CommandBuilder subCommand = CommandBuilder.create(builder);
-                subCommand.permission(methodAnnotation.permission());
+                if (!methodAnnotation.permission().isEmpty()) {
+                    subCommand.permission(methodAnnotation.permission());
+                }
                 subCommand.literal(methodAnnotation.name());
                 applyAction(subCommand, method, command);
                 applyArguments(subCommand, method);
@@ -83,7 +85,10 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                 if (builder==null) {
                     throw new CommandException("If default annotation, class needs annotation @Command");
                 }
-                builder.permission(method.getAnnotation(Default.class).permission());
+                Default defaultAnnotation = method.getAnnotation(Default.class);
+                if (!defaultAnnotation.permission().isEmpty()) {
+                    builder.permission(defaultAnnotation.permission());
+                }
                 applyAction(builder, method, command);
                 applyArguments(builder, method);
             }
