@@ -17,6 +17,7 @@ public class BukkitCommandManager extends SimpleCommandManager {
     public BukkitCommandManager() {
         super();
         getSuppliers().registerSupplier(Player.class, new PlayerSupplier());
+        startMap();
     }
 
     @Override
