@@ -87,7 +87,7 @@ public interface Storage<T> extends Nameable {
      * @param key represent the unique id of the object to create.
      * @return the new object.
      */
-    T createIfAbsent(String key);
+    T create(String key);
 
     /**
      * Gets the type of the storage.

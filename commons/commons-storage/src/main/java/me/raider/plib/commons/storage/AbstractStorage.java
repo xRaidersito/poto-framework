@@ -60,7 +60,7 @@ public abstract class AbstractStorage<T> implements Storage<T> {
         if (hasSerializer) {
             T deserialized = serializer.deserialize(linkedClass, key);
             if (deserialized==null) {
-                T absent = createIfAbsent(key);
+                T absent = create(key);
                 if (addToCache) {
                     cache.put(key, absent);
                 }
@@ -83,12 +83,13 @@ public abstract class AbstractStorage<T> implements Storage<T> {
             if (removeFromCache) {
                 get().remove(key);
             }
+            return;
         }
         throw new StorageException("You cant use this save if dont have serializer");
     }
 
     @Override
-    public T createIfAbsent(String key) {
+    public T create(String key) {
         return instanceFactoryManager.getFactory(linkedClass).create(key);
     }
 
