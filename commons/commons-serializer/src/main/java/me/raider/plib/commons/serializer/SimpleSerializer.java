@@ -111,7 +111,11 @@ public class SimpleSerializer<T> implements Serializer<T> {
                 deserialized.putAll(deserializeClass(value.getClazz(), newSection));
                 continue;
             }
-            deserialized.put(field.getName(), section.getRepositoryPath().get(field.getName()));
+            try {
+                deserialized.put(field.getName(), section.getRepositoryPath().get(field.getName()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return deserialized;
     }
