@@ -26,7 +26,6 @@ public class DefaultExecutor implements Executor {
 
         switch (commandResult.getResult()) {
             case SUCCESSFUL:
-                System.out.println(commandResult.getCommand().getPermission());
                 for (Object authorize : authorized) {
                     if (!authorize(authorize, commandResult.getCommand())) {
                         sendMessageToAll(message, "no-permission");
