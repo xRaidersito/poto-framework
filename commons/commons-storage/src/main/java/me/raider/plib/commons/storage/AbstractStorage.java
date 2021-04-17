@@ -56,7 +56,7 @@ public abstract class AbstractStorage<T> implements Storage<T> {
     }
 
     @Override
-    public T load(String key, boolean addToCache) {
+    public T load(String key, boolean addToCache, boolean returnAbsent) {
         if (hasSerializer) {
             T deserialized = serializer.deserialize(linkedClass, key);
             if (deserialized==null) {
@@ -64,7 +64,10 @@ public abstract class AbstractStorage<T> implements Storage<T> {
                 if (addToCache) {
                     cache.put(key, absent);
                 }
-                return absent;
+                if (returnAbsent) {
+                    return absent;
+                }
+                return null;
             }
             cache.put(key, deserialized);
             return deserialized;

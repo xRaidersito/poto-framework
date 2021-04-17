@@ -24,7 +24,7 @@ public interface Storage<T> extends Nameable {
      *
      * @param key represent the unique id of the object to load.
      */
-    T load(String key, boolean addToCache);
+    T load(String key, boolean addToCache, boolean returnAbsent);
 
     /**
      * Save an object to a database using its unique identifier.
@@ -40,7 +40,7 @@ public interface Storage<T> extends Nameable {
      * @param key represent the unique id of the object to load.
      */
     default ListenableFuture<T> loadAsync(String key, boolean addToCache) {
-        return getExecutorService().submit(() -> load(key, addToCache));
+        return getExecutorService().submit(() -> load(key, addToCache, true));
     }
 
     /**
@@ -68,17 +68,15 @@ public interface Storage<T> extends Nameable {
      */
     default void loadAll(String[] keys) {
         for (String key : keys) {
-            load(key, true);
+            load(key, true, true);
         }
     }
 
     /**
      * Save all objects to a database using its uniques identifiers.
-     *
-     * @param keys represent the uniques ids of the objects to save.
      */
-    default void saveAll(String[] keys) {
-        for (String key : keys) {
+    default void saveAll() {
+        for (String key : get().keySet()) {
             save(key, true);
         }
     }
