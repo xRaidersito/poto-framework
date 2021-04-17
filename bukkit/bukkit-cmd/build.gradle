@@ -1,30 +1,19 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+    }
+}
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'java'
 }
 
-configurations {
-    provided
-    // Make compile extend from our provided configuration so that things added to bundled end up on the compile classpath
-    compile.extendsFrom(provided)
-}
-
-task buildJar(type: Jar) {
-    manifest {
-        attributes(
-                'Main-Class': 'me.raider.plib.bukkit.cmd'
-        )
-    }
-    classifier = 'all'
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-            {
-                exclude "META-INF/*.SF"
-                exclude "META-INF/*.DSA"
-                exclude "META-INF/*.RSA"
-            }
-    with jar
-}
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
 
 group 'me.raider'
 version '1.0-SNAPSHOT'
