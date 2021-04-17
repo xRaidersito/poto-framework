@@ -3,6 +3,8 @@ package me.raider.plib.commons.cmd;
 import me.raider.plib.commons.cmd.resolved.ResolvedArgument;
 import me.raider.plib.commons.cmd.tree.CommandTree;
 
+import java.util.Arrays;
+
 public class DefaultExecutor implements Executor {
 
     private final CommandTree commandTree;
@@ -17,7 +19,6 @@ public class DefaultExecutor implements Executor {
         WrappedCommandResult commandResult = commandTree.traverseTree(args, injected);
 
         switch (commandResult.getResult()) {
-
             case SUCCESSFUL:
                 commandResult
                         .getCommand()

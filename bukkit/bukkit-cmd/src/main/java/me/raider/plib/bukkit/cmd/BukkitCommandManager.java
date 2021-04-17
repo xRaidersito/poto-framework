@@ -6,6 +6,8 @@ import me.raider.plib.commons.cmd.SimpleCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
@@ -17,6 +19,8 @@ public class BukkitCommandManager extends SimpleCommandManager {
     public BukkitCommandManager() {
         super();
         getSuppliers().registerSupplier(Player.class, new PlayerSupplier());
+        getSuppliers().registerSupplier(ConsoleCommandSender.class, object -> (ConsoleCommandSender) object);
+        getSuppliers().registerSupplier(CommandSender.class, object -> (CommandSender) object);
         startMap();
     }
 
