@@ -83,6 +83,7 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                 if (builder==null) {
                     throw new CommandException("If default annotation, class needs annotation @Command");
                 }
+                builder.permission(method.getAnnotation(Default.class).permission());
                 applyAction(builder, method, command);
                 applyArguments(builder, method);
             }
