@@ -54,7 +54,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
         for (SerializedKey field : result.getFields().keySet()) {
             SerializedField value = result.getFields().get(field);
 
-            if (value.isInterface()) {
+            if (value.isInterface() && value.isSerializable()) {
                 Class<?> bind = binder.getBinding(value.getClazz(), field.getNamed());
 
                 if (bind==null) {
@@ -95,7 +95,7 @@ public class SimpleSerializer<T> implements Serializer<T> {
 
         for (SerializedKey field : result.getFields().keySet()) {
             SerializedField value = result.getFields().get(field);
-            if (value.isInterface()) {
+            if (value.isInterface() && value.isSerializable()) {
                 Class<?> bind = binder.getBinding(value.getClazz(), field.getNamed());
 
                 if (bind==null) {
