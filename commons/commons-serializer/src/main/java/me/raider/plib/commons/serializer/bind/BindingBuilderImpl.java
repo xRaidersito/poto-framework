@@ -29,7 +29,7 @@ public class BindingBuilderImpl<T> implements BindingBuilder<T> {
 
     @Override
     public void to(Class<? extends T> clazz) {
-        BindingKey<T> bindingKey = new SimpleBindingKey<>(name!=null || !name.isEmpty(), name, this.clazz);
+        BindingKey<T> bindingKey = new SimpleBindingKey<>(name!=null, name, this.clazz);
         binder.getBindings().put(bindingKey, clazz);
     }
 }
