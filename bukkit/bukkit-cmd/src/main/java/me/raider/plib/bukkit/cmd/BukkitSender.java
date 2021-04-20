@@ -27,7 +27,7 @@ public class BukkitSender {
     }
 
     public <T> Optional<T> getSender(Class<T> tClass) {
-        if (sender.getClass().isAssignableFrom(tClass)) {
+        if (tClass.isAssignableFrom(sender.getClass())) {
             return Optional.of((T) sender);
         }
         return Optional.empty();
