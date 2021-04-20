@@ -69,11 +69,7 @@ public class DefaultExecutor implements Executor {
         }
         Messenger<T> messenger = (Messenger<T>) this.messenger;
         try {
-        messenger.sendMessage(messageProvider.getMessage(messageKey), holder);
+            messenger.sendMessage(messageProvider.getMessage(messageKey), holder);
         } catch (ClassCastException ignored) {}
     }
-
-
-
-
 }

@@ -24,6 +24,12 @@ public class BukkitCommandManager extends SimpleCommandManager {
         getSuppliers().registerSupplier(Player.class, new PlayerSupplier());
         getSuppliers().registerSupplier(ConsoleCommandSender.class, object -> (ConsoleCommandSender) object);
         getSuppliers().registerSupplier(CommandSender.class, object -> (CommandSender) object);
+        getSuppliers().registerSupplier(BukkitSender.class, object -> {
+            if (object instanceof BukkitSender) {
+                return (BukkitSender) object;
+            }
+            return null;
+        });
         startMap();
     }
 

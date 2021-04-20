@@ -100,23 +100,15 @@ public class CommandTree {
             for (Node<CommandArgument<?>, Command> children : actual.getChildren()) {
                 if (children != null) {
                     Class<?> requiredClass = children.getData().getRequiredClass();
-                    Object newObj = object;
-                    if (requiredClass.isAssignableFrom(object.getClass())) {
-                        newObj = cast(requiredClass, object);
-                    }
                     if (children.getData() instanceof InjectedCommandArgument<?>
-                            && children.getData().getRequiredClass().isAssignableFrom(newObj.getClass())) {
+                            && requiredClass.equals(object.getClass())) {
                         actual = children;
-                        resolvedArguments.add(ResolvedArgument.of(newObj, children.getData()));
+                        resolvedArguments.add(ResolvedArgument.of(object, children.getData()));
                     }
                 }
             }
         }
         return new InjectionResult(actual, resolvedArguments);
-    }
-
-    private <T> T cast(Class<T> clazz, Object value) {
-        return clazz.cast(value);
     }
 
     public Node<CommandArgument<?>, Command> getRoot() {

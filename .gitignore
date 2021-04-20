@@ -40,8 +40,6 @@ poto-framework.iml
 /commons/commons-serializer/src/main/java/me/raider/plib/commons/serializer/repository/DefaultRepositoryPath.java
 /commons/commons-serializer/src/main/java/me/raider/plib/commons/serializer/repository/DefaultFindableRepository.java
 /commons/commons-serializer/src/main/java/me/raider/plib/commons/serializer/test/
-/commons/commons-cmd/src/main/java/me/raider/plib/commons/cmd/Test.java
-/commons/commons-cmd/src/main/java/me/raider/plib/commons/cmd/TestClass.java
 /commons/commons-utils/build/
 /.gradle/
 /commons/commons-cmd/build/
@@ -50,3 +48,4 @@ poto-framework.iml
 /commons/commons-serializer/build/
 /bukkit/bukkit-cmd/build/
 /commons/commons-storage/build/
+/commons/commons-cmd/src/main/java/me/raider/plib/commons/cmd/test/

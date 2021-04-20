@@ -23,7 +23,8 @@ public class ExtendedCommand extends Command {
         newArgs.add(getName());
         newArgs.addAll(Arrays.asList(args));
         Object[] senderArray = new Object[]{sender};
-        commandManager.getExecutor().execute(newArgs.toArray(new String[0]), senderArray, senderArray, senderArray);
+        commandManager.getExecutor().execute(newArgs.toArray(new String[0]), new Object[]{new BukkitSender(sender)},
+                senderArray, senderArray);
         return true;
     }
 }
