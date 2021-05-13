@@ -69,7 +69,9 @@ public abstract class AbstractStorage<T> implements Storage<T> {
                 }
                 return null;
             }
-            cache.put(key, deserialized);
+            if (addToCache) {
+                cache.put(key, deserialized);
+            }
             return deserialized;
         }
         throw new StorageException("You cant use this load if dont have serializer");

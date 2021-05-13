@@ -6,6 +6,8 @@ import me.raider.commons.utils.Nameable;
 import me.raider.plib.commons.serializer.SerializerManager;
 import me.raider.plib.commons.storage.factory.InstanceFactoryManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -66,10 +68,16 @@ public interface Storage<T> extends Nameable {
      *
      * @param keys represent the uniques ids of the objects to load.
      */
-    default void loadAll(String[] keys) {
+    default List<T> loadAll(String[] keys) {
+        return loadAll(keys, true);
+    }
+
+    default List<T> loadAll(String[] keys, boolean addToCache) {
+        List<T> objects = new ArrayList<>();
         for (String key : keys) {
-            load(key, true, true);
+            objects.add(load(key, addToCache, true));
         }
+        return objects;
     }
 
     /**
