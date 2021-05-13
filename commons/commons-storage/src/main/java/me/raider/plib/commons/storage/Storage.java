@@ -76,8 +76,12 @@ public interface Storage<T> extends Nameable {
      * Save all objects to a database using its uniques identifiers.
      */
     default void saveAll(String[] keys) {
+        saveAll(keys, true);
+    }
+
+    default void saveAll(String[] keys, boolean removeFromCache) {
         for (String key : keys) {
-            save(key, true);
+            save(key, removeFromCache);
         }
     }
 
