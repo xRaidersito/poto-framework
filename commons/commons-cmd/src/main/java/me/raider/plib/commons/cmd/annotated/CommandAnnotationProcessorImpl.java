@@ -15,10 +15,9 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
     private final CommandSupplierManager supplierManager;
     private final ArgumentProcessor<LiteralCommandArgument> argumentProcessor;
 
-    public CommandAnnotationProcessorImpl(CommandSupplierManager supplierManager,
-                                          ArgumentProcessor<LiteralCommandArgument> argumentProcessor) {
+    public CommandAnnotationProcessorImpl(CommandSupplierManager supplierManager) {
         this.supplierManager = supplierManager;
-        this.argumentProcessor = argumentProcessor;
+        this.argumentProcessor = new LiteralArgumentProcessor(supplierManager);
     }
 
     @Override
