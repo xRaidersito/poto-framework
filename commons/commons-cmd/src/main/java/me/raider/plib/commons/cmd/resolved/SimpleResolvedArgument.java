@@ -14,6 +14,11 @@ public class SimpleResolvedArgument implements ResolvedArgument {
 
     @Override
     public Object getInstance() {
-        return argument.resolveArgument(object);
+        return object;
+    }
+
+    @Override
+    public CommandArgument<?> getArgument() {
+        return argument;
     }
 }

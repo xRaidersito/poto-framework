@@ -3,6 +3,8 @@ package me.raider.plib.commons.cmd.annotated;
 import me.raider.plib.commons.cmd.*;
 import me.raider.plib.commons.cmd.annotated.annotation.Default;
 import me.raider.plib.commons.cmd.annotated.annotation.Injected;
+import me.raider.plib.commons.cmd.annotated.annotation.Text;
+import me.raider.plib.commons.cmd.builder.CommandBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -13,11 +15,9 @@ import java.util.List;
 public class CommandAnnotationProcessorImpl implements CommandAnnotationProcessor {
 
     private final CommandSupplierManager supplierManager;
-    private final ArgumentProcessor<LiteralCommandArgument> argumentProcessor;
 
     public CommandAnnotationProcessorImpl(CommandSupplierManager supplierManager) {
         this.supplierManager = supplierManager;
-        this.argumentProcessor = new LiteralArgumentProcessor(supplierManager);
     }
 
     @Override
@@ -46,7 +46,6 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
             builder = CommandBuilder.create(
                     commandAnnotation.name(),
                     commandAnnotation.prefix(),
-                    argumentProcessor,
                     supplierManager);
 
             builder.permission(commandAnnotation.permission());
@@ -61,7 +60,6 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
                     CommandBuilder methodCommand = CommandBuilder.create(
                             methodAnnotation.name(),
                             methodAnnotation.prefix(),
-                            argumentProcessor,
                             supplierManager);
 
                     methodCommand.permission(methodAnnotation.permission());
@@ -112,14 +110,19 @@ public class CommandAnnotationProcessorImpl implements CommandAnnotationProcesso
         for (int i = 0 ; i < method.getParameterCount() ; i++) {
             Class<?> type = method.getParameterTypes()[i];
             Annotation[] annotations = method.getParameterAnnotations()[i];
-            boolean findInjected = false;
+            boolean find = false;
             for (Annotation annotation : annotations) {
                 if (annotation instanceof Injected) {
                     builder.injected(type);
-                    findInjected = true;
+                    find = true;
                 }
+                if (annotation instanceof Text) {
+                    builder.array();
+                    find = true;
+                }
+                break;
             }
-            if (!findInjected) builder.argument(type);
+            if (!find) builder.argument(type);
         }
     }
 }

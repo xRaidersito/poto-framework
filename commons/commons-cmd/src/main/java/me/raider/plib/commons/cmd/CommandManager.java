@@ -22,8 +22,10 @@ public interface CommandManager {
 
     Messenger<?> getMessenger();
 
-    Executor getExecutor();
+    CommandExecutor getExecutor();
 
     CommandTree getTree();
+
+    ArgumentRegistry getArgumentRegistry();
 
 }

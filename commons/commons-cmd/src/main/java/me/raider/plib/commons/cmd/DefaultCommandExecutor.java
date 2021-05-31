@@ -5,14 +5,15 @@ import me.raider.plib.commons.cmd.message.Messenger;
 import me.raider.plib.commons.cmd.resolved.ResolvedArgument;
 import me.raider.plib.commons.cmd.tree.CommandTree;
 
-public class DefaultExecutor implements Executor {
+@SuppressWarnings("unchecked")
+public class DefaultCommandExecutor implements CommandExecutor {
 
     private final CommandTree commandTree;
     private final MessageProvider messageProvider;
     private final Authorizer<?> authorizer;
     private final Messenger<?> messenger;
 
-    protected DefaultExecutor(CommandTree commandTree, MessageProvider messageProvider, Authorizer<?> authorizer, Messenger<?> messenger) {
+    protected DefaultCommandExecutor(CommandTree commandTree, MessageProvider messageProvider, Authorizer<?> authorizer, Messenger<?> messenger) {
         this.commandTree = commandTree;
         this.messageProvider = messageProvider;
         this.authorizer = authorizer;

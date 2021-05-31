@@ -1,9 +1,6 @@
 package me.raider.plib.commons.cmd.tree;
 
-import me.raider.plib.commons.cmd.Command;
-import me.raider.plib.commons.cmd.CommandArgument;
-import me.raider.plib.commons.cmd.InjectedCommandArgument;
-import me.raider.plib.commons.cmd.LiteralCommandArgument;
+import me.raider.plib.commons.cmd.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,11 +11,11 @@ public class CommandNodeImpl implements CommandNode {
     private final Command command;
     private final CommandArgument<?> data;
 
-    private final List<Node<CommandArgument<?>, Command>> children = new ArrayList<>();
+    private final List<CommandNode> children = new ArrayList<>();
 
-    private final Node<CommandArgument<?>, Command> parent;
+    private final CommandNode parent;
 
-    public CommandNodeImpl(Command command, CommandArgument<?> data, Node<CommandArgument<?>, Command> parent) {
+    public CommandNodeImpl(Command command, CommandArgument<?> data, CommandNode parent) {
         this.command = command;
         this.data = data;
         this.parent = parent;
@@ -35,12 +32,12 @@ public class CommandNodeImpl implements CommandNode {
     }
 
     @Override
-    public List<Node<CommandArgument<?>, Command>> getChildren() {
+    public List<CommandNode> getChildren() {
         return children;
     }
 
     @Override
-    public Node<CommandArgument<?>, Command> addChild(Node<CommandArgument<?>, Command> child) {
+    public CommandNode addChild(CommandNode child) {
         if (children.contains(child)) {
             return null;
         }
@@ -49,13 +46,13 @@ public class CommandNodeImpl implements CommandNode {
     }
 
     @Override
-    public Node<CommandArgument<?>, Command> getParent() {
+    public CommandNode getParent() {
         return parent;
     }
 
     @Override
-    public Node<CommandArgument<?>, Command> findData(String arg, Class<?> clazz) {
-        for (Node<CommandArgument<?>, Command> child : children) {
+    public CommandNode findData(String arg, Class<?> clazz) {
+        for (CommandNode child : children) {
             CommandArgument<?> argument = child.getData();
             if (argument instanceof LiteralCommandArgument && arg!=null) {
 
@@ -65,8 +62,7 @@ public class CommandNodeImpl implements CommandNode {
                     return child;
                 }
             }
-            else if (argument instanceof InjectedCommandArgument<?> &&
-                    argument.getRequiredClass().equals(clazz) && arg==null) {
+            else if (argument.getRequiredClass().equals(clazz) && arg==null) {
                 return child;
             }
         }
@@ -82,8 +78,8 @@ public class CommandNodeImpl implements CommandNode {
     public void print(StringBuilder buffer, String prefix, String childrenPrefix) {
         buffer.append(prefix);
         if (data!=null) {
-            if (data instanceof LiteralCommandArgument) {
-                LiteralCommandArgument literal = (LiteralCommandArgument) data;
+            if (data instanceof SimpleLiteralCommandArgument) {
+                SimpleLiteralCommandArgument literal = (SimpleLiteralCommandArgument) data;
                 buffer.append(literal.getRequiredLiteral());
             } else {
                 buffer.append(data.getRequiredClass());
@@ -92,8 +88,8 @@ public class CommandNodeImpl implements CommandNode {
             buffer.append("null");
         }
         buffer.append('\n');
-        for (Iterator<Node<CommandArgument<?>, Command>> it = children.iterator(); it.hasNext();) {
-            Node<CommandArgument<?>, Command> next = it.next();
+        for (Iterator<CommandNode> it = children.iterator(); it.hasNext();) {
+            CommandNode next = it.next();
             if (it.hasNext()) {
                 next.print(buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
             } else {

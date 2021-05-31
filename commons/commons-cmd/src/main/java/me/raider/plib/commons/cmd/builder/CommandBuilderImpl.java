@@ -1,4 +1,6 @@
-package me.raider.plib.commons.cmd;
+package me.raider.plib.commons.cmd.builder;
+
+import me.raider.plib.commons.cmd.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +13,16 @@ public class CommandBuilderImpl implements CommandBuilder {
 
     private Action action;
 
-    private final ArgumentProcessor<LiteralCommandArgument> argumentProcessor;
+    private final ArgumentHelper<LiteralCommandArgument> argumentProcessor;
     private final CommandSupplierManager supplierManager;
 
+    private ArrayCommandArgument arrayCommandArgument;
     private List<InjectedCommandArgument<?>> injected = new ArrayList<>();
     private List<LiteralCommandArgument> literal = new ArrayList<>();
     private List<CommandArgument<?>> argument = new ArrayList<>();
     private List<CommandBuilder> builders = new ArrayList<>();
 
-    public CommandBuilderImpl(String name, String prefix, ArgumentProcessor<LiteralCommandArgument> argumentProcessor,
+    protected CommandBuilderImpl(String name, String prefix, ArgumentHelper<LiteralCommandArgument> argumentProcessor,
                               CommandSupplierManager supplierManager) {
         this.name = name;
         this.prefix = prefix;
@@ -27,7 +30,7 @@ public class CommandBuilderImpl implements CommandBuilder {
         this.supplierManager = supplierManager;
     }
 
-    public CommandBuilderImpl(CommandBuilder builder) {
+    protected CommandBuilderImpl(CommandBuilder builder) {
         this.name = builder.getName();
         this.prefix = builder.getPrefix();
         this.argumentProcessor = builder.getArgumentProcessor();
@@ -54,6 +57,13 @@ public class CommandBuilderImpl implements CommandBuilder {
     @Override
     public <T> CommandBuilder argument(Class<T> clazz) {
         this.argument.add(new SimpleCommandArgument<>(clazz, supplierManager.getSupplier(clazz)));
+        return this;
+    }
+
+    @Override
+    public CommandBuilder array() {
+        SupplierKey<String> supplierKey = new CommandSupplierKey<>(String.class, ArrayCommandArgument.class);
+        this.arrayCommandArgument = new SimpleArrayCommandArgument(supplierManager.getSupplier(supplierKey));
         return this;
     }
 
@@ -91,7 +101,7 @@ public class CommandBuilderImpl implements CommandBuilder {
     }
 
     @Override
-    public ArgumentProcessor<LiteralCommandArgument> getArgumentProcessor() {
+    public ArgumentHelper<LiteralCommandArgument> getArgumentProcessor() {
         return argumentProcessor;
     }
 
@@ -106,13 +116,14 @@ public class CommandBuilderImpl implements CommandBuilder {
         List<CommandArgument<?>> arguments = new ArrayList<>(injected);
 
         if(prefix != null && !prefix.trim().isEmpty())  {
-            arguments.add(new LiteralCommandArgument(supplierManager.getSupplier(String.class), prefix));
+            arguments.add(new SimpleLiteralCommandArgument(supplierManager.getSupplier(String.class), prefix));
         }
         if(name != null && !name.trim().isEmpty())  {
-            arguments.add(new LiteralCommandArgument(supplierManager.getSupplier(String.class), name));
+            arguments.add(new SimpleLiteralCommandArgument(supplierManager.getSupplier(String.class), name));
         }
         arguments.addAll(literal);
         arguments.addAll(argument);
+        if (arrayCommandArgument!=null) arguments.add(arrayCommandArgument);
 
         List<Command> commands = new ArrayList<>();
         commands.add(new SimpleCommand(arguments, action, permission, name, prefix));

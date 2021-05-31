@@ -6,9 +6,13 @@ import java.util.List;
 
 public class WrappedCommandResult {
 
-    private final CommandResult result;
-    private final Command command;
+    private CommandResult result;
+    private Command command;
     private final List<ResolvedArgument> resolvedArguments;
+
+    public WrappedCommandResult(List<ResolvedArgument> resolvedArguments) {
+        this.resolvedArguments = resolvedArguments;
+    }
 
     public WrappedCommandResult(CommandResult result, Command command, List<ResolvedArgument> resolvedArguments) {
         this.result = result;
@@ -26,5 +30,13 @@ public class WrappedCommandResult {
 
     public List<ResolvedArgument> getResolvedArguments() {
         return resolvedArguments;
+    }
+
+    public void setResult(CommandResult result) {
+        this.result = result;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 }

@@ -9,18 +9,21 @@ import java.util.List;
 public class SimpleCommandManager implements CommandManager {
 
     private final CommandTree tree;
-    private final Executor executor;
+    private final CommandExecutor executor;
     private final CommandSupplierManager supplierManager;
     private final MessageProvider messageProvider;
+    private final ArgumentRegistry argumentRegistry;
     private final Authorizer<?> authorizer;
     private final Messenger<?> messenger;
 
-    public SimpleCommandManager(MessageProvider messageProvider, Authorizer<?> authorizer, Messenger<?> messenger) {
+    public SimpleCommandManager(MessageProvider messageProvider, Authorizer<?> authorizer, Messenger<?> messenger,
+                                ArgumentRegistry argumentRegistry) {
         this.messageProvider = messageProvider;
         this.authorizer = authorizer;
         this.messenger = messenger;
-        this.tree = new CommandTree();
-        this.executor = new DefaultExecutor(tree, messageProvider, authorizer, messenger);
+        this.argumentRegistry = argumentRegistry;
+        this.tree = new CommandTree(argumentRegistry);
+        this.executor = new DefaultCommandExecutor(tree, messageProvider, authorizer, messenger);
         this.supplierManager = new SimpleCommandSupplierManager();
     }
 
@@ -64,12 +67,17 @@ public class SimpleCommandManager implements CommandManager {
     }
 
     @Override
-    public Executor getExecutor() {
+    public CommandExecutor getExecutor() {
         return executor;
     }
 
     @Override
     public CommandTree getTree() {
         return tree;
+    }
+
+    @Override
+    public ArgumentRegistry getArgumentRegistry() {
+        return argumentRegistry;
     }
 }
